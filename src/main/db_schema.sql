@@ -71,13 +71,13 @@ create table reservations (
     foreign key (received_by_id) references managers(manager_id)
 );
 
-
 create table notifications (
     notification_id serial primary key,
     reservation_id int null,
     feedback_id int null,
     content text,
     was_seen int,
+    creation_time timestamp,
     foreign key (reservation_id) references reservations(reservation_id),
     foreign key (feedback_id) references feedbacks(feedback_id)
 );

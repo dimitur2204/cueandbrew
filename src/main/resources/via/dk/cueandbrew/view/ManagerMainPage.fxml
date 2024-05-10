@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="10.0" />
+            <Label prefHeight="26.0" prefWidth="397.0" text="Welcome + login">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="48.0" prefWidth="62.0" />
+            <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="122.0">
+               <children>
+                  <Label text="10.05.2024" />
+                  <Label text="11:33" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="10.0" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <HBox prefHeight="351.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="300.0">
+               <children>
+                  <HBox prefHeight="20.0" prefWidth="200.0" />
+                  <Label text="Notifications">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <TextArea editable="false" prefHeight="280.0" prefWidth="260.0" text="10.05.2024 11:46 &#10;Bitch ass made a reservation for Table 7" wrapText="true" />
+               </children>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" />
+            <VBox prefHeight="351.0" prefWidth="300.0">
+               <children>
+                  <HBox prefHeight="20.0" prefWidth="200.0" />
+                  <Label text="Reviews">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <TextArea editable="false" prefHeight="278.0" prefWidth="260.0" text="10.05.2024 11:46 &#10;Bitch ass -&gt; I did not like the fucking drinks" wrapText="true" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" text="Make a Reservation" />
+            <HBox prefHeight="49.0" prefWidth="423.0" />
+            <Button mnemonicParsing="false" text="Exit" />
+         </children>
+      </HBox>
+   </bottom>
+   <left>
+      <VBox prefHeight="302.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <VBox prefHeight="200.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+   </right>
+</BorderPane>
