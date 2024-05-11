@@ -25,7 +25,7 @@ create table feedbacks (
     author_lastname varchar(100),
     content text,
     type varchar(20),
-    checked_by_id int,
+    checked_by_id int null,
     foreign key (checked_by_id) references managers(manager_id)
 );
 
@@ -60,7 +60,7 @@ create table reservations (
     reservation_id serial primary key,
     booking_id int,
     order_id int null,
-    received_by_id int,
+    received_by_id int null,
     notes text,
     client_firstname varchar(100),
     client_lastname varchar(100),
@@ -71,13 +71,13 @@ create table reservations (
     foreign key (received_by_id) references managers(manager_id)
 );
 
-
 create table notifications (
     notification_id serial primary key,
     reservation_id int null,
     feedback_id int null,
     content text,
     was_seen int,
+    creation_time timestamp,
     foreign key (reservation_id) references reservations(reservation_id),
     foreign key (feedback_id) references feedbacks(feedback_id)
 );

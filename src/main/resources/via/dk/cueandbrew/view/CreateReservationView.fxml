@@ -1,46 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="via.dk.cueandbrew.view.CreateReservationController">
-   <children>
-      <DatePicker fx:id="datePicker" layoutX="41.0" layoutY="99.0" />
-      <Label layoutX="39.0" layoutY="138.0" text="Time">
-         <font>
-            <Font name="Roboto Regular" size="13.0" />
-         </font></Label>
-      <Text layoutX="32.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User  Panel - Reservations">
-         <font>
-            <Font name="Roboto Medium" size="18.0" />
-         </font></Text>
-      <Text layoutX="32.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.* Choose date and time">
-         <font>
-            <Font name="Roboto Regular" size="13.0" />
-         </font></Text>
-      <Label layoutX="41.0" layoutY="82.0" text="Date">
-         <font>
-            <Font name="Roboto Regular" size="13.0" />
-         </font></Label>
-      <ComboBox fx:id="hourField" layoutX="41.0" layoutY="159.0" prefHeight="27.0" prefWidth="63.0" />
-      <ComboBox fx:id="minutesField" layoutX="109.0" layoutY="159.0" prefHeight="27.0" prefWidth="63.0" />
-      <Text layoutX="32.0" layoutY="212.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.* Choose  table">
-         <font>
-            <Font name="Roboto Regular" size="13.0" />
-         </font>
-      </Text>
-      <Label layoutX="178.0" layoutY="138.0" text="Duration">
-         <font>
-            <Font name="Roboto Regular" size="13.0" />
-         </font>
-      </Label>
-      <RadioButton layoutX="181.0" layoutY="159.0" mnemonicParsing="false" text="30m" />
-      <RadioButton layoutX="243.0" layoutY="159.0" mnemonicParsing="false" text="1h" />
-      <RadioButton layoutX="293.0" layoutY="157.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="43.0" text="2h" />
-   </children>
-</Pane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="via.dk.cueandbrew.view.CreateReservationController">
+   <top>
+      <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="600.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="10.0" />
+            <Label prefHeight="26.0" prefWidth="184.0" text="Make a Reservation">
+               <font>
+                  <Font size="17.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="63.0" prefWidth="306.0" />
+            <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label text="10.05.2024" />
+                  <Label text="12:00" />
+               </children>
+            </VBox>
+            <HBox prefHeight="100.0" prefWidth="10.0" />
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="20.0" prefWidth="200.0" />
+            <Label text="1. * Choose the date and time" />
+            <HBox prefHeight="10.0" prefWidth="200.0" />
+            <Label text="Date" />
+            <DatePicker fx:id="datePicker" />
+            <HBox prefHeight="10.0" prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="93.0" prefWidth="121.0">
+                     <children>
+                        <Label text="Time" />
+                        <HBox prefHeight="76.0" prefWidth="115.0">
+                           <children>
+                              <ComboBox fx:id="hourField" prefWidth="150.0" />
+                              <VBox prefHeight="200.0" prefWidth="100.0" />
+                              <ComboBox fx:id="minutesField" prefWidth="150.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="93.0" prefWidth="198.0" />
+                  <VBox prefHeight="100.0" prefWidth="178.0">
+                     <children>
+                        <Label text="Duration" />
+                        <HBox prefHeight="83.0" prefWidth="188.0">
+                           <children>
+                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m" />
+                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h" />
+                              <RadioButton mnemonicParsing="false" text="2h" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox prefHeight="10.0" prefWidth="200.0" />
+            <Label prefWidth="100.0" text="2. * Choose a table" />
+            <HBox prefHeight="10.0" prefWidth="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Label" />
+                        <CheckBox mnemonicParsing="false" text="Table 1" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Label" />
+                        <CheckBox mnemonicParsing="false" text="Table 2" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Label" />
+                        <CheckBox mnemonicParsing="false" text="Table 3" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Label" />
+                        <CheckBox mnemonicParsing="false" text="Table 4" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </center>
+   <right>
+      <VBox prefHeight="337.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+   </right>
+   <left>
+      <VBox prefHeight="200.0" prefWidth="10.0" BorderPane.alignment="CENTER" />
+   </left>
+   <bottom>
+      <HBox prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="10.0" />
+                  <Button mnemonicParsing="false" text="Cancel" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="600.0">
+               <children>
+                  <Button mnemonicParsing="false" text="Next" />
+                  <VBox prefHeight="200.0" prefWidth="10.0" />
+               </children>
+            </HBox>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
