@@ -2,7 +2,7 @@ package via.dk.cueandbrew.view;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Region;
-import via.dk.cueandbrew.Application;
+import via.dk.cueandbrew.view.Reservation.CreateReservationController;
 import via.dk.cueandbrew.viewmodel.ViewModelFactory;
 
 import java.io.IOError;

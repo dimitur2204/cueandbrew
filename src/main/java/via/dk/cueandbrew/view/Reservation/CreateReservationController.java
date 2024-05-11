@@ -1,4 +1,4 @@
-package via.dk.cueandbrew.view;
+package via.dk.cueandbrew.view.Reservation;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
