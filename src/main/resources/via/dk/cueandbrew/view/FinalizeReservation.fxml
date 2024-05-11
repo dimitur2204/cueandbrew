@@ -9,8 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="via.dk.cueandbrew.view.Reservation.FinalizeReservation">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="312.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="via.dk.cueandbrew.view.Reservation.FinalizeReservationController">
    <top>
       <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER">
          <children>
@@ -42,9 +41,9 @@
          <children>
             <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="600.0">
                <children>
-                  <Button mnemonicParsing="false" text="Cancel" />
+                  <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
                   <HBox prefHeight="100.0" prefWidth="10.0" />
-                  <Button mnemonicParsing="false" text="Finalize" />
+                  <Button mnemonicParsing="false" onAction="#onFinalize" text="Finalize" />
                   <VBox prefHeight="200.0" prefWidth="10.0" />
                </children>
             </HBox>

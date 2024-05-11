@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="via.dk.cueandbrew.view.MainPages.ManagerMainPage">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="via.dk.cueandbrew.view.MainPages.ManagerMainPageController">
    <top>
       <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -89,9 +89,9 @@
    <bottom>
       <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" text="Make a Reservation" />
+            <Button mnemonicParsing="false" onAction="#onMakeAReservation" text="Make a Reservation" />
             <HBox prefHeight="49.0" prefWidth="423.0" />
-            <Button mnemonicParsing="false" text="Exit" />
+            <Button mnemonicParsing="false" onAction="#onExit" text="Exit" />
          </children>
       </HBox>
    </bottom>
