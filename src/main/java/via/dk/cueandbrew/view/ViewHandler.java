@@ -1,40 +1,193 @@
 package via.dk.cueandbrew.view;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import via.dk.cueandbrew.view.MainPages.ManagerMainPageController;
+import via.dk.cueandbrew.view.MainPages.UserMainPageController;
+import via.dk.cueandbrew.view.Reservation.CreateReservationController;
+import via.dk.cueandbrew.view.Reservation.FinalizeReservationController;
+import via.dk.cueandbrew.view.Reservation.OrderController;
+import via.dk.cueandbrew.view.Start.ManagerLoginController;
+import via.dk.cueandbrew.view.Start.StartController;
 import via.dk.cueandbrew.viewmodel.ViewModelFactory;
 
+import java.io.IOException;
+
 public class ViewHandler {
+    private final ViewModelFactory viewModelFactory;
+    private final Stage stage;
+    private final Stage finalizeReservationStage;
 
-    private final Scene currentScene;
-    private Stage primaryStage;
-    private final ViewFactory viewFactory;
-
-    public ViewHandler(ViewModelFactory viewModelFactory) {
-        this.viewFactory = new ViewFactory(this, viewModelFactory);
-        this.currentScene = new Scene(new Region());
+    public ViewHandler(ViewModelFactory viewModelFactory, Stage stage) {
+        this.viewModelFactory = viewModelFactory;
+        this.viewModelFactory.instantiateViewModels(this);
+        this.stage = stage;
+        this.finalizeReservationStage = new Stage();
+        this.finalizeReservationStage.initModality(Modality.APPLICATION_MODAL);
+        this.finalizeReservationStage.initOwner(this.stage);
     }
 
-    public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        openView(ViewFactory.CREATE_RESERVATION);
+    public ViewModelFactory getViewModelFactory()
+    {
+        return viewModelFactory;
     }
 
-    public void openView(String id) {
-        Region root = viewFactory.load(id);
-        currentScene.setRoot(root);
-        if (root.getUserData() == null) {
-            primaryStage.setTitle("Create Reservation");
-        } else {
-            primaryStage.setTitle(root.getUserData().toString());
+    public void openStartView() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/Start.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
         }
-        primaryStage.setScene(currentScene);
-        primaryStage.sizeToScene();
-        primaryStage.show();
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        StartController view = loader.getController();
+        view.init(viewModelFactory.getStartViewModel());
+        stage.setTitle("View Vinyls");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
-    public void closeView() {
-        primaryStage.close();
+    public void openUserMainPageView() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/UserMainPage.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        UserMainPageController view = loader.getController();
+        view.init(viewModelFactory.getUserMainPageViewModel());
+        stage.setTitle("Main");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openManagerLoginView() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/ManagerLogin.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        ManagerLoginController view = loader.getController();
+        view.init(viewModelFactory.getManagerLoginViewModel());
+        stage.setTitle("Log in");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openManagerMainPage()
+    {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/ManagerMainPage.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        ManagerMainPageController view = loader.getController();
+        view.init(viewModelFactory.getManagerMainPageViewModel());
+        stage.setTitle("Main");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openCreateReservationView() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/CreateReservationView.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        CreateReservationController view = loader.getController();
+        view.init(viewModelFactory.getCreateReservationViewModel());
+        stage.setTitle("Create Reservation");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openOrder() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/Order.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        OrderController view = loader.getController();
+        view.init(viewModelFactory.getOrderViewModel());
+        stage.setTitle("Add Drinks");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openFinalizeReservationView() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/FinalizeReservation.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        FinalizeReservationController view = loader.getController();
+        view.init(viewModelFactory.getFinalizeReservationViewModel());
+        finalizeReservationStage.setTitle("Finalize Reservation");
+
+        Scene scene = new Scene(root);
+        finalizeReservationStage.setScene(scene);
+        finalizeReservationStage.show();
+    }
+
+    public void closeFinalizeReservationView() {
+        finalizeReservationStage.close();
+    }
+
+    public void start() {
+        openStartView();
     }
 }

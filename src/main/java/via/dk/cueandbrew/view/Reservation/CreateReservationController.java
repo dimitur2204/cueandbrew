@@ -1,10 +1,11 @@
-package via.dk.cueandbrew.view;
+package via.dk.cueandbrew.view.Reservation;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.Region;
+import via.dk.cueandbrew.viewmodel.Reservation.CreateReservationViewModel;
 
 import java.util.ArrayList;
 
@@ -16,9 +17,9 @@ public class CreateReservationController {
     ComboBox<String> hourField;
     @FXML
     ComboBox<String> minutesField;
-    private Region root;
+    private CreateReservationViewModel viewModel;
 
-    public void init(Region root) {
+    public void init(CreateReservationViewModel viewModel) {
         ArrayList<String> hours = new ArrayList<>();
         ArrayList<String> minutes = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
@@ -33,10 +34,14 @@ public class CreateReservationController {
         minutesField.setItems(FXCollections.observableArrayList(minutes));
         hourField.setValue(currentHour);
         minutesField.setValue(currentMinute);
-        this.root = root;
+        this.viewModel = viewModel;
     }
 
-    public Region getRoot() {
-        return root;
+    public void onNext() {
+        this.viewModel.onNext();
+    }
+
+    public void onCancel() {
+        this.viewModel.onCancel();
     }
 }
