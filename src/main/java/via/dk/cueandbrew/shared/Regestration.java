@@ -1,4 +1,4 @@
-package via.dk.cueandbrew.model;
+package via.dk.cueandbrew.shared;
 
 public class Regestration {
     private String login;

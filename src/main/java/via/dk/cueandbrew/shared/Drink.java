@@ -1,4 +1,4 @@
-package via.dk.cueandbrew.model;
+package via.dk.cueandbrew.shared;
 
 public class Drink {
     private String name;

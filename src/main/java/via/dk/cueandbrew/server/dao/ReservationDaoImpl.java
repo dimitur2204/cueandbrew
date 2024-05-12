@@ -1,6 +1,6 @@
 package via.dk.cueandbrew.server.dao;
 
-import via.dk.cueandbrew.model.Reservation;
+import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.server.Database;
 
 import java.sql.Connection;
@@ -21,14 +21,17 @@ public class ReservationDaoImpl implements ReservationDao {
     }
 
     @Override
-    public Reservation create(String clientFirstName, String clientLastName, String clientPhoneNumber) throws SQLException {
+    public Reservation create(Reservation.ReservationBuilder builder) throws SQLException {
         try (Connection connection = Database.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO cueandbrew.reservation (client_firstname, client_lastname, client_phone_number, creation_datetime ) VALUES (?, ?, ?, ?)");
-            Reservation res = new Reservation();
-            statement.setString(1, clientFirstName);
-            statement.setString(2, clientLastName);
-            statement.setString(3, clientPhoneNumber);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO cueandbrew.reservations (client_firstname, client_lastname, client_phone_number, creation_datetime, notes ) VALUES (?, ?, ?, ?, ?)");
+            Reservation res = builder.build();
+            statement.setString(1, res.getClientFirstName());
+            statement.setString(2, res.getClientLastName());
+            statement.setString(3, res.getClientPhoneNumber());
             statement.setTimestamp(4, res.getCreationDatetime());
+            statement.setString(5, res.getNotes());
+            boolean execute = statement.execute();
+            System.out.println(execute);
             return res;
         } catch (SQLException e) {
             throw e;
@@ -46,11 +49,12 @@ public class ReservationDaoImpl implements ReservationDao {
             statement.setInt(1, tableId);
             var result = statement.executeQuery();
             if (result.next()) {
-                Reservation res = new Reservation();
-                res.setClientFirstName(result.getString("client_firstname"));
-                res.setClientLastName(result.getString("client_lastname"));
-                res.setClientPhoneNumber(result.getString("client_phone_number"));
-                res.setCreationDatetime(result.getTimestamp("creation_datetime"));
+                String firstname = result.getString("client_firstname");
+                String lastname = result.getString("client_lastname");
+                String phoneNumber = result.getString("client_phone_number");
+                Reservation res = new Reservation.ReservationBuilder(firstname, lastname, phoneNumber)
+                        .setNotes(result.getString("notes"))
+                        .build();
                 return res;
             }
             return null;

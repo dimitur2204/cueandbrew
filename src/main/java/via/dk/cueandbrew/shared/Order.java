@@ -1,4 +1,4 @@
-package via.dk.cueandbrew.model;
+package via.dk.cueandbrew.shared;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
