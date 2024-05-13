@@ -1,4 +1,4 @@
-package via.dk.cueandbrew.server.dao;
+package via.dk.cueandbrew.databse.dao;
 
 import via.dk.cueandbrew.shared.Reservation;
 
