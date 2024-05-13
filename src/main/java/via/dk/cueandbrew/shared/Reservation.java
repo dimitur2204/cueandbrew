@@ -87,6 +87,11 @@ public class Reservation {
         public Reservation build() {
             return new Reservation(this);
         }
+        //"Dimitar Nizamov booked table 1 and 2 for 10.05.2024 17:00 until 10.05.2024 19:00"
+    }
+    @Override
+    public String toString() {
+        return clientFirstName + " " + clientLastName + " booked table " + booking.getFirst().getTables().getFirst() + " for " + booking.getFirst().getStartTime() + " until " + booking.getFirst().getEndTime();
     }
 }
 
