@@ -81,25 +81,25 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 1" />
+                        <CheckBox fx:id="table1CheckBox" mnemonicParsing="false" text="Table 1" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 2" />
+                        <CheckBox fx:id="table2CheckBox" mnemonicParsing="false" text="Table 2" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 3" />
+                        <CheckBox fx:id="table3CheckBox" mnemonicParsing="false" text="Table 3" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 4" />
+                        <CheckBox fx:id="table4CheckBox" mnemonicParsing="false" text="Table 4" />
                      </children>
                   </VBox>
                </children>
