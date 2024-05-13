@@ -16,4 +16,26 @@ public class Booking {
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
+    public List<Table> getTables() {
+        return tables;
+    }
+
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public Time getEndTime() {
+        return endTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "tables=" + tables +
+                ", date=" + date +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                '}';
+    }
 }
