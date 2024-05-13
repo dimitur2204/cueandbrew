@@ -1,9 +1,12 @@
 package via.dk.cueandbrew.viewmodel.Reservation;
 
 import via.dk.cueandbrew.model.Model;
+import via.dk.cueandbrew.shared.Table;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateReservationViewModel {
     private Model model;
@@ -32,6 +35,9 @@ public class CreateReservationViewModel {
 
     public void onNext() {
         this.viewHandler.openOrder();
+    }
+    public List<Table> getOccupiedTables(){
+        return new ArrayList<>();
     }
 
     public void onCancel() {
