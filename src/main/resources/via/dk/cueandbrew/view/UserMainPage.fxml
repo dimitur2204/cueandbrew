@@ -85,9 +85,9 @@
                       </Label>
                       <HBox alignment="CENTER" prefHeight="77.0" prefWidth="431.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;">
                           <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="76.0" prefWidth="200.0">
+                              <HBox fx:id="reservationsContainer" alignment="CENTER_LEFT" prefHeight="76.0" prefWidth="200.0">
                                   <children>
-                                      <Label prefHeight="75.0" prefWidth="200.0" text="11.05.2024 11:34 Big Man reserved table 8 and 9. Drink orders: pinacolada cause he is coquette as shit" wrapText="true" />
+<!--                                      <Label prefHeight="75.0" prefWidth="200.0" text="11.05.2024 11:34 Big Man reserved table 8 and 9. Drink orders: pinacolada cause he is coquette as shit" wrapText="true" />-->
                                   </children>
                                   <opaqueInsets>
                                       <Insets />

@@ -11,4 +11,12 @@ public class Order {
         this.drinks = new ArrayList<>();
         this.expectedDatetime = expectedDatetime;
     }
+
+    public List<Drink> getDrinks()
+    {
+        return drinks;
+    }
+    public void addDrink(Drink drink){
+        drinks.add(drink);
+    }
 }
