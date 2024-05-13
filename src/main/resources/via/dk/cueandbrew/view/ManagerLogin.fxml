@@ -29,15 +29,20 @@
                   <Font size="17.0" />
                </font>
             </Label>
-            <TextField prefHeight="33.0" prefWidth="400.0" />
+            <TextField fx:id="usernameField" prefHeight="33.0" prefWidth="400.0" />
             <HBox prefHeight="37.0" prefWidth="400.0" />
             <Label text="Password">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <PasswordField prefHeight="32.0" prefWidth="400.0" />
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+            <PasswordField fx:id="passwordField" prefHeight="32.0" prefWidth="400.0" />
+            <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
+               <children>
+                  <Label fx:id="errorLabel" />
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#onCancel" prefHeight="45.0" prefWidth="100.0" text="Cancel">
                      <font>
@@ -45,7 +50,7 @@
                      </font>
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0" />
-                  <Button mnemonicParsing="false" onAction="#onLogin" prefHeight="45.0" prefWidth="100.0" text="Log in">
+                  <Button fx:id="loginButton" disable="true" mnemonicParsing="false" onAction="#onLogin" prefHeight="45.0" prefWidth="100.0" text="Log in">
                      <font>
                         <Font size="17.0" />
                      </font>
