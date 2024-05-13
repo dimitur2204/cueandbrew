@@ -1,7 +1,7 @@
-package via.dk.cueandbrew.server.dao;
+package via.dk.cueandbrew.databse.dao;
 
 import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.server.Database;
+import via.dk.cueandbrew.databse.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

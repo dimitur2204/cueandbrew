@@ -1,13 +1,10 @@
-package via.dk.cueandbrew.server;
+package via.dk.cueandbrew.databse;
 
-import via.dk.cueandbrew.shared.Booking;
-import via.dk.cueandbrew.shared.Order;
 import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.server.dao.ReservationDao;
-import via.dk.cueandbrew.server.dao.ReservationDaoImpl;
+import via.dk.cueandbrew.databse.dao.ReservationDao;
+import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 public class Start {
     public static void main(String[] args) {
