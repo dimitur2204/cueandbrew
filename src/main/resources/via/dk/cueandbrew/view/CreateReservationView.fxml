@@ -61,9 +61,12 @@
                         <Label text="Duration" />
                         <HBox prefHeight="83.0" prefWidth="188.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m" />
-                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h" />
-                              <RadioButton mnemonicParsing="false" text="2h" />
+<!--                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m" />-->
+<!--                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h" />-->
+<!--                              <RadioButton mnemonicParsing="false" text="2h" />-->
+                              <RadioButton fx:id="duration30m" mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m"/>
+                              <RadioButton fx:id="duration1h" mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h"/>
+                              <RadioButton fx:id="duration2h" mnemonicParsing="false" text="2h"/>
                            </children>
                         </HBox>
                      </children>
