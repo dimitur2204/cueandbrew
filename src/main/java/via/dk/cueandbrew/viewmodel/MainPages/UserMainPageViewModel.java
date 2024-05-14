@@ -17,8 +17,11 @@ public class UserMainPageViewModel
     this.model = model;
     this.viewHandler = viewHandler;
     reservations = FXCollections.observableArrayList();
-    var res = new Reservation.ReservationBuilder("Allan", "Acbs",
-        "24524252").setNotes("Lol").build();
+    var res = new Reservation.ReservationBuilder()
+            .setClientFirstName("Lol")
+            .setClientLastName("Lol")
+            .setClientPhoneNumber("Lol")
+            .setNotes("Lol").build();
     reservations.add(res);
   }
 

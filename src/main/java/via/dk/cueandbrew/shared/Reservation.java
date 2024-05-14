@@ -1,9 +1,11 @@
 package via.dk.cueandbrew.shared;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Reservation {
+public class Reservation implements Serializable {
     private String notes;
     private String clientFirstName;
     private String clientLastName;
@@ -67,11 +69,9 @@ public class Reservation {
         private List<Booking> booking;
         private Order order;
 
-        public ReservationBuilder(String clientFirstName, String clientLastName, String clientPhoneNumber) {
+        public ReservationBuilder() {
+            this.booking = new ArrayList<>();
             this.creationDatetime = new Timestamp(System.currentTimeMillis());
-            this.clientFirstName = clientFirstName;
-            this.clientLastName = clientLastName;
-            this.clientPhoneNumber = clientPhoneNumber;
         }
 
         public ReservationBuilder setNotes(String notes) {
@@ -79,13 +79,33 @@ public class Reservation {
             return this;
         }
 
-        public ReservationBuilder setBooking(List<Booking> booking) {
-            this.booking = booking;
+        public ReservationBuilder addBooking(Booking booking) {
+            this.booking.add(booking);
             return this;
         }
 
         public ReservationBuilder setOrder(Order order) {
             this.order = order;
+            return this;
+        }
+
+        public ReservationBuilder setClientLastName(String clientLastName) {
+            this.clientLastName = clientLastName;
+            return this;
+        }
+
+        public ReservationBuilder setClientFirstName(String clientFirstName) {
+            this.clientFirstName = clientFirstName;
+            return this;
+        }
+
+        public ReservationBuilder setCreationDatetime(Timestamp creationDatetime) {
+            this.creationDatetime = creationDatetime;
+            return this;
+        }
+
+        public ReservationBuilder setClientPhoneNumber(String clientPhoneNumber) {
+            this.clientPhoneNumber = clientPhoneNumber;
             return this;
         }
 

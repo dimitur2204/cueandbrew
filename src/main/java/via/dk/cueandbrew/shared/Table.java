@@ -1,6 +1,8 @@
 package via.dk.cueandbrew.shared;
 
-public class Table {
+import java.io.Serializable;
+
+public class Table implements Serializable {
     private Integer number;
     public Table(Integer number) {
         this.number = number;
@@ -8,10 +10,5 @@ public class Table {
 
     public int getNumber() {
         return number;
-    }
-
-    @Override
-    public String toString() {
-        return number.toString();
     }
 }

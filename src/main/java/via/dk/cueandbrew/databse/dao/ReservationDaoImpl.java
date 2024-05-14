@@ -55,7 +55,10 @@ public class ReservationDaoImpl implements ReservationDao {
                 String firstname = result.getString("client_firstname");
                 String lastname = result.getString("client_lastname");
                 String phoneNumber = result.getString("client_phone_number");
-                Reservation res = new Reservation.ReservationBuilder(firstname, lastname, phoneNumber)
+                Reservation res = new Reservation.ReservationBuilder()
+                        .setClientLastName(lastname)
+                        .setClientFirstName(firstname)
+                        .setClientPhoneNumber(phoneNumber)
                         .setNotes(result.getString("notes"))
                         .build();
                 return res;
@@ -74,17 +77,20 @@ public class ReservationDaoImpl implements ReservationDao {
                 FROM cueandbrew.reservations AS r
                 JOIN cueandbrew.bookings AS b ON r.booking_id = b.booking_id
                 JOIN cueandbrew.tables AS t ON b.table_number = t.number
-                WHERE b.start_time BETWEEN ? AND ? OR b.end_time BETWEEN ? AND ? OR (b.start_time < ? AND b.end_time > ?);
+                WHERE b.date = ? AND ((b.start_time BETWEEN ? AND ?)
+                   OR (b.end_time BETWEEN ? AND ?)
+                   OR (b.start_time < ? AND b.end_time > ?));
                 """;
 
         try (Connection connection = Database.createConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setTime(1, Time.valueOf(start.toLocalTime()));
-            statement.setTime(2, Time.valueOf(endTime.toLocalTime()));
-            statement.setTime(3, Time.valueOf(start.toLocalTime()));
-            statement.setTime(4, Time.valueOf(endTime.toLocalTime()));
-            statement.setTime(5, Time.valueOf(start.toLocalTime()));
-            statement.setTime(6, Time.valueOf(endTime.toLocalTime()));
+            statement.setDate(1, Date.valueOf(start.toLocalDate()));
+            statement.setTime(2, Time.valueOf(start.toLocalTime()));
+            statement.setTime(3, Time.valueOf(endTime.toLocalTime()));
+            statement.setTime(4, Time.valueOf(start.toLocalTime()));
+            statement.setTime(5, Time.valueOf(endTime.toLocalTime()));
+            statement.setTime(6, Time.valueOf(start.toLocalTime()));
+            statement.setTime(7, Time.valueOf(endTime.toLocalTime()));
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     String firstname = result.getString("client_firstname");
@@ -96,11 +102,12 @@ public class ReservationDaoImpl implements ReservationDao {
                     String tableNumber = result.getString("table_number");
                     Booking booking = new Booking(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTimeStr));
                     booking.getTables().add(new Table(Integer.parseInt(tableNumber)));
-                    ArrayList<Booking> bookings = new ArrayList<>();
-                    bookings.add(booking);
-                    Reservation reservation = new Reservation.ReservationBuilder(firstname, lastname, phoneNumber)
+                    Reservation reservation = new Reservation.ReservationBuilder()
+                            .setClientFirstName(firstname)
+                            .setClientLastName(lastname)
+                            .setClientPhoneNumber(phoneNumber)
                             .setNotes(result.getString("notes"))
-                            .setBooking(bookings)
+                            .addBooking(booking)
                             .build();
                     overlappingReservations.add(reservation);
                 }

@@ -29,17 +29,36 @@ create table feedbacks (
     foreign key (checked_by_id) references managers(manager_id)
 );
 
+--drop table tables;
+--drop table bookings;
+--drop table reservations;
+
 create table tables (
     number int primary key
+    foreign key (booking_id) references bookings(booking_id)
 );
 
 create table bookings (
     booking_id serial primary key,
+    foreign key (reservation_id) references reservation(reservation_id)
     table_number int,
     date date,
     start_time time,
     end_time time,
-    foreign key (table_number) references tables(number)
+);
+
+create table reservations (
+    reservation_id serial primary key,
+    booking_id int,
+    order_id int null,
+    received_by_id int null,
+    notes text,
+    client_firstname varchar(100),
+    client_lastname varchar(100),
+    client_phone_number varchar(15),
+    creation_datetime timestamp,
+    foreign key (order_id) references orders(order_id),
+    foreign key (received_by_id) references managers(manager_id)
 );
 
 create table drinks (
@@ -56,20 +75,6 @@ create table orders (
     expected_order_time time
 );
 
-create table reservations (
-    reservation_id serial primary key,
-    booking_id int,
-    order_id int null,
-    received_by_id int null,
-    notes text,
-    client_firstname varchar(100),
-    client_lastname varchar(100),
-    client_phone_number varchar(15),
-    creation_datetime timestamp,
-    foreign key (booking_id) references bookings(booking_id),
-    foreign key (order_id) references orders(order_id),
-    foreign key (received_by_id) references managers(manager_id)
-);
 
 create table notifications (
     notification_id serial primary key,

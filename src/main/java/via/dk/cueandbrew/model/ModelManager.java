@@ -2,11 +2,8 @@ package via.dk.cueandbrew.model;
 
 import javafx.application.Platform;
 import via.dk.cueandbrew.client.CallbackClient;
-import via.dk.cueandbrew.databse.dao.ReservationDao;
-import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
-
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -20,17 +17,23 @@ public class ModelManager implements Model, PropertyChangeListener
   private final CallbackClient client;
   private final PropertyChangeSupport support;
   private Registration registration;
+  private Reservation.ReservationBuilder reservationBuilder;
 
   public ModelManager(CallbackClient client) {
     this.client = client;
     this.client.addPropertyChange(this);
     this.registration = new Registration();
+    this.reservationBuilder = new Reservation.ReservationBuilder();
     this.support = new PropertyChangeSupport(this);
   }
 
   public Registration getRegistration()
   {
     return registration;
+  }
+
+  public Reservation.ReservationBuilder getReservationBuilder() {
+    return reservationBuilder;
   }
 
   public void setRegistration(Registration registration)
@@ -51,23 +54,14 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override public void addPropertyChangeListener(
-      PropertyChangeListener listener)
+          PropertyChangeListener listener)
   {
     this.support.addPropertyChangeListener(listener);
   }
 
-  public ModelManager(CallbackClient client, ReservationDao reservationDao) {
-    this.client = client;
-    this.support = new PropertyChangeSupport(this);
-  }
   @Override
-  public List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) {
-    try {
-      return ReservationDaoImpl.getInstance().findReservationsWithinPeriod(start, durationMinutes);
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
+  public List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException {
+    return this.client.getReservationsByDateTimeAndDuration(start, durationMinutes);
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
