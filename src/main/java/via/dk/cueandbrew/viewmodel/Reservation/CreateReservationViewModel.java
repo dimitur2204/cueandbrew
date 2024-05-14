@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,11 +19,12 @@ public class CreateReservationViewModel {
     private final ViewHandler viewHandler;
     private LocalDateTime dateTime;
     private int duration;
-    private int tableId;
+    private ArrayList<Integer> tableNumbers;
 
     public CreateReservationViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
+        this.tableNumbers = new ArrayList<>();
     }
 
     public void chooseDateTime(LocalDateTime dateTime) {
@@ -33,8 +35,8 @@ public class CreateReservationViewModel {
         this.duration = duration;
     }
 
-    public void chooseTable(int tableId) {
-        this.tableId = tableId;
+    public void chooseTable(int tableNumber) {
+        this.tableNumbers.add(tableNumber);
     }
 
     public void onNext() {
