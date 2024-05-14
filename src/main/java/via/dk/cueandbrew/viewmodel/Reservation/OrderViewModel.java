@@ -36,15 +36,6 @@ public class OrderViewModel
   {
     this.viewHandler.openCreateReservationView();
   }
-  @FXML
-  public void onAdd1(int i){
-    orders.add(drinks.get(i));
-  }
-  @FXML
-  public void onDelete(int i){
-    orders.remove(drinks.get(i));
-  }
-
   public ObservableList<Drink> getDrinks()
   {
     return drinks;
@@ -53,6 +44,7 @@ public class OrderViewModel
   {
     return orders;
   }
+
 
   /*<HBox fx:id="id" alignment="CENTER" prefHeight="30.0" prefWidth="290.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;">
                        <children>

@@ -32,4 +32,7 @@ public class ManagerMainPageController
   public void onMakeAReservation() {
     this.viewModel.onMakeAReservation();
   }
+  public void onAddADrink(){
+    this.viewModel.onAddADrink();
+  }
 }

@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import via.dk.cueandbrew.view.MainPages.AddDrinkManagerController;
 import via.dk.cueandbrew.view.MainPages.ManagerMainPageController;
 import via.dk.cueandbrew.view.MainPages.UserMainPageController;
 import via.dk.cueandbrew.view.Reservation.CreateReservationController;
@@ -96,7 +97,27 @@ public class ViewHandler {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }public void openAddDrinkManager() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("AddDrinkManager.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        AddDrinkManagerController view = loader.getController();
+        view.init(viewModelFactory.getAddDrinkManagerViewModel());
+        stage.setTitle("Add Drink Manager");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
+
 
     public void openManagerMainPage()
     {

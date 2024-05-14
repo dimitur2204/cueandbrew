@@ -2,6 +2,7 @@ package via.dk.cueandbrew.viewmodel.MainPages;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Booking;
 import via.dk.cueandbrew.shared.Notification;
@@ -48,5 +49,9 @@ public class ManagerMainPageViewModel {
 
     public void onExit() {
         this.viewHandler.openManagerLoginView();
+    }
+    @FXML
+    public void onAddADrink(){
+        this.viewHandler.openAddDrinkManager();
     }
 }
