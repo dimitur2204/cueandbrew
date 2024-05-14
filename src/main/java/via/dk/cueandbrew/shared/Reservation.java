@@ -2,8 +2,6 @@ package via.dk.cueandbrew.shared;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Reservation implements Serializable {
     private String notes;
@@ -11,9 +9,8 @@ public class Reservation implements Serializable {
     private String clientLastName;
     private String clientPhoneNumber;
     private Timestamp creationDatetime;
-    private List<Booking> booking;
+    private Booking booking;
     private Order order;
-    private int bookingId;
 
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
@@ -26,7 +23,7 @@ public class Reservation implements Serializable {
     }
 
 
-    public List<Booking> getBooking() {
+    public Booking getBooking() {
         return booking;
     }
 
@@ -56,21 +53,16 @@ public class Reservation implements Serializable {
         return order;
     }
 
-    public int getBookingId() {
-        return this.bookingId;
-    }
-
     public static class ReservationBuilder {
         private String clientFirstName;
         private String clientLastName;
         private String clientPhoneNumber;
         private String notes;
         private Timestamp creationDatetime;
-        private List<Booking> booking;
+        private Booking booking;
         private Order order;
 
         public ReservationBuilder() {
-            this.booking = new ArrayList<>();
             this.creationDatetime = new Timestamp(System.currentTimeMillis());
         }
 
@@ -79,8 +71,8 @@ public class Reservation implements Serializable {
             return this;
         }
 
-        public ReservationBuilder addBooking(Booking booking) {
-            this.booking.add(booking);
+        public ReservationBuilder setBooking(Booking booking) {
+            this.booking = booking;
             return this;
         }
 
@@ -115,10 +107,7 @@ public class Reservation implements Serializable {
     }
     @Override
     public String toString() {
-        return clientFirstName + " " + clientLastName + " booked table " + booking.getFirst().getTables().getFirst() + " for " + booking.getFirst().getStartTime() + " until " + booking.getFirst().getEndTime();
+        return clientFirstName + " " + clientLastName + " booked table " + booking.getTables().getFirst() + " for " + booking.getStartTime() + " until " + booking.getEndTime();
     }
-
-
-
 }
 
