@@ -43,16 +43,9 @@ public class CreateReservationController {
         for (int i = 0; i <= 59; i += 15) {
             minutes.add(String.format("%02d", i));
         }
-        String currentHour = String.format("%02d", java.time.LocalTime.now().getHour());
-        String currentMinute = String.format("%02d", java.time.LocalTime.now().getMinute());
         hourField.setItems(FXCollections.observableArrayList(hours));
         minutesField.setItems(FXCollections.observableArrayList(minutes));
-        hourField.setValue(currentHour);
-        minutesField.setValue(currentMinute);
         this.viewModel = viewModel;
-    }
-
-    public void initialize() {
         durationGroup = new ToggleGroup();
         duration30m.setToggleGroup(durationGroup);
         duration1h.setToggleGroup(durationGroup);
@@ -84,7 +77,6 @@ public class CreateReservationController {
         viewModel.chooseDuration(duration);
     }
 
-    //TODO: Call the update unavailable tables method in the view model
     private void handleDateChange(LocalDate date) {
         viewModel.chooseDateTime(LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(minutesField.getValue()))));
     }
