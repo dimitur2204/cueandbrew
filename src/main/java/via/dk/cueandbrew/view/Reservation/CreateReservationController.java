@@ -2,21 +2,36 @@ package via.dk.cueandbrew.view.Reservation;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import via.dk.cueandbrew.viewmodel.Reservation.CreateReservationViewModel;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CreateReservationController {
 
     @FXML
     public DatePicker datePicker;
     @FXML
-    ComboBox<String> hourField;
+    ComboBox<String> hourField, minuteField;
+
     @FXML
     ComboBox<String> minutesField;
+    @FXML
+    RadioButton duration30m, duration1h, duration2h;
+    @FXML
+    ToggleGroup durationGroup;
+    @FXML
+    CheckBox table1CheckBox;
+    @FXML
+    CheckBox table2CheckBox;
+    @FXML
+    CheckBox table3CheckBox;
+    @FXML
+    CheckBox table4CheckBox;
     private CreateReservationViewModel viewModel;
 
     public void init(CreateReservationViewModel viewModel) {
@@ -37,7 +52,63 @@ public class CreateReservationController {
         this.viewModel = viewModel;
     }
 
+    public void initialize() {
+        durationGroup = new ToggleGroup();
+        duration30m.setToggleGroup(durationGroup);
+        duration1h.setToggleGroup(durationGroup);
+        duration2h.setToggleGroup(durationGroup);
+        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            handleDateChange(newValue);
+        });
+        durationGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                handleDurationChange((RadioButton) newValue);
+            }
+        });
+    }
+
+    private void handleDurationChange(RadioButton selectedDuration) {
+        String durationText = selectedDuration.getText();
+        int duration = "30m".equals(durationText) ? 30 : "1h".equals(durationText) ? 60 : 120;
+        var hours = hourField.getValue();
+        var minutes = minutesField.getValue();
+        var datePickerValue = datePicker.getValue();
+        if (hours != null && minutes != null && datePickerValue != null) {
+            LocalDateTime selectedTime = LocalDateTime.of(datePickerValue, java.time.LocalTime.of(Integer.parseInt(hours), Integer.parseInt(minutes)));
+            updateBasedOnSelection(selectedTime, duration);
+        }
+        viewModel.chooseDuration(duration);
+    }
+
+//    TODO: DO
+    private void handleDateChange(LocalDate date){
+        var hours = hourField.getValue();
+        var minutes = minutesField.getValue();
+        var durationText = durationGroup.selectedToggleProperty().getValue();
+        int duration = 0;
+        if (durationText != null){
+            duration = "30m".equals(durationText) ? 30 : "1h".equals(durationText) ? 60 : 120;
+        }
+        if (hours != null && minutes != null && date != null) {
+            LocalDateTime selectedTime = LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hours), Integer.parseInt(minutes)));
+            updateBasedOnSelection(selectedTime, duration);
+        }
+    }
+
+    public void updateBasedOnSelection(LocalDateTime selectedTime, int duration) {
+        List<Integer> unavailableTables = viewModel.getUnavailableTableIds(selectedTime, duration);
+        disableTableSelections(unavailableTables);
+    }
+
+    private void disableTableSelections(List<Integer> unavailableTables) {
+        table1CheckBox.setDisable(unavailableTables.contains(1));
+        table2CheckBox.setDisable(unavailableTables.contains(2));
+        table3CheckBox.setDisable(unavailableTables.contains(3));
+        table4CheckBox.setDisable(unavailableTables.contains(4));
+    }
+
     public void onNext() {
+        viewModel.chooseDateTime(LocalDateTime.of(datePicker.getValue(), LocalDateTime.now().toLocalTime()));
         this.viewModel.onNext();
     }
 

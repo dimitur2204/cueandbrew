@@ -11,6 +11,7 @@ public class Reservation {
     private Timestamp creationDatetime;
     private List<Booking> booking;
     private Order order;
+    private int bookingId;
 
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
@@ -53,6 +54,10 @@ public class Reservation {
         return order;
     }
 
+    public int getBookingId() {
+        return this.bookingId;
+    }
+
     public static class ReservationBuilder {
         private String clientFirstName;
         private String clientLastName;
@@ -87,6 +92,10 @@ public class Reservation {
         public Reservation build() {
             return new Reservation(this);
         }
+    }
+    @Override
+    public String toString() {
+        return clientFirstName + " " + clientLastName + " booked table " + booking.getFirst().getTables().getFirst() + " for " + booking.getFirst().getStartTime() + " until " + booking.getFirst().getEndTime();
     }
 
 

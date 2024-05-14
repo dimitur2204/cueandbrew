@@ -43,27 +43,30 @@
             <HBox prefHeight="10.0" prefWidth="200.0" />
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <VBox prefHeight="93.0" prefWidth="121.0">
+                  <VBox prefHeight="93.0" prefWidth="168.0">
                      <children>
                         <Label text="Time" />
-                        <HBox prefHeight="76.0" prefWidth="115.0">
+                        <HBox prefHeight="76.0" prefWidth="164.0">
                            <children>
-                              <ComboBox fx:id="hourField" prefWidth="150.0" />
-                              <VBox prefHeight="200.0" prefWidth="100.0" />
-                              <ComboBox fx:id="minutesField" prefWidth="150.0" />
+                              <ComboBox fx:id="hourField" prefHeight="26.0" prefWidth="74.0" />
+                              <VBox prefHeight="76.0" prefWidth="40.0" />
+                              <ComboBox fx:id="minutesField" prefHeight="26.0" prefWidth="81.0" />
                            </children>
                         </HBox>
                      </children>
                   </VBox>
-                  <HBox prefHeight="93.0" prefWidth="198.0" />
+                  <HBox prefHeight="93.0" prefWidth="167.0" />
                   <VBox prefHeight="100.0" prefWidth="178.0">
                      <children>
                         <Label text="Duration" />
                         <HBox prefHeight="83.0" prefWidth="188.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m" />
-                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h" />
-                              <RadioButton mnemonicParsing="false" text="2h" />
+<!--                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m" />-->
+<!--                              <RadioButton mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h" />-->
+<!--                              <RadioButton mnemonicParsing="false" text="2h" />-->
+                              <RadioButton fx:id="duration30m" mnemonicParsing="false" prefHeight="17.0" prefWidth="59.0" text="30m" />
+                              <RadioButton fx:id="duration1h" mnemonicParsing="false" prefHeight="17.0" prefWidth="53.0" text="1h" />
+                              <RadioButton fx:id="duration2h" mnemonicParsing="false" text="2h" />
                            </children>
                         </HBox>
                      </children>
@@ -78,25 +81,25 @@
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 1" />
+                        <CheckBox fx:id="table1CheckBox" mnemonicParsing="false" text="Table 1" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 2" />
+                        <CheckBox fx:id="table2CheckBox" mnemonicParsing="false" text="Table 2" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 3" />
+                        <CheckBox fx:id="table3CheckBox" mnemonicParsing="false" text="Table 3" />
                      </children>
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
                         <Label text="Label" />
-                        <CheckBox mnemonicParsing="false" text="Table 4" />
+                        <CheckBox fx:id="table4CheckBox" mnemonicParsing="false" text="Table 4" />
                      </children>
                   </VBox>
                </children>

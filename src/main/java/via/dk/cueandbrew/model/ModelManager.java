@@ -2,12 +2,18 @@ package via.dk.cueandbrew.model;
 
 import javafx.application.Platform;
 import via.dk.cueandbrew.client.CallbackClient;
+import via.dk.cueandbrew.databse.dao.ReservationDao;
+import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.shared.Registration;
+import via.dk.cueandbrew.shared.Reservation;
+
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ModelManager implements Model, PropertyChangeListener
 {
@@ -48,6 +54,20 @@ public class ModelManager implements Model, PropertyChangeListener
       PropertyChangeListener listener)
   {
     this.support.addPropertyChangeListener(listener);
+  }
+
+  public ModelManager(CallbackClient client, ReservationDao reservationDao) {
+    this.client = client;
+    this.support = new PropertyChangeSupport(this);
+  }
+  @Override
+  public List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) {
+    try {
+      return ReservationDaoImpl.getInstance().findReservationsWithinPeriod(start, durationMinutes);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)
