@@ -147,7 +147,7 @@ public class ReservationDaoImpl implements ReservationDao {
                             .setClientLastName(lastname)
                             .setClientPhoneNumber(phoneNumber)
                             .setNotes(result.getString("notes"))
-                            .addBooking(booking)
+                            .setBooking(booking)
                             .build();
                     overlappingReservations.add(reservation);
                 }

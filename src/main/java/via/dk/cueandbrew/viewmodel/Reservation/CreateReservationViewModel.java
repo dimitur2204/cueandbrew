@@ -55,7 +55,7 @@ public class CreateReservationViewModel {
     public List<Integer> getUnavailableTableIds(LocalDateTime dateTime, int durationMinutes) throws RemoteException {
         List<Reservation> reservations = model.getReservationsByDateTimeAndDuration(dateTime, durationMinutes);
         // get all bookings from all reservations
-        List<Booking> bookings = reservations.stream().flatMap(reservation -> reservation.getBooking().stream()).toList();
+        List<Booking> bookings = reservations.stream().map(Reservation::getBooking).toList();
         //get all tables from all bookings
         List<Table> tables = bookings.stream().flatMap(booking -> booking.getTables().stream()).toList();
         //get all table numbers
