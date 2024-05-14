@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class Database {
     // You need to change the password and user to your own
     private static final String schema = "cueandbrew";
-    private static final String url = "jdbc:postgresql://localhost:5432/cueandbrew?currentSchema=" + schema;
+    private static final String url = "jdbc:postgresql://localhost:5432/postgres?currentSchema=" + schema;
     private static final String user = "postgres";
     private static final String password = "root";
     public static Connection createConnection() throws SQLException {

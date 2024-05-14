@@ -11,6 +11,8 @@ public class Reservation {
     private Timestamp creationDatetime;
     private List<Booking> booking;
     private Order order;
+    private int tableId;
+    private int bookingId;
 
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
@@ -20,6 +22,7 @@ public class Reservation {
         this.creationDatetime = builder.creationDatetime;
         this.booking = builder.booking;
         this.order = builder.order;
+        this.tableId = builder.tableId;
     }
 
 
@@ -52,8 +55,16 @@ public class Reservation {
     public Order getOrder() {
         return order;
     }
+    public int getTableId() {
+        return this.tableId;
+    }
+
+    public int getBookingId() {
+        return this.bookingId;
+    }
 
     public static class ReservationBuilder {
+        public int tableId;
         private String clientFirstName;
         private String clientLastName;
         private String clientPhoneNumber;
