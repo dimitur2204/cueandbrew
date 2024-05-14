@@ -1,7 +1,9 @@
 package via.dk.cueandbrew.databse.dao;
 
+import via.dk.cueandbrew.shared.Booking;
 import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.databse.Database;
+import via.dk.cueandbrew.shared.Table;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -68,24 +70,37 @@ public class ReservationDaoImpl implements ReservationDao {
         List<Reservation> overlappingReservations = new ArrayList<>();
         LocalDateTime endTime = start.plusMinutes(durationMinutes);
         String sql = """
-        SELECT r.*, b.*, t.*
-        FROM cueandbrew.reservations AS r
-        JOIN cueandbrew.bookings AS b ON r.booking_id = b.booking_id
-        JOIN cueandbrew.tables AS t ON b.table_number = t.number
-        WHERE r.start_time < ? AND r.end_time > ?;
-        """;
+                SELECT r.*, b.*, t.*
+                FROM cueandbrew.reservations AS r
+                JOIN cueandbrew.bookings AS b ON r.booking_id = b.booking_id
+                JOIN cueandbrew.tables AS t ON b.table_number = t.number
+                WHERE b.start_time BETWEEN ? AND ? OR b.end_time BETWEEN ? AND ? OR (b.start_time < ? AND b.end_time > ?);
+                """;
 
         try (Connection connection = Database.createConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setTimestamp(1, Timestamp.valueOf(endTime));
-            statement.setTimestamp(2, Timestamp.valueOf(start));
+            statement.setTime(1, Time.valueOf(start.toLocalTime()));
+            statement.setTime(2, Time.valueOf(endTime.toLocalTime()));
+            statement.setTime(3, Time.valueOf(start.toLocalTime()));
+            statement.setTime(4, Time.valueOf(endTime.toLocalTime()));
+            statement.setTime(5, Time.valueOf(start.toLocalTime()));
+            statement.setTime(6, Time.valueOf(endTime.toLocalTime()));
             try (ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     String firstname = result.getString("client_firstname");
                     String lastname = result.getString("client_lastname");
                     String phoneNumber = result.getString("client_phone_number");
+                    String date = result.getString("date");
+                    String startTime = result.getString("start_time");
+                    String endTimeStr = result.getString("end_time");
+                    String tableNumber = result.getString("table_number");
+                    Booking booking = new Booking(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTimeStr));
+                    booking.getTables().add(new Table(Integer.parseInt(tableNumber)));
+                    ArrayList<Booking> bookings = new ArrayList<>();
+                    bookings.add(booking);
                     Reservation reservation = new Reservation.ReservationBuilder(firstname, lastname, phoneNumber)
                             .setNotes(result.getString("notes"))
+                            .setBooking(bookings)
                             .build();
                     overlappingReservations.add(reservation);
                 }
@@ -95,6 +110,7 @@ public class ReservationDaoImpl implements ReservationDao {
         }
         return overlappingReservations;
     }
+
     @Override
     public void update(Reservation reservation) throws SQLException {
         if (reservation == null || reservation.getBookingId() == 0) {
@@ -113,6 +129,7 @@ public class ReservationDaoImpl implements ReservationDao {
             throw e;
         }
     }
+
     @Override
     public void delete(Reservation reservation) throws SQLException {
         try (Connection connection = Database.createConnection()) {

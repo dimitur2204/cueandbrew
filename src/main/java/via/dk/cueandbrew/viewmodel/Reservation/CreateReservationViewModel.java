@@ -1,6 +1,7 @@
 package via.dk.cueandbrew.viewmodel.Reservation;
 
 import via.dk.cueandbrew.model.Model;
+import via.dk.cueandbrew.shared.Booking;
 import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.shared.Table;
 import via.dk.cueandbrew.view.ViewHandler;
@@ -49,8 +50,11 @@ public class CreateReservationViewModel {
     }
     public List<Integer> getUnavailableTableIds(LocalDateTime dateTime, int durationMinutes) {
         List<Reservation> reservations = model.getReservationsByDateTimeAndDuration(dateTime, durationMinutes);
-        return reservations.stream()
-                .map(Reservation::getTableId)
-                .collect(Collectors.toList());
+        // get all bookings from all reservations
+        List<Booking> bookings = reservations.stream().flatMap(reservation -> reservation.getBooking().stream()).collect(Collectors.toList());
+        //get all tables from all bookings
+        List<Table> tables = bookings.stream().flatMap(booking -> booking.getTables().stream()).collect(Collectors.toList());
+        //get all table numbers
+        return tables.stream().map(Table::getNumber).collect(Collectors.toList());
     }
 }
