@@ -121,9 +121,6 @@ public class ReservationDaoImpl implements ReservationDao {
 
     @Override
     public void update(Reservation reservation) throws SQLException {
-        if (reservation == null || reservation.getBookingId() == 0) {
-            throw new IllegalArgumentException("Invalid reservation or booking ID");
-        }
         try (Connection connection = Database.createConnection()) {
             PreparedStatement statement = connection.prepareStatement(
                     "UPDATE cueandbrew.reservations SET client_firstname = ?, client_lastname = ?, client_phone_number = ?, notes = ? WHERE booking_id = ?");
@@ -131,7 +128,6 @@ public class ReservationDaoImpl implements ReservationDao {
             statement.setString(2, reservation.getClientLastName());
             statement.setString(3, reservation.getClientPhoneNumber());
             statement.setString(4, reservation.getNotes());
-            statement.setInt(5, reservation.getBookingId());
         } catch (SQLException e) {
             System.err.println("SQL error during update: " + e.getMessage());
             throw e;
@@ -143,7 +139,6 @@ public class ReservationDaoImpl implements ReservationDao {
         try (Connection connection = Database.createConnection()) {
             PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM cueandbrew.reservations WHERE booking_id = ?");
-            statement.setInt(1, reservation.getBookingId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw e;
