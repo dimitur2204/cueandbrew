@@ -6,6 +6,8 @@ import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.view.ViewHandler;
 
+import java.rmi.RemoteException;
+
 public class UserMainPageViewModel
 {
   private Model model;
@@ -30,19 +32,13 @@ public class UserMainPageViewModel
     this.viewHandler.openCreateReservationView();
   }
 
-  public int size()
-  {
-    return reservations.size();
-  }
-
-  public ObservableList<Reservation> getReservations()
-  {
-    return reservations;
-  }
-
-
   public void onClose()
   {
     this.viewHandler.openStartView();
+  }
+
+  public void onSearch(String phone) throws RemoteException
+  {
+    this.model.onSearch(phone);
   }
 }

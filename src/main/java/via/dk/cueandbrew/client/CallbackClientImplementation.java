@@ -45,6 +45,11 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     this.support.addPropertyChangeListener(listener);
   }
 
+  @Override public void onSearch(String phone) throws RemoteException
+  {
+    this.serverInterface.onSearch(phone);
+  }
+
   @Override public void propertyChange(
       RemotePropertyChangeEvent<Registration> remotePropertyChangeEvent)
       throws RemoteException

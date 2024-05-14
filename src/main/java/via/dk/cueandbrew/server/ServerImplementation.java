@@ -18,7 +18,6 @@ public class ServerImplementation implements ServerInterface {
     public ServerImplementation() {
         this.support = new RemotePropertyChangeSupport<>();
     }
-
     @Override
     public void onLogin(String login, String password)
             throws RemoteException {
@@ -46,5 +45,8 @@ public class ServerImplementation implements ServerInterface {
             RemotePropertyChangeListener<Registration> listener) throws RemoteException {
         this.support.addPropertyChangeListener(listener);
     }
+  @Override public void onSearch(String phone) throws RemoteException
+  {
 
+  }
 }

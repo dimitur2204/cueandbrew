@@ -69,6 +69,45 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
+    @Override public List<Reservation> readByPhoneNumber(String phone)
+        throws SQLException
+    {
+        try(Connection connection = Database.createConnection()) {
+            PreparedStatement statement = connection.prepareStatement("""
+                select r.notes, r.client_firstname, r.client_lastname, r.creation_time, r.client_phone_number
+                from cueandbrew.reservations r
+                inner join orders o on r.order_id = o.order_id
+                inner join drinks d on d.drink_id = o.order_id
+                inner join bookings b on b.booking_id = r.booking_id
+                inner join tables t on t.number = b.table_number
+                where r.client_phone_number = ?;
+                """);
+            statement.setString(1, phone);
+            try(var result = statement.executeQuery()) {
+                ArrayList<Reservation> reservations = new ArrayList<>();
+                while (result.next()) {
+                    String firstname = result.getString("client_firstname");
+                    String lastname = result.getString("client_lastname");
+                    String phoneNumber = result.getString("client_phone_number");
+                    String date = result.getString("date");
+                    String startTime = result.getString("start_time");
+                    String endTimeStr = result.getString("end_time");
+                    String tableNumber = result.getString("table_number");
+                    Booking booking = new Booking(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTimeStr));
+                    booking.getTables().add(new Table(Integer.parseInt(tableNumber)));
+                    ArrayList<Booking> bookings = new ArrayList<>();
+                    bookings.add(booking);
+                    Reservation reservation = new Reservation.ReservationBuilder(firstname, lastname, phoneNumber)
+                        .setNotes(result.getString("notes"))
+                        .setBooking(bookings)
+                        .build();
+                    reservations.add(reservation);
+                }
+                return reservations;
+            }
+        }
+    }
+
     public List<Reservation> findReservationsWithinPeriod(LocalDateTime start, int durationMinutes) {
         List<Reservation> overlappingReservations = new ArrayList<>();
         LocalDateTime endTime = start.plusMinutes(durationMinutes);
