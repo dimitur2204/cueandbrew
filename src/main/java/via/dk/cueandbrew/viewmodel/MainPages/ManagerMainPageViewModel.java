@@ -9,10 +9,8 @@ import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.shared.Table;
 import via.dk.cueandbrew.view.ViewHandler;
 
-import java.awt.print.Book;
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
 
 public class ManagerMainPageViewModel {
     private Model model;
@@ -22,25 +20,23 @@ public class ManagerMainPageViewModel {
     public ManagerMainPageViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
-        this.notifications = FXCollections.observableArrayList(new ArrayList<>());
+        this.notifications = FXCollections.observableArrayList();
         var table = new Table(2);
-        var bookings = new ArrayList<Booking>();
         var booking = new Booking(
                 new Date(System.currentTimeMillis()),
                 new Time(System.currentTimeMillis()),
                 new Time(System.currentTimeMillis())
         );
         booking.getTables().add(table);
-        bookings.add(booking);
-        Reservation reservation = new Reservation.ReservationBuilder("Test", "Test2", "1234")
-                .setBooking(bookings)
+        Reservation reservation = new Reservation.ReservationBuilder()
+                .setClientFirstName("Lol")
+                .setClientLastName("Lol")
+                .setClientPhoneNumber("Lol")
+                .addBooking(booking)
                 .build();
         this.notifications.add(new Notification(reservation));
     }
 
-    public ObservableList<Notification> getNotifications() {
-        return notifications;
-    }
 
     public void onMakeAReservation() {
         this.viewHandler.openCreateReservationView();
@@ -48,5 +44,9 @@ public class ManagerMainPageViewModel {
 
     public void onExit() {
         this.viewHandler.openManagerLoginView();
+    }
+
+    public ObservableList<Notification> getNotifications() {
+        return notifications;
     }
 }

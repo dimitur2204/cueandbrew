@@ -1,11 +1,12 @@
 package via.dk.cueandbrew.shared;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Booking {
+public class Booking implements Serializable {
     private List<Table> tables;
     private Date date;
     private Time startTime;

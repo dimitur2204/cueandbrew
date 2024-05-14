@@ -11,6 +11,8 @@ module via.dk {
 
     exports via.dk.cueandbrew;
     exports via.dk.cueandbrew.server;
+    exports via.dk.cueandbrew.shared;
+
     opens via.dk.cueandbrew.view.MainPages to javafx.fxml;
     opens via.dk.cueandbrew.view.Reservation to javafx.fxml;
     opens via.dk.cueandbrew.view.Start to javafx.fxml;

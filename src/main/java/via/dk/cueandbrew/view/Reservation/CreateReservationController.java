@@ -3,9 +3,9 @@ package via.dk.cueandbrew.view.Reservation;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.Region;
 import via.dk.cueandbrew.viewmodel.Reservation.CreateReservationViewModel;
 
+import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,8 +16,7 @@ public class CreateReservationController {
     @FXML
     public DatePicker datePicker;
     @FXML
-    ComboBox<String> hourField, minuteField;
-
+    ComboBox<String> hourField;
     @FXML
     ComboBox<String> minutesField;
     @FXML
@@ -32,6 +31,7 @@ public class CreateReservationController {
     CheckBox table3CheckBox;
     @FXML
     CheckBox table4CheckBox;
+
     private CreateReservationViewModel viewModel;
 
     public void init(CreateReservationViewModel viewModel) {
@@ -62,12 +62,16 @@ public class CreateReservationController {
         });
         durationGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                handleDurationChange((RadioButton) newValue);
+                try {
+                    handleDurationChange((RadioButton) newValue);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
 
-    private void handleDurationChange(RadioButton selectedDuration) {
+    private void handleDurationChange(RadioButton selectedDuration) throws RemoteException {
         String durationText = selectedDuration.getText();
         int duration = "30m".equals(durationText) ? 30 : "1h".equals(durationText) ? 60 : 120;
         var hours = hourField.getValue();
@@ -80,22 +84,12 @@ public class CreateReservationController {
         viewModel.chooseDuration(duration);
     }
 
-//    TODO: DO
-    private void handleDateChange(LocalDate date){
-        var hours = hourField.getValue();
-        var minutes = minutesField.getValue();
-        var durationText = durationGroup.selectedToggleProperty().getValue();
-        int duration = 0;
-        if (durationText != null){
-            duration = "30m".equals(durationText) ? 30 : "1h".equals(durationText) ? 60 : 120;
-        }
-        if (hours != null && minutes != null && date != null) {
-            LocalDateTime selectedTime = LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hours), Integer.parseInt(minutes)));
-            updateBasedOnSelection(selectedTime, duration);
-        }
+    //TODO: Call the update unavailable tables method in the view model
+    private void handleDateChange(LocalDate date) {
+        viewModel.chooseDateTime(LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(minutesField.getValue()))));
     }
 
-    public void updateBasedOnSelection(LocalDateTime selectedTime, int duration) {
+    public void updateBasedOnSelection(LocalDateTime selectedTime, int duration) throws RemoteException {
         List<Integer> unavailableTables = viewModel.getUnavailableTableIds(selectedTime, duration);
         disableTableSelections(unavailableTables);
     }
@@ -108,7 +102,6 @@ public class CreateReservationController {
     }
 
     public void onNext() {
-        viewModel.chooseDateTime(LocalDateTime.of(datePicker.getValue(), LocalDateTime.now().toLocalTime()));
         this.viewModel.onNext();
     }
 
