@@ -76,7 +76,8 @@ public class ReservationDaoImpl implements ReservationDao {
                 SELECT r.*, b.*, t.*
                 FROM cueandbrew.reservations AS r
                 JOIN cueandbrew.bookings AS b ON r.booking_id = b.booking_id
-                JOIN cueandbrew.tables AS t ON b.table_number = t.number
+                JOIN cueandbrew.booking_tables AS bt ON bt.table_number = b.booking_id
+                JOIN cueandbrew.tables AS t ON bt.table_number = t.number
                 WHERE b.date = ? AND ((b.start_time BETWEEN ? AND ?)
                    OR (b.end_time BETWEEN ? AND ?)
                    OR (b.start_time < ? AND b.end_time > ?));
@@ -99,7 +100,7 @@ public class ReservationDaoImpl implements ReservationDao {
                     String date = result.getString("date");
                     String startTime = result.getString("start_time");
                     String endTimeStr = result.getString("end_time");
-                    String tableNumber = result.getString("table_number");
+                    String tableNumber = result.getString("number");
                     Booking booking = new Booking(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTimeStr));
                     booking.getTables().add(new Table(Integer.parseInt(tableNumber)));
                     Reservation reservation = new Reservation.ReservationBuilder()
