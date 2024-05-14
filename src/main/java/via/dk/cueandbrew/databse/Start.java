@@ -10,7 +10,10 @@ public class Start {
     public static void main(String[] args) {
         try {
             ReservationDao reservationDao = ReservationDaoImpl.getInstance();
-            Reservation.ReservationBuilder builder = new Reservation.ReservationBuilder("Dimitar", "Nizamov", "+45527124134")
+            Reservation.ReservationBuilder builder = new Reservation.ReservationBuilder()
+                    .setClientFirstName("John")
+                    .setClientLastName("Doe")
+                    .setClientPhoneNumber("12345678")
                     .setNotes("This is a test");
             reservationDao.create(builder);
         } catch (SQLException e) {

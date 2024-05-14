@@ -6,24 +6,25 @@ import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.shared.Table;
 import via.dk.cueandbrew.view.ViewHandler;
 
+import java.rmi.RemoteException;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CreateReservationViewModel {
     private Model model;
     private final ViewHandler viewHandler;
-
     private LocalDateTime dateTime;
     private int duration;
     private int tableId;
 
-    public CreateReservationViewModel(Model model, ViewHandler viewHandler)
-    {
+    public CreateReservationViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
     }
+
     public void chooseDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
@@ -37,10 +38,10 @@ public class CreateReservationViewModel {
     }
 
     public void onNext() {
+        LocalDateTime endtime = this.dateTime.plusMinutes(this.duration);
+        Booking booking = new Booking(Date.valueOf(this.dateTime.toLocalDate()), Time.valueOf(this.dateTime.toLocalTime()), Time.valueOf(endtime.toLocalTime()));
+        this.model.getReservationBuilder();
         this.viewHandler.openOrder();
-    }
-    public List<Table> getOccupiedTables(){
-        return new ArrayList<>();
     }
 
     public void onCancel() {
@@ -48,12 +49,13 @@ public class CreateReservationViewModel {
         //based on this check -> open the relevant views
         this.viewHandler.openManagerMainPage();
     }
-    public List<Integer> getUnavailableTableIds(LocalDateTime dateTime, int durationMinutes) {
+
+    public List<Integer> getUnavailableTableIds(LocalDateTime dateTime, int durationMinutes) throws RemoteException {
         List<Reservation> reservations = model.getReservationsByDateTimeAndDuration(dateTime, durationMinutes);
         // get all bookings from all reservations
-        List<Booking> bookings = reservations.stream().flatMap(reservation -> reservation.getBooking().stream()).collect(Collectors.toList());
+        List<Booking> bookings = reservations.stream().flatMap(reservation -> reservation.getBooking().stream()).toList();
         //get all tables from all bookings
-        List<Table> tables = bookings.stream().flatMap(booking -> booking.getTables().stream()).collect(Collectors.toList());
+        List<Table> tables = bookings.stream().flatMap(booking -> booking.getTables().stream()).toList();
         //get all table numbers
         return tables.stream().map(Table::getNumber).collect(Collectors.toList());
     }
