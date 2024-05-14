@@ -11,7 +11,6 @@ public class Reservation {
     private Timestamp creationDatetime;
     private List<Booking> booking;
     private Order order;
-    private int tableId;
     private int bookingId;
 
     private Reservation(ReservationBuilder builder) {
@@ -22,7 +21,6 @@ public class Reservation {
         this.creationDatetime = builder.creationDatetime;
         this.booking = builder.booking;
         this.order = builder.order;
-        this.tableId = builder.tableId;
     }
 
 
@@ -55,16 +53,12 @@ public class Reservation {
     public Order getOrder() {
         return order;
     }
-    public int getTableId() {
-        return this.tableId;
-    }
 
     public int getBookingId() {
         return this.bookingId;
     }
 
     public static class ReservationBuilder {
-        public int tableId;
         private String clientFirstName;
         private String clientLastName;
         private String clientPhoneNumber;
@@ -98,7 +92,6 @@ public class Reservation {
         public Reservation build() {
             return new Reservation(this);
         }
-        //"Dimitar Nizamov booked table 1 and 2 for 10.05.2024 17:00 until 10.05.2024 19:00"
     }
     @Override
     public String toString() {
