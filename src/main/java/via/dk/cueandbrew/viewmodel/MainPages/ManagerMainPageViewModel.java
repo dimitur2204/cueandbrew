@@ -32,7 +32,7 @@ public class ManagerMainPageViewModel {
                 .setClientFirstName("Lol")
                 .setClientLastName("Lol")
                 .setClientPhoneNumber("Lol")
-                .addBooking(booking)
+                .setBooking(booking)
                 .build();
         this.notifications.add(new Notification(reservation));
     }
