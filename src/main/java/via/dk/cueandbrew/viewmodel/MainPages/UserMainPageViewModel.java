@@ -6,11 +6,14 @@ import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.view.ViewHandler;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public class UserMainPageViewModel
 {
-  private Model model;
+  private final Model model;
   private final ViewHandler viewHandler;
   private ObservableList<Reservation> reservations;
 
@@ -18,13 +21,7 @@ public class UserMainPageViewModel
   {
     this.model = model;
     this.viewHandler = viewHandler;
-    reservations = FXCollections.observableArrayList();
-    var res = new Reservation.ReservationBuilder()
-            .setClientFirstName("Lol")
-            .setClientLastName("Lol")
-            .setClientPhoneNumber("Lol")
-            .setNotes("Lol").build();
-    reservations.add(res);
+    this.reservations = FXCollections.observableArrayList();
   }
 
   public void onMakeAReservation()
@@ -32,13 +29,17 @@ public class UserMainPageViewModel
     this.viewHandler.openCreateReservationView();
   }
 
+  public void openCreateFeedbackPage() {
+    this.viewHandler.openCreateFeedbackStage();
+  }
+
   public void onClose()
   {
     this.viewHandler.openStartView();
   }
 
-  public void onSearch(String phone) throws RemoteException
+  public List<Reservation> onSearch(String phone) throws RemoteException
   {
-    this.model.onSearch(phone);
+    return this.model.onSearch(phone);
   }
 }

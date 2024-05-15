@@ -3,7 +3,6 @@ package via.dk.cueandbrew.client;
 import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.application.Platform;
-import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.server.ServerInterface;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
@@ -45,9 +44,9 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     this.support.addPropertyChangeListener(listener);
   }
 
-  @Override public void onSearch(String phone) throws RemoteException
+  @Override public List<Reservation> onSearch(String phone) throws RemoteException
   {
-    this.serverInterface.onSearch(phone);
+    return this.serverInterface.onSearch(phone);
   }
 
   @Override public void propertyChange(

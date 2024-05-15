@@ -1,7 +1,6 @@
 package via.dk.cueandbrew.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
-import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
 
@@ -15,5 +14,5 @@ public interface ServerInterface extends Remote
   void onLogin(String login, String password) throws RemoteException;
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   void addPropertyChangeListener(RemotePropertyChangeListener<Registration> listener) throws RemoteException;
-  void onSearch(String phone) throws RemoteException;
+  List<Reservation> onSearch(String phone) throws RemoteException;
 }

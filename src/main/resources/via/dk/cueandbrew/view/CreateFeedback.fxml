@@ -32,7 +32,7 @@
             <children>
                 <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="600.0">
                     <children>
-                        <Button mnemonicParsing="false" text="Cancel" />
+                        <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
                         <HBox prefHeight="100.0" prefWidth="10.0" />
                         <Button mnemonicParsing="false" text="Finalize" />
                         <VBox prefHeight="200.0" prefWidth="10.0" />

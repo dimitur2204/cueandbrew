@@ -4,8 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.rmi.RemoteException;
-import java.time.LocalDateTime;
 
 public interface Model
 {
@@ -13,5 +11,5 @@ public interface Model
   void addPropertyChangeListener(PropertyChangeListener listener);
   Reservation.ReservationBuilder getReservationBuilder();
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
-  void onSearch(String phone) throws RemoteException;
+  List<Reservation> onSearch(String phone) throws RemoteException;
 }
