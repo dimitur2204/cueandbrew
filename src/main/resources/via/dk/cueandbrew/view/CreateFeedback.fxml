@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -34,7 +36,7 @@
                     <children>
                         <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
                         <HBox prefHeight="100.0" prefWidth="10.0" />
-                        <Button mnemonicParsing="false" text="Finalize" />
+                        <Button fx:id="finalizeButton" disable="true" mnemonicParsing="false" onAction="#onFinalize" text="Finalize" />
                         <VBox prefHeight="200.0" prefWidth="10.0" />
                     </children>
                 </HBox>
@@ -44,9 +46,33 @@
    <center>
       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label text="Feedback" />
-            <VBox prefHeight="19.0" prefWidth="280.0" />
-            <TextArea prefHeight="269.0" prefWidth="280.0" />
+            <HBox prefHeight="39.0" prefWidth="280.0">
+               <children>
+                  <Label text="Feedback" />
+                  <HBox prefHeight="0.0" prefWidth="78.0" />
+                  <ComboBox fx:id="typeDropdown" prefWidth="150.0" />
+               </children>
+            </HBox>
+            <VBox prefHeight="64.0" prefWidth="280.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="First name" />
+                        <TextField fx:id="firstname" />
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="42.0" prefWidth="69.0" />
+                  <VBox prefHeight="42.0" prefWidth="110.0">
+                     <children>
+                        <Label text="Last name" />
+                        <TextField fx:id="lastname" prefHeight="25.0" prefWidth="101.0" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <VBox prefHeight="75.0" prefWidth="280.0" />
+            <TextArea fx:id="feedback" prefHeight="275.0" prefWidth="280.0" />
          </children>
       </VBox>
    </center>

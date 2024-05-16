@@ -49,6 +49,11 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     return this.serverInterface.onSearch(phone);
   }
 
+  @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
+  {
+    return this.serverInterface.createFeedback(content, selectedType, firstname, lastname);
+  }
+
   @Override public void propertyChange(
       RemotePropertyChangeEvent<Registration> remotePropertyChangeEvent)
       throws RemoteException
