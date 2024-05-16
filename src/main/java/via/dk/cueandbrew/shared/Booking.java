@@ -22,6 +22,10 @@ public class Booking implements Serializable {
         return tables;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     public Time getStartTime() {
         return startTime;
     }

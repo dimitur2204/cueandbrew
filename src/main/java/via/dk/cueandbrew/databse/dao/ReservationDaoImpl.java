@@ -1,9 +1,7 @@
 package via.dk.cueandbrew.databse.dao;
 
-import via.dk.cueandbrew.shared.Booking;
-import via.dk.cueandbrew.shared.Reservation;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.databse.Database;
-import via.dk.cueandbrew.shared.Table;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -26,15 +24,49 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public Reservation create(Reservation.ReservationBuilder builder) throws SQLException {
         try (Connection connection = Database.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO cueandbrew.reservations (client_firstname, client_lastname, client_phone_number, creation_datetime, notes ) VALUES (?, ?, ?, ?, ?)");
             Reservation res = builder.build();
-            statement.setString(1, res.getClientFirstName());
-            statement.setString(2, res.getClientLastName());
-            statement.setString(3, res.getClientPhoneNumber());
-            statement.setTimestamp(4, res.getCreationDatetime());
-            statement.setString(5, res.getNotes());
-            boolean execute = statement.execute();
-            System.out.println(execute);
+            Booking booking = res.getBooking();
+            PreparedStatement insertBooking = connection.prepareStatement("INSERT INTO cueandbrew.bookings (date, start_time, end_time) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            insertBooking.setDate(1, booking.getDate());
+            insertBooking.setTime(2, booking.getStartTime());
+            insertBooking.setTime(3, booking.getEndTime());
+            insertBooking.executeUpdate();
+            ResultSet bookingKeys = insertBooking.getGeneratedKeys();
+            bookingKeys.next();
+            int bookingId = bookingKeys.getInt(1);
+            List<Table> tables = res.getBooking().getTables();
+            for (Table table : tables) {
+                PreparedStatement insertTable = connection.prepareStatement("INSERT INTO cueandbrew.booking_tables (booking_id, table_number) VALUES (?, ?)");
+                insertTable.setInt(1, bookingId);
+                insertTable.setInt(2, table.getNumber());
+                insertTable.executeUpdate();
+            }
+            Order order = res.getOrder();
+            int orderId = 0;
+            if (order != null) {
+                PreparedStatement insertOrder = connection.prepareStatement("INSERT INTO cueandbrew.orders (booking_id, order_time) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+                insertOrder.setTimestamp(2, order.getExpectedDatetime());
+                insertOrder.executeUpdate();
+                ResultSet orderKeys = insertOrder.getGeneratedKeys();
+                orderKeys.next();
+                orderId = orderKeys.getInt(1);
+            }
+            List< Drink> drinks = order.getDrinks();
+            for (Drink drink : drinks) {
+                PreparedStatement insertDrink = connection.prepareStatement("INSERT INTO cueandbrew.order_drinks (order_id, drink_id, quantity) VALUES (?, ?, ?)");
+                insertDrink.setInt(1, orderId);
+                insertDrink.setInt(2, drink.getId());
+                insertDrink.setInt(3, drink.getQuantityOfDrink());
+                insertDrink.executeUpdate();
+            }
+            PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            insertReservation.setInt(1, bookingId);
+            insertReservation.setInt(2, orderId);
+            insertReservation.setString(3, res.getClientFirstName());
+            insertReservation.setString(4, res.getClientLastName());
+            insertReservation.setString(5, res.getClientPhoneNumber());
+            insertReservation.setString(6, res.getNotes());
+            insertReservation.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
             return res;
         } catch (SQLException e) {
             throw e;

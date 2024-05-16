@@ -64,6 +64,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return this.client.getReservationsByDateTimeAndDuration(start, durationMinutes);
   }
 
+  @Override
+  public void onFinalizeReservatino() {
+
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> {

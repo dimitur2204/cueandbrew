@@ -43,12 +43,8 @@ public class CreateReservationController {
         for (int i = 0; i <= 59; i += 15) {
             minutes.add(String.format("%02d", i));
         }
-        String currentHour = String.format("%02d", java.time.LocalTime.now().getHour());
-        String currentMinute = String.format("%02d", java.time.LocalTime.now().getMinute());
         hourField.setItems(FXCollections.observableArrayList(hours));
         minutesField.setItems(FXCollections.observableArrayList(minutes));
-        hourField.setValue(currentHour);
-        minutesField.setValue(currentMinute);
         this.viewModel = viewModel;
     }
 
@@ -60,6 +56,18 @@ public class CreateReservationController {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             handleDateChange(newValue);
         });
+        hourField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (minutesField.getValue() == null || datePicker.getValue() == null){
+                return;
+            }
+            viewModel.chooseDateTime(LocalDateTime.of(datePicker.getValue(), java.time.LocalTime.of(Integer.parseInt(newValue), Integer.parseInt(minutesField.getValue()))));
+        });
+        minutesField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (hourField.getValue() == null || datePicker.getValue() == null){
+                return;
+            }
+            viewModel.chooseDateTime(LocalDateTime.of(datePicker.getValue(), java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(newValue))));
+        });
         durationGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
@@ -68,6 +76,18 @@ public class CreateReservationController {
                     throw new RuntimeException(e);
                 }
             }
+        });
+        table1CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(1);
+        });
+        table2CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(2);
+        });
+        table3CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(3);
+        });
+        table4CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(4);
         });
     }
 
@@ -86,6 +106,9 @@ public class CreateReservationController {
 
     //TODO: Call the update unavailable tables method in the view model
     private void handleDateChange(LocalDate date) {
+        if (hourField.getValue() == null || minutesField.getValue() == null) {
+            return;
+        }
         viewModel.chooseDateTime(LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(minutesField.getValue()))));
     }
 

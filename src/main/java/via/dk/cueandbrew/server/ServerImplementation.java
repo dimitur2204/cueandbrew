@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class ServerImplementation implements ServerInterface {
+
     private final RemotePropertyChangeSupport<Registration> support;
 
     public ServerImplementation() {
@@ -39,6 +40,15 @@ public class ServerImplementation implements ServerInterface {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException {
+        try {
+            ReservationDaoImpl.getInstance().create(builder);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

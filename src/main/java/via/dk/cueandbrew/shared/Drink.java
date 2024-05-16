@@ -1,27 +1,31 @@
 package via.dk.cueandbrew.shared;
 
 public class Drink {
+    private int id;
     private String name;
     private double price;
     private int quantityOfDrink;
-    public Drink(String name, double price, int quantityOfDrink) {
+
+    public Drink(int id, String name, double price, int quantityOfDrink) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.quantityOfDrink = quantityOfDrink;
     }
 
-    public String getName()
-    {
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
         return name;
     }
 
-    public double getPrice()
-    {
+    public double getPrice() {
         return price;
     }
 
-    public int getQuantityOfDrink()
-    {
+    public int getQuantityOfDrink() {
         return quantityOfDrink;
     }
 }

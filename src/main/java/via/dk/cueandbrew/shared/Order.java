@@ -12,11 +12,12 @@ public class Order {
         this.expectedDatetime = expectedDatetime;
     }
 
+    public Timestamp getExpectedDatetime() {
+        return expectedDatetime;
+    }
+
     public List<Drink> getDrinks()
     {
         return drinks;
-    }
-    public void addDrink(Drink drink){
-        drinks.add(drink);
     }
 }
