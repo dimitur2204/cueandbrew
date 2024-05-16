@@ -37,8 +37,6 @@ public class RegistrationDaoImplementation implements RegistrationDao
             result.getString("login"));
       }
       return null;
-    } catch (SQLException e) {
-      throw e;
     }
   }
 }
