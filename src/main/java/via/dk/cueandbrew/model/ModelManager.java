@@ -64,6 +64,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return this.client.getReservationsByDateTimeAndDuration(start, durationMinutes);
   }
 
+  @Override
+  public void onFinalizeReservation() throws RemoteException {
+    this.client.onFinalizeReservation(this.reservationBuilder);
+  }
+
   @Override public List<Reservation> onSearch(String phone) throws RemoteException
   {
     return this.client.onSearch(phone);

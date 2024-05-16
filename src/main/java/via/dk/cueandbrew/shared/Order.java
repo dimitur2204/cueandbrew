@@ -9,41 +9,26 @@ public class Order implements Serializable
 {
     private List<Drink> drinks;
     private Timestamp expectedDatetime;
-
-    public Order()
-    {
-        this.drinks = null;
+    public Order() {
+        this.drinks = new ArrayList<>();
         this.expectedDatetime = null;
     }
-
     public Order(Timestamp expectedDatetime) {
         this.drinks = new ArrayList<>();
         this.expectedDatetime = expectedDatetime;
     }
 
-    public void setDrinks(List<Drink> drinks)
-    {
-        this.drinks = drinks;
-    }
-
-    public Timestamp getExpectedDatetime()
-    {
+    public Timestamp getExpectedDatetime() {
         return expectedDatetime;
     }
-
-    public void setExpectedDatetime(Timestamp expectedDatetime)
-    {
-        this.expectedDatetime = expectedDatetime;
-    }
-
     public boolean containsDrink(String drink) {
-      for (Drink value : this.drinks)
-      {
-        if (value.getName().equals(drink))
+        for (Drink value : this.drinks)
         {
-          return true;
+            if (value.getName().equals(drink))
+            {
+                return true;
+            }
         }
-      }
 
         return false;
     }
@@ -64,13 +49,12 @@ public class Order implements Serializable
     {
         return drinks;
     }
-    public void addDrink(Drink drink){
-        drinks.add(drink);
+
+    public void setDrinks(ArrayList<Drink> drinks) {
+this.drinks = drinks;
     }
 
-    @Override public String toString()
-    {
-        return "Order{" + "drinks=" + drinks + ", expectedDatetime="
-            + expectedDatetime + '}';
+    public void setExpectedDatetime(Timestamp expectedDatetime) {
+        this.expectedDatetime = expectedDatetime;
     }
 }

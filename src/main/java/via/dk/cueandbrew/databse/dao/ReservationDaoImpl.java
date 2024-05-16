@@ -14,7 +14,7 @@ import java.util.List;
 public class ReservationDaoImpl implements ReservationDao {
     private static ReservationDaoImpl instance;
 
-    private ReservationDaoImpl(){
+    private ReservationDaoImpl() {
     }
 
     public static ReservationDaoImpl getInstance() throws SQLException {
@@ -27,15 +27,52 @@ public class ReservationDaoImpl implements ReservationDao {
     @Override
     public Reservation create(Reservation.ReservationBuilder builder) throws SQLException {
         try (Connection connection = Database.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO cueandbrew.reservations (client_firstname, client_lastname, client_phone_number, creation_datetime, notes ) VALUES (?, ?, ?, ?, ?)");
             Reservation res = builder.build();
-            statement.setString(1, res.getClientFirstName());
-            statement.setString(2, res.getClientLastName());
-            statement.setString(3, res.getClientPhoneNumber());
-            statement.setTimestamp(4, res.getCreationDatetime());
-            statement.setString(5, res.getNotes());
-            boolean execute = statement.execute();
-            System.out.println(execute);
+            Booking booking = res.getBooking();
+            PreparedStatement insertBooking = connection.prepareStatement("INSERT INTO cueandbrew.bookings (date, start_time, end_time) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            insertBooking.setDate(1, booking.getDate());
+            insertBooking.setTime(2, booking.getStartTime());
+            insertBooking.setTime(3, booking.getEndTime());
+            insertBooking.executeUpdate();
+            ResultSet bookingKeys = insertBooking.getGeneratedKeys();
+            bookingKeys.next();
+            int bookingId = bookingKeys.getInt(1);
+            List<Table> tables = res.getBooking().getTables();
+            for (Table table : tables) {
+                PreparedStatement insertTable = connection.prepareStatement("INSERT INTO cueandbrew.booking_tables (booking_id, table_number) VALUES (?, ?)");
+                insertTable.setInt(1, bookingId);
+                insertTable.setInt(2, table.getNumber());
+                insertTable.executeUpdate();
+            }
+            Order order = res.getOrder();
+            int orderId = 0;
+            if (order != null) {
+                PreparedStatement insertOrder = connection.prepareStatement("INSERT INTO cueandbrew.orders (expected_order_date, expected_order_time) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+                insertOrder.setDate(1, Date.valueOf(order.getExpectedDatetime().toLocalDateTime().toLocalDate()));
+                insertOrder.setTime(2, Time.valueOf(order.getExpectedDatetime().toLocalDateTime().toLocalTime()));
+                insertOrder.executeUpdate();
+                ResultSet orderKeys = insertOrder.getGeneratedKeys();
+                orderKeys.next();
+                orderId = orderKeys.getInt(1);
+            }
+            if(order != null) {
+                List<Drink> drinks = order.getDrinks();
+                for (Drink drink : drinks) {
+                    PreparedStatement insertDrink = connection.prepareStatement("INSERT INTO cueandbrew.order_drinks (order_id, drink_id) VALUES (?, ?)");
+                    insertDrink.setInt(1, orderId);
+                    insertDrink.setInt(2, drink.getId());
+                    insertDrink.executeUpdate();
+                }
+            }
+            PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            insertReservation.setInt(1, bookingId);
+            insertReservation.setInt(2, orderId);
+            insertReservation.setString(3, res.getClientFirstName());
+            insertReservation.setString(4, res.getClientLastName());
+            insertReservation.setString(5, res.getClientPhoneNumber());
+            insertReservation.setString(6, res.getNotes());
+            insertReservation.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
+            insertReservation.executeUpdate();
             return res;
         }
     }
@@ -54,7 +91,7 @@ public class ReservationDaoImpl implements ReservationDao {
                 String firstname = result.getString("client_firstname");
                 String lastname = result.getString("client_lastname");
                 String phoneNumber = result.getString("client_phone_number");
-              return new Reservation.ReservationBuilder()
+                return new Reservation.ReservationBuilder()
                         .setClientLastName(lastname)
                         .setClientFirstName(firstname)
                         .setClientPhoneNumber(phoneNumber)
@@ -65,46 +102,47 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
-    @Override public List<Reservation> readByPhoneNumber(String phone)
-        throws SQLException
-    {
-        try(Connection connection = Database.createConnection()) {
+    @Override
+    public List<Reservation> readByPhoneNumber(String phone)
+            throws SQLException {
+        try (Connection connection = Database.createConnection()) {
             PreparedStatement statement = connection.prepareStatement("""
-                SELECT
-                    r.reservation_id,
-                    r.client_firstname,
-                    r.client_lastname,
-                    r.client_phone_number,
-                    r.notes,
-                    r.creation_datetime,
-                    t.number,
-                    d.name,
-                    d.quantity,
-                    d.price,
-                    o.expected_order_date,
-                    o.expected_order_time,
-                    b.date,
-                    b.end_time,
-                    b.start_time
-                FROM
-                    cueandbrew.reservations r
-                JOIN
-                    cueandbrew.bookings b on r.booking_id = b.booking_id
-                JOIN
-                    cueandbrew.booking_tables bt ON b.booking_id = bt.booking_id
-                JOIN
-                    cueandbrew.tables t ON bt.table_number = t.number
-                LEFT JOIN
-                    cueandbrew.orders o ON r.order_id = o.order_id
-                LEFT JOIN
-                    cueandbrew.order_drinks od ON o.order_id = od.order_id
-                LEFT JOIN
-                    cueandbrew.drinks d ON od.drink_id = d.drink_id
-                WHERE
-                    r.client_phone_number = ?;
-                """);
+                    SELECT
+                        r.reservation_id,
+                        r.client_firstname,
+                        r.client_lastname,
+                        r.client_phone_number,
+                        r.notes,
+                        r.creation_datetime,
+                        t.number,
+                        d.drink_id,
+                        d.name,
+                        d.quantity,
+                        d.price,
+                        o.expected_order_date,
+                        o.expected_order_time,
+                        b.date,
+                        b.end_time,
+                        b.start_time
+                    FROM
+                        cueandbrew.reservations r
+                    JOIN
+                        cueandbrew.bookings b on r.booking_id = b.booking_id
+                    JOIN
+                        cueandbrew.booking_tables bt ON b.booking_id = bt.booking_id
+                    JOIN
+                        cueandbrew.tables t ON bt.table_number = t.number
+                    LEFT JOIN
+                        cueandbrew.orders o ON r.order_id = o.order_id
+                    LEFT JOIN
+                        cueandbrew.order_drinks od ON o.order_id = od.order_id
+                    LEFT JOIN
+                        cueandbrew.drinks d ON od.drink_id = d.drink_id
+                    WHERE
+                        r.client_phone_number = ?;
+                    """);
             statement.setString(1, phone);
-            try(var result = statement.executeQuery()) {
+            try (var result = statement.executeQuery()) {
                 ArrayList<Reservation> reservations = new ArrayList<>();
                 ArrayList<Table> tables = new ArrayList<>();
                 ArrayList<Drink> drinks = new ArrayList<>();
@@ -116,11 +154,12 @@ public class ReservationDaoImpl implements ReservationDao {
                     if (reservations.isEmpty()) {
                         //ORDER
                         String drinkName = result.getString("name");
+                        int drinkId = result.getInt("drink_id");
                         double drinkPrice = result.getDouble("price");
                         int quantity = result.getInt("quantity");
                         String expected_order_date = result.getString("expected_order_date");
                         String expected_order_time = result.getString("expected_order_time");
-                        drinks.add(new Drink(drinkName, drinkPrice, quantity));
+                        drinks.add(new Drink(drinkId, drinkName, drinkPrice, quantity));
                         order.setDrinks(drinks);
                         order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
 
@@ -143,18 +182,17 @@ public class ReservationDaoImpl implements ReservationDao {
                         String notes = result.getString("notes");
                         String creation_datetime = result.getString("creation_datetime");
                         Reservation reservation = new Reservation.ReservationBuilder()
-                            .setReservationId(reservation_id)
-                            .setClientFirstName(client_firstname)
-                            .setClientLastName(client_lastname)
-                            .setClientPhoneNumber(client_phone_number)
-                            .setNotes(notes)
-                            .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
-                            .setBooking(booking)
-                            .setOrder(order)
-                            .build();
+                                .setReservationId(reservation_id)
+                                .setClientFirstName(client_firstname)
+                                .setClientLastName(client_lastname)
+                                .setClientPhoneNumber(client_phone_number)
+                                .setNotes(notes)
+                                .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                                .setBooking(booking)
+                                .setOrder(order)
+                                .build();
                         reservations.add(reservation);
-                    }
-                    else {
+                    } else {
                         if (reservations.getLast().getReservationId() == result.getInt("reservation_id")) {
                             //tables.clear();
                             //drinks.clear();
@@ -165,7 +203,7 @@ public class ReservationDaoImpl implements ReservationDao {
                                 tables.add(table);
                             }
                             //drink
-                            Drink drink = new Drink(result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
+                            Drink drink = new Drink(result.getInt("drink_id"), result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
                             if (!reservations.getLast().getOrder().containsDrink(drink.getName())) {
                                 drinks.add(drink);
                             }
@@ -174,22 +212,24 @@ public class ReservationDaoImpl implements ReservationDao {
                             reservations.getLast().getOrder().setDrinks(drinks);
                             //add new tables to booking
                             reservations.getLast().getBooking().setTables(tables);
-                        }
-                        else {
+                        } else {
                             //this is a completely new reservation -> clear tables, drinks, booking, order
                             //add the new reservation to the list
                             tables.clear();
                             drinks.clear();
                             //probably not necessary to make them null
+
+
                             order = new Order();
                             booking = new Booking();
 
                             String drinkName = result.getString("name");
+                            int drinkId = result.getInt("drink_id");
                             double drinkPrice = result.getDouble("price");
                             int quantity = result.getInt("quantity");
                             String expected_order_date = result.getString("expected_order_date");
                             String expected_order_time = result.getString("expected_order_time");
-                            drinks.add(new Drink(drinkName, drinkPrice, quantity));
+                            drinks.add(new Drink(drinkId, drinkName, drinkPrice, quantity));
                             order.setDrinks(drinks);
                             order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
 
@@ -212,15 +252,15 @@ public class ReservationDaoImpl implements ReservationDao {
                             String notes = result.getString("notes");
                             String creation_datetime = result.getString("creation_datetime");
                             Reservation reservation = new Reservation.ReservationBuilder()
-                                .setReservationId(reservation_id)
-                                .setClientFirstName(client_firstname)
-                                .setClientLastName(client_lastname)
-                                .setClientPhoneNumber(client_phone_number)
-                                .setNotes(notes)
-                                .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
-                                .setBooking(booking)
-                                .setOrder(order)
-                                .build();
+                                    .setReservationId(reservation_id)
+                                    .setClientFirstName(client_firstname)
+                                    .setClientLastName(client_lastname)
+                                    .setClientPhoneNumber(client_phone_number)
+                                    .setNotes(notes)
+                                    .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                                    .setBooking(booking)
+                                    .setOrder(order)
+                                    .build();
                             reservations.add(reservation);
                         }
                     }

@@ -36,6 +36,10 @@ public class ViewHandler {
         this.createFeedbackStage.initOwner(this.stage);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public ViewModelFactory getViewModelFactory()
     {
         return viewModelFactory;

@@ -53,6 +53,18 @@ public class CreateReservationController {
         datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
             handleDateChange(newValue);
         });
+        hourField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (minutesField.getValue() == null || datePicker.getValue() == null){
+                return;
+            }
+            viewModel.chooseDateTime(LocalDateTime.of(datePicker.getValue(), java.time.LocalTime.of(Integer.parseInt(newValue), Integer.parseInt(minutesField.getValue()))));
+        });
+        minutesField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (hourField.getValue() == null || datePicker.getValue() == null){
+                return;
+            }
+            viewModel.chooseDateTime(LocalDateTime.of(datePicker.getValue(), java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(newValue))));
+        });
         durationGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 try {
@@ -61,6 +73,18 @@ public class CreateReservationController {
                     throw new RuntimeException(e);
                 }
             }
+        });
+        table1CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(1);
+        });
+        table2CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(2);
+        });
+        table3CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(3);
+        });
+        table4CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            viewModel.chooseTable(4);
         });
     }
 
@@ -78,6 +102,9 @@ public class CreateReservationController {
     }
 
     private void handleDateChange(LocalDate date) {
+        if (hourField.getValue() == null || minutesField.getValue() == null) {
+            return;
+        }
         viewModel.chooseDateTime(LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(minutesField.getValue()))));
     }
 

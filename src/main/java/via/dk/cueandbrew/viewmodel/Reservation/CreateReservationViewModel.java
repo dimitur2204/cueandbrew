@@ -42,7 +42,11 @@ public class CreateReservationViewModel {
     public void onNext() {
         LocalDateTime endtime = this.dateTime.plusMinutes(this.duration);
         Booking booking = new Booking(Date.valueOf(this.dateTime.toLocalDate()), Time.valueOf(this.dateTime.toLocalTime()), Time.valueOf(endtime.toLocalTime()));
-        this.model.getReservationBuilder();
+        for (int tableNumber : this.tableNumbers) {
+            booking.getTables().add(new Table(tableNumber));
+        }
+        this.model.getReservationBuilder()
+                .setBooking(booking);
         this.viewHandler.openOrder();
     }
 

@@ -61,7 +61,7 @@ public class Reservation implements Serializable {
         return order;
     }
 
-    public static class ReservationBuilder {
+    public static class ReservationBuilder implements Serializable {
         private String clientFirstName;
         private String clientLastName;
         private String clientPhoneNumber;
