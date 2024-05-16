@@ -1,19 +1,20 @@
 package via.dk.cueandbrew.databse.dao;
 
-import via.dk.cueandbrew.shared.Booking;
-import via.dk.cueandbrew.shared.Reservation;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.databse.Database;
-import via.dk.cueandbrew.shared.Table;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReservationDaoImpl implements ReservationDao {
     private static ReservationDaoImpl instance;
 
-    private ReservationDaoImpl() throws SQLException {
+    private ReservationDaoImpl(){
     }
 
     public static ReservationDaoImpl getInstance() throws SQLException {
@@ -36,8 +37,6 @@ public class ReservationDaoImpl implements ReservationDao {
             boolean execute = statement.execute();
             System.out.println(execute);
             return res;
-        } catch (SQLException e) {
-            throw e;
         }
     }
 
@@ -55,17 +54,179 @@ public class ReservationDaoImpl implements ReservationDao {
                 String firstname = result.getString("client_firstname");
                 String lastname = result.getString("client_lastname");
                 String phoneNumber = result.getString("client_phone_number");
-                Reservation res = new Reservation.ReservationBuilder()
+              return new Reservation.ReservationBuilder()
                         .setClientLastName(lastname)
                         .setClientFirstName(firstname)
                         .setClientPhoneNumber(phoneNumber)
                         .setNotes(result.getString("notes"))
                         .build();
-                return res;
             }
             return null;
-        } catch (SQLException e) {
-            throw e;
+        }
+    }
+
+    @Override public List<Reservation> readByPhoneNumber(String phone)
+        throws SQLException
+    {
+        try(Connection connection = Database.createConnection()) {
+            PreparedStatement statement = connection.prepareStatement("""
+                SELECT
+                    r.reservation_id,
+                    r.client_firstname,
+                    r.client_lastname,
+                    r.client_phone_number,
+                    r.notes,
+                    r.creation_datetime,
+                    t.number,
+                    d.name,
+                    d.quantity,
+                    d.price,
+                    o.expected_order_date,
+                    o.expected_order_time,
+                    b.date,
+                    b.end_time,
+                    b.start_time
+                FROM
+                    cueandbrew.reservations r
+                JOIN
+                    cueandbrew.bookings b on r.booking_id = b.booking_id
+                JOIN
+                    cueandbrew.booking_tables bt ON b.booking_id = bt.booking_id
+                JOIN
+                    cueandbrew.tables t ON bt.table_number = t.number
+                LEFT JOIN
+                    cueandbrew.orders o ON r.order_id = o.order_id
+                LEFT JOIN
+                    cueandbrew.order_drinks od ON o.order_id = od.order_id
+                LEFT JOIN
+                    cueandbrew.drinks d ON od.drink_id = d.drink_id
+                WHERE
+                    r.client_phone_number = ?;
+                """);
+            statement.setString(1, phone);
+            try(var result = statement.executeQuery()) {
+                ArrayList<Reservation> reservations = new ArrayList<>();
+                ArrayList<Table> tables = new ArrayList<>();
+                ArrayList<Drink> drinks = new ArrayList<>();
+                Booking booking = new Booking();
+                Order order = new Order();
+
+                while (result.next()) {
+                    //check by the creation_date_time if it is still the same reservation
+                    if (reservations.isEmpty()) {
+                        //ORDER
+                        String drinkName = result.getString("name");
+                        double drinkPrice = result.getDouble("price");
+                        int quantity = result.getInt("quantity");
+                        String expected_order_date = result.getString("expected_order_date");
+                        String expected_order_time = result.getString("expected_order_time");
+                        drinks.add(new Drink(drinkName, drinkPrice, quantity));
+                        order.setDrinks(drinks);
+                        order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
+
+                        //BOOKING
+                        int table_number = result.getInt("number");
+                        tables.add(new Table(table_number));
+                        String date = result.getString("date");
+                        String start_time = result.getString("start_time");
+                        String end_time = result.getString("end_time");
+                        booking.setDate(Date.valueOf(LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE)));
+                        booking.setStartTime(Time.valueOf(LocalTime.parse(start_time, DateTimeFormatter.ISO_LOCAL_TIME)));
+                        booking.setEndTime(Time.valueOf(LocalTime.parse(end_time, DateTimeFormatter.ISO_LOCAL_TIME)));
+                        booking.setTables(tables);
+
+                        //RESERVATION
+                        int reservation_id = result.getInt("reservation_id");
+                        String client_firstname = result.getString("client_firstname");
+                        String client_lastname = result.getString("client_lastname");
+                        String client_phone_number = result.getString("client_phone_number");
+                        String notes = result.getString("notes");
+                        String creation_datetime = result.getString("creation_datetime");
+                        Reservation reservation = new Reservation.ReservationBuilder()
+                            .setReservationId(reservation_id)
+                            .setClientFirstName(client_firstname)
+                            .setClientLastName(client_lastname)
+                            .setClientPhoneNumber(client_phone_number)
+                            .setNotes(notes)
+                            .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                            .setBooking(booking)
+                            .setOrder(order)
+                            .build();
+                        reservations.add(reservation);
+                    }
+                    else {
+                        if (reservations.getLast().getReservationId() == result.getInt("reservation_id")) {
+                            //tables.clear();
+                            //drinks.clear();
+
+                            //table
+                            Table table = new Table(result.getInt("number"));
+                            if (!reservations.getLast().getBooking().containsTable(table.getNumber())) {
+                                tables.add(table);
+                            }
+                            //drink
+                            Drink drink = new Drink(result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
+                            if (!reservations.getLast().getOrder().containsDrink(drink.getName())) {
+                                drinks.add(drink);
+                            }
+
+                            //add new drinks to order
+                            reservations.getLast().getOrder().setDrinks(drinks);
+                            //add new tables to booking
+                            reservations.getLast().getBooking().setTables(tables);
+                        }
+                        else {
+                            //this is a completely new reservation -> clear tables, drinks, booking, order
+                            //add the new reservation to the list
+                            tables.clear();
+                            drinks.clear();
+                            //probably not necessary to make them null
+                            order = new Order();
+                            booking = new Booking();
+
+                            String drinkName = result.getString("name");
+                            double drinkPrice = result.getDouble("price");
+                            int quantity = result.getInt("quantity");
+                            String expected_order_date = result.getString("expected_order_date");
+                            String expected_order_time = result.getString("expected_order_time");
+                            drinks.add(new Drink(drinkName, drinkPrice, quantity));
+                            order.setDrinks(drinks);
+                            order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
+
+                            //BOOKING
+                            int table_number = result.getInt("number");
+                            tables.add(new Table(table_number));
+                            String date = result.getString("date");
+                            String start_time = result.getString("start_time");
+                            String end_time = result.getString("end_time");
+                            booking.setDate(Date.valueOf(LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE)));
+                            booking.setStartTime(Time.valueOf(LocalTime.parse(start_time, DateTimeFormatter.ISO_LOCAL_TIME)));
+                            booking.setEndTime(Time.valueOf(LocalTime.parse(end_time, DateTimeFormatter.ISO_LOCAL_TIME)));
+                            booking.setTables(tables);
+
+                            //RESERVATION
+                            int reservation_id = result.getInt("reservation_id");
+                            String client_firstname = result.getString("client_firstname");
+                            String client_lastname = result.getString("client_lastname");
+                            String client_phone_number = result.getString("client_phone_number");
+                            String notes = result.getString("notes");
+                            String creation_datetime = result.getString("creation_datetime");
+                            Reservation reservation = new Reservation.ReservationBuilder()
+                                .setReservationId(reservation_id)
+                                .setClientFirstName(client_firstname)
+                                .setClientLastName(client_lastname)
+                                .setClientPhoneNumber(client_phone_number)
+                                .setNotes(notes)
+                                .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                                .setBooking(booking)
+                                .setOrder(order)
+                                .build();
+                            reservations.add(reservation);
+                        }
+                    }
+                }
+                return reservations;
+            }
         }
     }
 
@@ -114,7 +275,7 @@ public class ReservationDaoImpl implements ReservationDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return overlappingReservations;
     }
@@ -140,8 +301,6 @@ public class ReservationDaoImpl implements ReservationDao {
             PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM cueandbrew.reservations WHERE booking_id = ?");
             statement.executeUpdate();
-        } catch (SQLException e) {
-            throw e;
         }
     }
 }

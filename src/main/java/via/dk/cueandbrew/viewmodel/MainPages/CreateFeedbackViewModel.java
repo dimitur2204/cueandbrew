@@ -14,4 +14,7 @@ public class CreateFeedbackViewModel
     this.viewHandler = viewHandler;
   }
 
+  public void onCancel() {
+    this.viewHandler.closeCreateFeedbackStage();
+  }
 }

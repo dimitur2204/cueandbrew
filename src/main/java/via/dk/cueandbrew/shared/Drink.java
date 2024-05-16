@@ -1,9 +1,12 @@
 package via.dk.cueandbrew.shared;
 
-public class Drink {
-    private String name;
-    private double price;
-    private int quantityOfDrink;
+import java.io.Serializable;
+
+public class Drink implements Serializable
+{
+    private final String name;
+    private final double price;
+    private final int quantityOfDrink;
     public Drink(String name, double price, int quantityOfDrink) {
         this.name = name;
         this.price = price;
@@ -23,5 +26,11 @@ public class Drink {
     public int getQuantityOfDrink()
     {
         return quantityOfDrink;
+    }
+
+    @Override public String toString()
+    {
+        return "Drink{" + "name='" + name + '\'' + ", price=" + price
+            + ", quantityOfDrink=" + quantityOfDrink + '}';
     }
 }

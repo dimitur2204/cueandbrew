@@ -12,4 +12,5 @@ public interface CallbackClient
   void onLogin(String login, String password) throws RemoteException;
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   void addPropertyChange(PropertyChangeListener listener);
+  List<Reservation> onSearch(String phone) throws RemoteException;
 }

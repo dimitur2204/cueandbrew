@@ -18,7 +18,6 @@ public class ServerImplementation implements ServerInterface {
     public ServerImplementation() {
         this.support = new RemotePropertyChangeSupport<>();
     }
-
     @Override
     public void onLogin(String login, String password)
             throws RemoteException {
@@ -33,12 +32,14 @@ public class ServerImplementation implements ServerInterface {
 
     @Override
     public List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException {
-        try {
+        try
+        {
             return ReservationDaoImpl.getInstance().findReservationsWithinPeriod(start, durationMinutes);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return null;
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -46,5 +47,15 @@ public class ServerImplementation implements ServerInterface {
             RemotePropertyChangeListener<Registration> listener) throws RemoteException {
         this.support.addPropertyChangeListener(listener);
     }
-
+  @Override public List<Reservation> onSearch(String phone) throws RemoteException
+  {
+      try
+      {
+          return ReservationDaoImpl.getInstance().readByPhoneNumber(phone);
+      }
+      catch (SQLException e)
+      {
+          throw new RuntimeException(e);
+      }
+  }
 }
