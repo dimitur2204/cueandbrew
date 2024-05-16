@@ -1,8 +1,10 @@
 set schema 'cueandbrew';
 drop table notifications;
 drop table reservations;
+drop table order_drinks;
 drop table orders;
 drop table drinks;
+drop table booking_tables;
 drop table bookings;
 drop table tables;
 drop table feedbacks;

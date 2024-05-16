@@ -155,13 +155,13 @@ VALUES
 -- Inserting reservations
 INSERT INTO reservations (booking_id, order_id, received_by_id, notes, client_firstname, client_lastname, client_phone_number, creation_datetime)
 VALUES
-    (1, 1, 1, 'VIP Guests', 'Alice', 'Johnson', '123-456-7890', CURRENT_TIMESTAMP),
-    (2, 2, 2, 'Birthday party', 'Bob', 'Anderson', '987-654-3210', CURRENT_TIMESTAMP),
-    (3, 3, NULL, 'Anniversary', 'Charlie', 'Brown', '555-555-5555', CURRENT_TIMESTAMP);
+    (1, 1, 1, 'VIP Guests', 'Alice', 'Johnson', '123-456-7890', '2024-05-14 12:59:00'),
+    (2, 2, 2, 'Birthday party', 'Bob', 'Anderson', '987-654-3210', '2024-05-14 13:15:00'),
+    (3, 3, NULL, 'Anniversary', 'Charlie', 'Brown', '555-555-5555', '2024-05-14 14:30:00');
 
--- Inserting notifications
+-- Inserting notifications with a specific creation time without seconds
 INSERT INTO notifications (reservation_id, content, was_seen, creation_time)
 VALUES
-    (1, 'Your reservation is confirmed.', 0, CURRENT_TIMESTAMP),
-    (2, 'Your reservation is confirmed.', 0, CURRENT_TIMESTAMP),
-    (3, 'Your reservation is confirmed.', 0, CURRENT_TIMESTAMP);
+    (1, 'bitch ass made a reservation for table 1, 2, 3. Notes: jadhjabhbjvsjh. Phone Number: snjgnjsbhjhf', 0, '2024-05-14 12:59:00'),
+    (2, 'Your reservation is confirmed.', 0, '2024-05-14 13:15:00'),
+    (3, 'Your reservation is confirmed.', 0, '2024-05-14 14:30:00');
