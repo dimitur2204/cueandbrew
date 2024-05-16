@@ -74,6 +74,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return this.client.onSearch(phone);
   }
 
+  @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
+  {
+    return this.client.createFeedback(content, selectedType, firstname, lastname);
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> {

@@ -14,4 +14,5 @@ public interface CallbackClient
   void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException;
   void addPropertyChange(PropertyChangeListener listener);
   List<Reservation> onSearch(String phone) throws RemoteException;
+  boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 }

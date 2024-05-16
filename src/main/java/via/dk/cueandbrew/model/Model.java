@@ -13,4 +13,5 @@ public interface Model
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   List<Reservation> onSearch(String phone) throws RemoteException;
   void onFinalizeReservation() throws RemoteException;
+  boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 }

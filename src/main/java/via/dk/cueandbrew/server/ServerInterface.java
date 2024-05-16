@@ -16,4 +16,5 @@ public interface ServerInterface extends Remote
   void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException;
   void addPropertyChangeListener(RemotePropertyChangeListener<Registration> listener) throws RemoteException;
   List<Reservation> onSearch(String phone) throws RemoteException;
+  boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 }

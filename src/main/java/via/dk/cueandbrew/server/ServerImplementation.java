@@ -2,6 +2,7 @@ package via.dk.cueandbrew.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
+import via.dk.cueandbrew.databse.dao.FeedbackDaoImplementation;
 import via.dk.cueandbrew.databse.dao.RegistrationDaoImplementation;
 import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.shared.Registration;
@@ -68,4 +69,16 @@ public class ServerImplementation implements ServerInterface {
           throw new RuntimeException(e);
       }
   }
+
+    @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
+    {
+        try
+        {
+            return FeedbackDaoImplementation.getInstance().createFeedback(content, selectedType, firstname, lastname);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 }
