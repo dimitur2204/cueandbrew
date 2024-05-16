@@ -2,6 +2,7 @@ package via.dk.cueandbrew.viewmodel.MainPages;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Booking;
 import via.dk.cueandbrew.shared.Notification;
@@ -13,9 +14,9 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class ManagerMainPageViewModel {
-    private Model model;
-    private ViewHandler viewHandler;
-    private ObservableList<Notification> notifications;
+    private final Model model;
+    private final ViewHandler viewHandler;
+    private final ObservableList<Notification> notifications;
 
     public ManagerMainPageViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
@@ -37,6 +38,13 @@ public class ManagerMainPageViewModel {
         this.notifications.add(new Notification(reservation));
     }
 
+    public void updateDateTime(Label date, Label time) {
+        this.model.updateDateTime(date, time);
+    }
+
+    public void startDateTimeUpdater(Label date, Label time) {
+        this.model.startDateTimeUpdater(date, time);
+    }
 
     public void onMakeAReservation() {
         this.viewHandler.openCreateReservationView();

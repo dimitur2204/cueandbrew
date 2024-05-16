@@ -114,6 +114,7 @@ public class ReservationDaoImpl implements ReservationDao {
                         r.client_phone_number,
                         r.notes,
                         r.creation_datetime,
+                        r.order_id,
                         t.number,
                         d.drink_id,
                         d.name,
@@ -153,15 +154,21 @@ public class ReservationDaoImpl implements ReservationDao {
                     //check by the creation_date_time if it is still the same reservation
                     if (reservations.isEmpty()) {
                         //ORDER
-                        String drinkName = result.getString("name");
-                        int drinkId = result.getInt("drink_id");
-                        double drinkPrice = result.getDouble("price");
-                        int quantity = result.getInt("quantity");
-                        String expected_order_date = result.getString("expected_order_date");
-                        String expected_order_time = result.getString("expected_order_time");
-                        drinks.add(new Drink(drinkId, drinkName, drinkPrice, quantity));
-                        order.setDrinks(drinks);
-                        order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
+                        int order_id = result.getInt("order_id");
+                        if (result.wasNull()) {
+                            order_id = -1;
+                        }
+                        if (order_id != -1) {
+                            String drinkName = result.getString("name");
+                            int drinkId = result.getInt("drink_id");
+                            double drinkPrice = result.getDouble("price");
+                            int quantity = result.getInt("quantity");
+                            String expected_order_date = result.getString("expected_order_date");
+                            String expected_order_time = result.getString("expected_order_time");
+                            drinks.add(new Drink(drinkId, drinkName, drinkPrice, quantity));
+                            order.setDrinks(drinks);
+                            order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
+                        }
 
                         //BOOKING
                         int table_number = result.getInt("number");

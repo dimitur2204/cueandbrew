@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.viewmodel.MainPages.UserMainPageViewModel;
@@ -19,6 +21,8 @@ public class UserMainPageController
   @FXML private TextField phoneLabel;
   @FXML private VBox contentVBox;
   @FXML private Button searchButton;
+  @FXML private Label dateLabel;
+  @FXML private Label hourLabel;
   private UserMainPageViewModel viewModel;
   private List<Reservation> reservations;
 
@@ -27,6 +31,8 @@ public class UserMainPageController
     this.viewModel = viewModel;
     this.reservations = new ArrayList<>();
     this.searchButton.disableProperty().bind(this.phoneLabel.textProperty().isEmpty());
+    this.viewModel.updateDateTime(dateLabel, hourLabel);
+    this.viewModel.startDateTimeUpdater(dateLabel, hourLabel);
   }
 
   public void onMakeAReservation()
@@ -52,6 +58,10 @@ public class UserMainPageController
       for (Reservation reservation : this.reservations)
       {
         HBox hBox = new HBox();
+        hBox.setPrefWidth(250);
+        hBox.setSpacing(10);
+        hBox.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10;");
+
         Label content = new Label(
             reservation.getCreationDatetime().toString() + "\n"
                 + reservation.getClientFirstName() + " "
@@ -66,14 +76,15 @@ public class UserMainPageController
                 reservation.getOrder().getDrinksToString() :
                 " none ordered"));
         content.setWrapText(true);
+        content.setPrefWidth(250);
 
-        HBox margin = new HBox();
-        margin.setPrefWidth(100);
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Button button = new Button("Leave Feedback");
         button.setOnAction(actionEvent -> this.viewModel.openCreateFeedbackPage());
 
-        hBox.getChildren().addAll(content, margin, button);
+        hBox.getChildren().addAll(content, spacer, button);
         hBox.setAlignment(Pos.CENTER);
 
         this.contentVBox.getChildren().add(hBox);

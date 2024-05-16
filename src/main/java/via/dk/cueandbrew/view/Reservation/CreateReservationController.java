@@ -13,28 +13,23 @@ import java.util.List;
 
 public class CreateReservationController {
 
-    @FXML
-    public DatePicker datePicker;
-    @FXML
-    ComboBox<String> hourField;
-    @FXML
-    ComboBox<String> minutesField;
-    @FXML
-    RadioButton duration30m, duration1h, duration2h;
-    @FXML
-    ToggleGroup durationGroup;
-    @FXML
-    CheckBox table1CheckBox;
-    @FXML
-    CheckBox table2CheckBox;
-    @FXML
-    CheckBox table3CheckBox;
-    @FXML
-    CheckBox table4CheckBox;
+    @FXML private DatePicker datePicker;
+    @FXML private ComboBox<String> hourField;
+    @FXML private ComboBox<String> minutesField;
+    @FXML private RadioButton duration30m, duration1h, duration2h;
+    @FXML private ToggleGroup durationGroup;
+    @FXML private CheckBox table1CheckBox;
+    @FXML private CheckBox table2CheckBox;
+    @FXML private CheckBox table3CheckBox;
+    @FXML private CheckBox table4CheckBox;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
 
     private CreateReservationViewModel viewModel;
 
     public void init(CreateReservationViewModel viewModel) {
+        this.viewModel.updateDateTime(dateLabel, timeLabel);
+        this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
         ArrayList<String> hours = new ArrayList<>();
         ArrayList<String> minutes = new ArrayList<>();
         for (int i = 0; i < 24; i++) {
@@ -50,9 +45,7 @@ public class CreateReservationController {
         duration30m.setToggleGroup(durationGroup);
         duration1h.setToggleGroup(durationGroup);
         duration2h.setToggleGroup(durationGroup);
-        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> {
-            handleDateChange(newValue);
-        });
+        datePicker.valueProperty().addListener((observable, oldValue, newValue) -> handleDateChange(newValue));
         hourField.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (minutesField.getValue() == null || datePicker.getValue() == null){
                 return;
@@ -74,18 +67,10 @@ public class CreateReservationController {
                 }
             }
         });
-        table1CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(1);
-        });
-        table2CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(2);
-        });
-        table3CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(3);
-        });
-        table4CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(4);
-        });
+        table1CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> viewModel.chooseTable(1));
+        table2CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> viewModel.chooseTable(2));
+        table3CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> viewModel.chooseTable(3));
+        table4CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> viewModel.chooseTable(4));
     }
 
     private void handleDurationChange(RadioButton selectedDuration) throws RemoteException {

@@ -2,10 +2,10 @@ package via.dk.cueandbrew.viewmodel.Reservation;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Drink;
 import via.dk.cueandbrew.shared.Order;
-import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.sql.Date;
@@ -13,10 +13,10 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class OrderViewModel {
-    private Model model;
-    private ViewHandler viewHandler;
-    private ObservableList<Drink> drinks;
-    private ObservableList<Drink> orders;
+    private final Model model;
+    private final ViewHandler viewHandler;
+    private final ObservableList<Drink> drinks;
+    private final ObservableList<Drink> orders;
 
     public OrderViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
@@ -29,6 +29,15 @@ public class OrderViewModel {
         drinks.add(drink);
         drinks.add(drink2);
     }
+
+    public void updateDateTime(Label date, Label time) {
+    this.model.updateDateTime(date, time);
+    }
+
+    public void startDateTimeUpdater(Label date, Label time) {
+    this.model.startDateTimeUpdater(date, time);
+    }
+
     public Date getBookingDate(){
         var res = this.model.getReservationBuilder().build();
         return res.getBooking().getDate();
