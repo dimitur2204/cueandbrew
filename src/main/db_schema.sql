@@ -114,7 +114,7 @@ VALUES
     ('Bob', 'Anderson', 'Could improve cleanliness.', 'Negative', 2);
 
 -- Inserting tables
-INSERT INTO tables (number) VALUES (1), (2), (3);
+INSERT INTO tables (number) VALUES (1), (2), (3), (4), (5);
 
 -- Inserting bookings
 INSERT INTO bookings (date, start_time, end_time)
