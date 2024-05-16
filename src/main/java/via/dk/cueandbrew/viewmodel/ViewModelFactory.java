@@ -2,6 +2,7 @@ package via.dk.cueandbrew.viewmodel;
 
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.view.ViewHandler;
+import via.dk.cueandbrew.viewmodel.MainPages.CreateFeedbackViewModel;
 import via.dk.cueandbrew.viewmodel.MainPages.ManagerMainPageViewModel;
 import via.dk.cueandbrew.viewmodel.MainPages.UserMainPageViewModel;
 import via.dk.cueandbrew.viewmodel.Reservation.CreateReservationViewModel;
@@ -19,6 +20,7 @@ public class ViewModelFactory {
     private CreateReservationViewModel createReservationViewModel;
     private OrderViewModel orderViewModel;
     private FinalizeReservationViewModel finalizeReservationViewModel;
+    private CreateFeedbackViewModel createFeedbackViewModel;
 
     public ViewModelFactory(Model model) {
         this.model = model;
@@ -32,6 +34,7 @@ public class ViewModelFactory {
         this.createReservationViewModel = new CreateReservationViewModel(model, viewHandler);
         this.orderViewModel = new OrderViewModel(model, viewHandler);
         this.finalizeReservationViewModel = new FinalizeReservationViewModel(model, viewHandler);
+        this.createFeedbackViewModel = new CreateFeedbackViewModel(model, viewHandler);
     }
 
     public StartViewModel getStartViewModel()
@@ -67,5 +70,10 @@ public class ViewModelFactory {
     public FinalizeReservationViewModel getFinalizeReservationViewModel()
     {
         return finalizeReservationViewModel;
+    }
+
+    public CreateFeedbackViewModel getCreateFeedbackViewModel()
+    {
+        return createFeedbackViewModel;
     }
 }

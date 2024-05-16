@@ -5,7 +5,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order implements Serializable {
+public class Order implements Serializable
+{
     private List<Drink> drinks;
     private Timestamp expectedDatetime;
     public Order(Timestamp expectedDatetime) {

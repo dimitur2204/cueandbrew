@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import via.dk.cueandbrew.view.MainPages.CreateFeedbackController;
 import via.dk.cueandbrew.view.MainPages.ManagerMainPageController;
 import via.dk.cueandbrew.view.MainPages.UserMainPageController;
 import via.dk.cueandbrew.view.Reservation.CreateReservationController;
@@ -12,6 +13,7 @@ import via.dk.cueandbrew.view.Reservation.FinalizeReservationController;
 import via.dk.cueandbrew.view.Reservation.OrderController;
 import via.dk.cueandbrew.view.Start.ManagerLoginController;
 import via.dk.cueandbrew.view.Start.StartController;
+import via.dk.cueandbrew.viewmodel.MainPages.CreateFeedbackViewModel;
 import via.dk.cueandbrew.viewmodel.ViewModelFactory;
 
 import java.io.IOException;
@@ -20,6 +22,7 @@ public class ViewHandler {
     private final ViewModelFactory viewModelFactory;
     private final Stage stage;
     private final Stage finalizeReservationStage;
+    private final Stage createFeedbackStage;
 
     public ViewHandler(ViewModelFactory viewModelFactory, Stage stage) {
         this.viewModelFactory = viewModelFactory;
@@ -28,6 +31,9 @@ public class ViewHandler {
         this.finalizeReservationStage = new Stage();
         this.finalizeReservationStage.initModality(Modality.APPLICATION_MODAL);
         this.finalizeReservationStage.initOwner(this.stage);
+        this.createFeedbackStage = new Stage();
+        this.createFeedbackStage.initModality(Modality.APPLICATION_MODAL);
+        this.createFeedbackStage.initOwner(this.stage);
     }
 
     public Stage getStage() {
@@ -189,6 +195,31 @@ public class ViewHandler {
 
     public void closeFinalizeReservationView() {
         finalizeReservationStage.close();
+    }
+
+    public void openCreateFeedbackStage() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/CreateFeedback.fxml"));
+        Parent root = null;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        CreateFeedbackController view = loader.getController();
+        view.init(viewModelFactory.getCreateFeedbackViewModel());
+        createFeedbackStage.setTitle("Create Feedback");
+
+        Scene scene = new Scene(root);
+        createFeedbackStage.setScene(scene);
+        createFeedbackStage.show();
+    }
+
+    public void closeCreateFeedbackStage() {
+        createFeedbackStage.close();
     }
 
     public void start() {

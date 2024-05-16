@@ -3,12 +3,9 @@ package via.dk.cueandbrew.client;
 import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.application.Platform;
-import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.server.ServerInterface;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.view.Toast;
-import via.dk.cueandbrew.view.ViewHandler;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -50,14 +47,19 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         this.support.addPropertyChangeListener(listener);
     }
 
-    @Override
-    public void propertyChange(
-            RemotePropertyChangeEvent<Registration> remotePropertyChangeEvent)
-            throws RemoteException {
-        Platform.runLater(() -> {
-            if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
-                this.support.firePropertyChange("login", null, remotePropertyChangeEvent.getNewValue());
-            }
-        });
-    }
+  @Override public List<Reservation> onSearch(String phone) throws RemoteException
+  {
+    return this.serverInterface.onSearch(phone);
+  }
+
+  @Override public void propertyChange(
+      RemotePropertyChangeEvent<Registration> remotePropertyChangeEvent)
+      throws RemoteException
+  {
+    Platform.runLater(() -> {
+      if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
+        this.support.firePropertyChange("login", null, remotePropertyChangeEvent.getNewValue());
+      }
+    });
+  }
 }

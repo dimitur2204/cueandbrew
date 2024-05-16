@@ -4,13 +4,14 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 public class Reservation implements Serializable {
-    private String notes;
-    private String clientFirstName;
-    private String clientLastName;
-    private String clientPhoneNumber;
-    private Timestamp creationDatetime;
-    private Booking booking;
-    private Order order;
+    private final String notes;
+    private final String clientFirstName;
+    private final String clientLastName;
+    private final String clientPhoneNumber;
+    private final Timestamp creationDatetime;
+    private final Booking booking;
+    private final Order order;
+    private final int reservationId;
 
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
@@ -20,8 +21,15 @@ public class Reservation implements Serializable {
         this.creationDatetime = builder.creationDatetime;
         this.booking = builder.booking;
         this.order = builder.order;
+        this.reservationId = builder.reservationId;
     }
 
+
+
+    public int getReservationId()
+    {
+        return reservationId;
+    }
 
     public Booking getBooking() {
         return booking;
@@ -61,6 +69,7 @@ public class Reservation implements Serializable {
         private Timestamp creationDatetime;
         private Booking booking;
         private Order order;
+        private int reservationId;
 
         public ReservationBuilder() {
             this.creationDatetime = new Timestamp(System.currentTimeMillis());
@@ -98,6 +107,11 @@ public class Reservation implements Serializable {
 
         public ReservationBuilder setClientPhoneNumber(String clientPhoneNumber) {
             this.clientPhoneNumber = clientPhoneNumber;
+            return this;
+        }
+
+        public ReservationBuilder setReservationId(int reservationId) {
+            this.reservationId = reservationId;
             return this;
         }
 

@@ -46,9 +46,6 @@ public class CreateReservationController {
         hourField.setItems(FXCollections.observableArrayList(hours));
         minutesField.setItems(FXCollections.observableArrayList(minutes));
         this.viewModel = viewModel;
-    }
-
-    public void initialize() {
         durationGroup = new ToggleGroup();
         duration30m.setToggleGroup(durationGroup);
         duration1h.setToggleGroup(durationGroup);
@@ -104,7 +101,6 @@ public class CreateReservationController {
         viewModel.chooseDuration(duration);
     }
 
-    //TODO: Call the update unavailable tables method in the view model
     private void handleDateChange(LocalDate date) {
         if (hourField.getValue() == null || minutesField.getValue() == null) {
             return;

@@ -13,4 +13,5 @@ public interface CallbackClient
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException;
   void addPropertyChange(PropertyChangeListener listener);
+  List<Reservation> onSearch(String phone) throws RemoteException;
 }
