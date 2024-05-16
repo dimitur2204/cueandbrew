@@ -4,94 +4,118 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import via.dk.cueandbrew.shared.Drink;
-import via.dk.cueandbrew.shared.Order;
 import via.dk.cueandbrew.viewmodel.Reservation.OrderViewModel;
 
-import java.util.List;
+import java.sql.Timestamp;
 
-public class OrderController
-{
-  private OrderViewModel viewModel;
-  private List<Drink> drinks;
- private  List<Drink> orders;
- @FXML
- private VBox menu;
- @FXML
-  private VBox selections;
- private HBox doubles;
+public class OrderController {
 
-  public void init(OrderViewModel viewModel)
-  {
-    this.viewModel = viewModel;
-    drinks=this.viewModel.getDrinks();
-    orders=this.viewModel.getOrders();
-    for (Drink drink:drinks)
-    {
-     int count=1;
-      Button button= new Button();
-      Label label=new Label();
-      label.setText(count+"."+drink.getName()+" - "+drink.getPrice()+"dkk - "+drink.getQuantityOfDrink()+"ml ");
-      count++;
-      HBox box=new HBox(label,button);
-      menu.getChildren().add(box);
-      box.setStyle("-fx-border-color: black; " +
-          "-fx-border-width: 1px; " +
-          "-fx-border-style: solid;" +
-          "-fx-border-radius: 5px;");
-      button.setTranslateX(20);
-      button.setText("+");
-      button.setOnAction(new EventHandler<ActionEvent>()
-      {
-        @Override public void handle(ActionEvent event)
-        {
-          for (Drink drink:orders)
-          {
-            int count=1;
-            Button button1= new Button();
-            Label label1=new Label();
-            label1.setText(count+"."+drink.getName()+" - "+drink.getPrice()+"dkk - "+drink.getQuantityOfDrink()+"ml ");
-            count++;
-            HBox box2=new HBox(label1,button1);
-            selections.getChildren().add(box2);
-            box2.setStyle("-fx-border-color: black; " +
-                "-fx-border-width: 1px; " +
-                "-fx-border-style: solid;" +
-                "-fx-border-radius: 5px;");
-            button1.setTranslateX(20);
-            button1.setText("-");
-            button1.setOnAction(new EventHandler<ActionEvent>()
-            {
-              @Override public void handle(ActionEvent event)
-              {
-                selections.getChildren().remove(box2);
-              }
-            });
-          }
-        }
-      });
+    @FXML
+    private ComboBox hourField;
+    @FXML
+    private ComboBox minutesField;
+    @FXML
+    private Button confirmBtn;
+
+    private OrderViewModel viewModel;
+
+    @FXML
+    private VBox menuContainer;
+
+    @FXML
+    private VBox selections;
+
+    private Button buildActionButton(String text) {
+        Button button = new Button();
+        button.setTranslateX(20);
+        button.setText(text);
+        return button;
     }
 
-  }
+    private HBox buildDrinkBox() {
+        HBox box = new HBox();
+        box.setPrefHeight(30.0);
+        box.setPrefWidth(290.0);
+        box.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;");
+        return box;
+    }
+
+    private void setTimeOfDrinks() {
+        for (int i = 0; i < 24; i++) {
+            hourField.getItems().add(i);
+        }
+
+        for (int i = 0; i <= 59; i += 15) {
+            minutesField.getItems().add(i);
+        }
+        this.hourField.setValue(this.viewModel.getBookingHour());
+        this.minutesField.setValue(this.viewModel.getBookingMinute());
+    }
+
+    public void init(OrderViewModel viewModel) {
+        this.confirmBtn.setDisable(true);
+        this.viewModel = viewModel;
+        setTimeOfDrinks();
+        for (Drink drink : this.viewModel.getDrinks()) {
+            Label menuDrinkLabel = new Label();
+            menuDrinkLabel.setText(drink.getName() + " - " + drink.getPrice() + "dkk - " + drink.getQuantityOfDrink() + "ml ");
+            Button addButton = buildActionButton("+");
+            HBox drinkBox = buildDrinkBox();
+            drinkBox.getChildren().addAll(menuDrinkLabel, addButton);
+            menuContainer.getChildren().add(drinkBox);
+            addButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    viewModel.getOrderedDrinks().add(drink);
+                    if(!viewModel.getOrderedDrinks().isEmpty()) {
+                        confirmBtn.setDisable(false);
+                    }
+                    Label orderedDrinkLabel = new Label();
+                    orderedDrinkLabel.setText(drink.getName() + " - " + drink.getPrice() + "dkk - " + drink.getQuantityOfDrink() + "ml ");
+                    Button removeDrinkButton = buildActionButton("-");
+                    HBox box2 = buildDrinkBox();
+                    box2.getChildren().addAll(orderedDrinkLabel, removeDrinkButton);
+                    selections.getChildren().add(box2);
+                    removeDrinkButton.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            var drinks = viewModel.getOrderedDrinks();
+                            drinks.remove(drink);
+                            if(drinks.isEmpty()) {
+                                confirmBtn.setDisable(true);
+                            }
+                            selections.getChildren().remove(box2);
+                        }
+                    });
+                }
+            });
+        }
+    }
 
 
-  public void onCancel() {
-    this.viewModel.onCancel();
-  }
+    public void onCancel() {
+        this.viewModel.onCancel();
+    }
 
-  public void onBackToReservations() {
-    this.viewModel.onBackToReservations();
-  }
+    public void onBackToReservations() {
+        this.viewModel.onBackToReservations();
+    }
 
-  public void onSkip() {
-    this.viewModel.onSkip();
-  }
+    public void onSkip() {
+        this.viewModel.onSkip();
+    }
 
-  public void onConfirm() {
-    this.viewModel.onConfirm();
-  }
+    public void onConfirm() {
+        var hours = (int) hourField.getValue();
+        var minutes = (int) minutesField.getValue();
+        var date = this.viewModel.getBookingDate();
+        var expected = new Timestamp(date.getYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
+        this.viewModel.onConfirm(expected);
+    }
 
 }

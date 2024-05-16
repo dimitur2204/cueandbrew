@@ -50,7 +50,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onSkip" text="Skip" />
                   <HBox prefHeight="100.0" prefWidth="10.0" />
-                  <Button mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
+                  <Button mnemonicParsing="false" fx:id="confirmBtn" onAction="#onConfirm" text="Confirm" />
                   <VBox prefHeight="200.0" prefWidth="10.0" />
                </children>
             </HBox>
