@@ -30,6 +30,10 @@ public class ViewHandler {
         this.finalizeReservationStage.initOwner(this.stage);
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     public ViewModelFactory getViewModelFactory()
     {
         return viewModelFactory;

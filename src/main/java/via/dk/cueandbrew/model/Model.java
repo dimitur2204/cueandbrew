@@ -11,5 +11,5 @@ public interface Model
   void addPropertyChangeListener(PropertyChangeListener listener);
   Reservation.ReservationBuilder getReservationBuilder();
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
-  void onFinalizeReservatino();
+  void onFinalizeReservation() throws RemoteException;
 }

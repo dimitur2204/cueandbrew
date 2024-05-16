@@ -65,8 +65,8 @@ public class ModelManager implements Model, PropertyChangeListener
   }
 
   @Override
-  public void onFinalizeReservatino() {
-
+  public void onFinalizeReservation() throws RemoteException {
+    this.client.onFinalizeReservation(this.reservationBuilder);
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)

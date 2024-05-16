@@ -24,8 +24,8 @@ public class OrderViewModel {
         drinks = FXCollections.observableArrayList();
         orders = FXCollections.observableArrayList();
         //TODO: Read drinks from the database
-        Drink drink = new Drink("Cuba Libre", 80.0, 400);
-        Drink drink2 = new Drink("Mojito", 90.0, 500);
+        Drink drink = new Drink(1, "Cuba Libre", 80.0, 400);
+        Drink drink2 = new Drink(2, "Mojito", 90.0, 500);
         drinks.add(drink);
         drinks.add(drink2);
     }

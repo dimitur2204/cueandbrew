@@ -1,10 +1,11 @@
 package via.dk.cueandbrew.shared;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     private List<Drink> drinks;
     private Timestamp expectedDatetime;
     public Order(Timestamp expectedDatetime) {

@@ -7,6 +7,8 @@ import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
 import via.dk.cueandbrew.server.ServerInterface;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
+import via.dk.cueandbrew.view.Toast;
+import via.dk.cueandbrew.view.ViewHandler;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
