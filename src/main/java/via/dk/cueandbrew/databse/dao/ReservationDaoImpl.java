@@ -319,7 +319,7 @@ public class ReservationDaoImpl implements ReservationDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return overlappingReservations;
     }

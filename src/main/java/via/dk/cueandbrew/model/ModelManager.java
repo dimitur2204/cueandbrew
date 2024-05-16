@@ -17,7 +17,7 @@ public class ModelManager implements Model, PropertyChangeListener
   private final CallbackClient client;
   private final PropertyChangeSupport support;
   private Registration registration;
-  private Reservation.ReservationBuilder reservationBuilder;
+  private final Reservation.ReservationBuilder reservationBuilder;
 
   public ModelManager(CallbackClient client) {
     this.client = client;
@@ -62,6 +62,21 @@ public class ModelManager implements Model, PropertyChangeListener
   @Override
   public List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException {
     return this.client.getReservationsByDateTimeAndDuration(start, durationMinutes);
+  }
+
+  @Override
+  public void onFinalizeReservation() throws RemoteException {
+    this.client.onFinalizeReservation(this.reservationBuilder);
+  }
+
+  @Override public List<Reservation> onSearch(String phone) throws RemoteException
+  {
+    return this.client.onSearch(phone);
+  }
+
+  @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
+  {
+    return this.client.createFeedback(content, selectedType, firstname, lastname);
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)

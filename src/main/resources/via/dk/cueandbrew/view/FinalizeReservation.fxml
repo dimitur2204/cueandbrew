@@ -60,14 +60,14 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="firstnameField"/>
                   <HBox prefHeight="10.0" prefWidth="200.0" />
                   <Label text="Lastname">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <TextField />
+                  <TextField fx:id="lastnameField"/>
                   <HBox prefHeight="10.0" prefWidth="200.0" />
                   <Label text="Phone number">
                      <font>
@@ -78,7 +78,7 @@
                      <children>
                         <Label prefHeight="17.0" prefWidth="30.0" text="+45" />
                         <HBox prefHeight="30.0" prefWidth="0.0" />
-                        <TextField />
+                        <TextField fx:id="phonenumberField" />
                      </children>
                   </HBox>
                </children>
@@ -91,7 +91,7 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <TextArea prefHeight="152.0" prefWidth="283.0" />
+                  <TextArea fx:id="notesField" prefHeight="152.0" prefWidth="283.0" />
                </children>
             </VBox>
          </children>
