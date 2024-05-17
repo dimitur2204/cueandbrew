@@ -209,13 +209,19 @@ public class ReservationDaoImpl implements ReservationDao {
                             //TODO: check if there is an order in the reservation
                             //drink
                             if (reservations.getLast().getOrder() != null) {
-                                Drink drink = new Drink(result.getInt("drink_id"), result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
-                                if (!reservations.getLast().getOrder().containsDrink(drink.getName())) {
-                                    drinks.add(drink);
+                                int drink_id = result.getInt("drink_id");
+                                if (result.wasNull()) {
+                                    drink_id = -1;
                                 }
-                                //TODO: check if the last reservation has an order
-                                //add new drinks to order
-                                reservations.getLast().getOrder().setDrinks(drinks);
+                                    if (drink_id != -1) {
+                                        Drink drink = new Drink(result.getInt("drink_id"), result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
+                                        if (!reservations.getLast().getOrder().containsDrink(drink.getName())) {
+                                            drinks.add(drink);
+                                        }
+                                    }
+                                    //TODO: check if the last reservation has an order
+                                    //add new drinks to order
+                                    reservations.getLast().getOrder().setDrinks(drinks);
                             }
 
                             //add new tables to booking
