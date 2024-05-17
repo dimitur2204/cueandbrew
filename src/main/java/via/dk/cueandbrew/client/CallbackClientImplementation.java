@@ -4,11 +4,19 @@ import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.application.Platform;
 import via.dk.cueandbrew.server.ServerInterface;
+<<<<<<< Updated upstream
+=======
+import via.dk.cueandbrew.shared.Notification;
+>>>>>>> Stashed changes
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+<<<<<<< Updated upstream
+=======
+import java.io.Serializable;
+>>>>>>> Stashed changes
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
