@@ -4,10 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
-import via.dk.cueandbrew.shared.Booking;
-import via.dk.cueandbrew.shared.Notification;
-import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.shared.Table;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.sql.Date;
@@ -51,6 +48,9 @@ public class ManagerMainPageViewModel {
     }
 
     public void onExit() {
+        Registration temp = Registration.getInstance();
+        temp.setManager_id(-1);
+        temp.setLogin("");
         this.viewHandler.openManagerLoginView();
     }
 

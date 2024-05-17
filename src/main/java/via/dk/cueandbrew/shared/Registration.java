@@ -4,17 +4,24 @@ import java.io.Serializable;
 
 public class Registration implements Serializable
 {
+    private static Registration instance;
     private int manager_id;
     private String login;
 
-    public Registration() {
+    private Registration() {
         this.manager_id = -1;
         this.login = null;
     }
 
-    public Registration(int id, String login) {
-        this.manager_id = id;
-        this.login = login;
+    public static synchronized Registration getInstance() {
+        if (instance == null) {
+            instance = new Registration();
+        }
+        return instance;
+    }
+
+    public static synchronized Registration createAnEmptyRegistration() {
+        return new Registration();
     }
 
     public void setManager_id(int manager_id)
@@ -35,11 +42,5 @@ public class Registration implements Serializable
     public String getLogin()
     {
         return login;
-    }
-
-    @Override public String toString()
-    {
-        return "Registration{" + "manager_id=" + manager_id + ", login='"
-            + login + '\'' + '}';
     }
 }

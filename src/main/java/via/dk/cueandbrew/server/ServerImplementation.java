@@ -25,8 +25,15 @@ public class ServerImplementation implements ServerInterface {
             throws RemoteException {
         try {
             RegistrationDaoImplementation dao = RegistrationDaoImplementation.getInstance();
-            Registration temp = new Registration();
-            this.support.firePropertyChange("login", temp, dao.getRegistration(login, password));
+            Registration registration = dao.getRegistration(login, password);
+            if (registration != null) {
+                //there is a login
+                this.support.firePropertyChange("login", null, registration);
+            }
+            else {
+                //there isn't a login
+                this.support.firePropertyChange("login", Registration.createAnEmptyRegistration(), null);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +56,7 @@ public class ServerImplementation implements ServerInterface {
         try {
             ReservationDaoImpl.getInstance().create(builder);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
     }
 
