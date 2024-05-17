@@ -277,14 +277,14 @@ public class ReservationDaoImpl implements ReservationDao {
                             String client_lastname = result.getString("client_lastname");
                             String client_phone_number = result.getString("client_phone_number");
                             String notes = result.getString("notes");
-                            String creation_datetime = result.getString("creation_datetime");
+                            Timestamp creation_datetime = result.getTimestamp("creation_datetime");
                             Reservation reservation = new Reservation.ReservationBuilder()
                                     .setReservationId(reservation_id)
                                     .setClientFirstName(client_firstname)
                                     .setClientLastName(client_lastname)
                                     .setClientPhoneNumber(client_phone_number)
                                     .setNotes(notes)
-                                    .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
+                                    .setCreationDatetime(creation_datetime)
                                     .setBooking(booking)
                                     .setOrder(order)
                                     .build();
