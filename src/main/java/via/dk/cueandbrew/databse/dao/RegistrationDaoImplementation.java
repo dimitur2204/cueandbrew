@@ -32,9 +32,11 @@ public class RegistrationDaoImplementation implements RegistrationDao
       statement.setString(1, login);
       statement.setString(2, password);
       var result = statement.executeQuery();
+      Registration registration = Registration.getInstance();
       if (result.next()) {
-        return new Registration(result.getInt("manager_id"),
-            result.getString("login"));
+        registration.setLogin(result.getString("login"));
+        registration.setManager_id(result.getInt("manager_id"));
+        return registration;
       }
       return null;
     }

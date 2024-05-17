@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import via.dk.cueandbrew.viewmodel.Reservation.CreateReservationViewModel;
 
-import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,10 +33,15 @@ public class CreateReservationController {
     CheckBox table3CheckBox;
     @FXML
     CheckBox table4CheckBox;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
 
     private CreateReservationViewModel viewModel;
 
     public void init(CreateReservationViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.updateDateTime(dateLabel, timeLabel);
+        this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
         this.nextButton.setDisable(true);
         ArrayList<String> hours = new ArrayList<>();
         ArrayList<String> minutes = new ArrayList<>();

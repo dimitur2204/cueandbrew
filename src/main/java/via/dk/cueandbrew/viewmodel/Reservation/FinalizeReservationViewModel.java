@@ -1,5 +1,6 @@
 package via.dk.cueandbrew.viewmodel.Reservation;
 
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.view.Toast;
 import via.dk.cueandbrew.view.ViewHandler;
@@ -7,23 +8,31 @@ import via.dk.cueandbrew.view.ViewHandler;
 import java.rmi.RemoteException;
 
 public class FinalizeReservationViewModel {
-    private Model model;
-    private ViewHandler viewHandler;
+    private final Model model;
+    private final ViewHandler viewHandler;
 
     public FinalizeReservationViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
     }
 
+    public void updateDateTime(Label date, Label time) {
+        this.model.updateDateTime(date, time);
+    }
+
+    public void startDateTimeUpdater(Label date, Label time) {
+        this.model.startDateTimeUpdater(date, time);
+    }
+
     public void onCancel() {
         this.viewHandler.closeFinalizeReservationView();
     }
 
-    public void onFinalize(String firstname, String lastname, String phonenumber, String notes) {
+    public void onFinalize(String firstname, String lastname, String phoneNumber, String notes) {
         this.model.getReservationBuilder()
                 .setClientFirstName(firstname)
                 .setClientLastName(lastname)
-                .setClientPhoneNumber(phonenumber)
+                .setClientPhoneNumber(phoneNumber)
                 .setNotes(notes);
         try {
             this.model.onFinalizeReservation();

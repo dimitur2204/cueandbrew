@@ -1,9 +1,8 @@
 package via.dk.cueandbrew.viewmodel.Reservation;
 
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
-import via.dk.cueandbrew.shared.Booking;
-import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.shared.Table;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.rmi.RemoteException;
@@ -15,16 +14,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CreateReservationViewModel {
-    private Model model;
+    private final Model model;
     private final ViewHandler viewHandler;
     private LocalDateTime dateTime;
     private int duration;
-    private ArrayList<Integer> tableNumbers;
+    private final ArrayList<Integer> tableNumbers;
 
     public CreateReservationViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
         this.tableNumbers = new ArrayList<>();
+    }
+
+    public void updateDateTime(Label date, Label time) {
+        this.model.updateDateTime(date, time);
+    }
+
+    public void startDateTimeUpdater(Label date, Label time) {
+        this.model.startDateTimeUpdater(date, time);
     }
 
     public void chooseDateTime(LocalDateTime dateTime) {
@@ -51,9 +58,14 @@ public class CreateReservationViewModel {
     }
 
     public void onCancel() {
-        //need a check here if a manager or a user is logged in
-        //based on this check -> open the relevant views
-        this.viewHandler.openManagerMainPage();
+        if (Registration.getInstance().getManager_id() != -1) {
+            System.out.println(Registration.getInstance().getManager_id());
+            this.viewHandler.openManagerMainPage();
+        }
+        else {
+            System.out.println(Registration.getInstance().getManager_id());
+            this.viewHandler.openUserMainPageView();
+        }
     }
 
     public List<Integer> getUnavailableTableIds(LocalDateTime dateTime, int durationMinutes) throws RemoteException {

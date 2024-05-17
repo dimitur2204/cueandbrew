@@ -1,7 +1,12 @@
 package via.dk.cueandbrew.model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.util.Duration;
 import via.dk.cueandbrew.client.CallbackClient;
+import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
 
@@ -10,35 +15,24 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ModelManager implements Model, PropertyChangeListener
 {
   private final CallbackClient client;
   private final PropertyChangeSupport support;
-  private Registration registration;
   private final Reservation.ReservationBuilder reservationBuilder;
 
   public ModelManager(CallbackClient client) {
     this.client = client;
     this.client.addPropertyChange(this);
-    this.registration = new Registration();
     this.reservationBuilder = new Reservation.ReservationBuilder();
     this.support = new PropertyChangeSupport(this);
   }
 
-  public Registration getRegistration()
-  {
-    return registration;
-  }
-
   public Reservation.ReservationBuilder getReservationBuilder() {
     return reservationBuilder;
-  }
-
-  public void setRegistration(Registration registration)
-  {
-    this.registration = registration;
   }
 
   @Override public void onLogin(String login, String password)
@@ -79,18 +73,63 @@ public class ModelManager implements Model, PropertyChangeListener
     return this.client.createFeedback(content, selectedType, firstname, lastname);
   }
 
+  @Override public void startDateTimeUpdater(Label date, Label time)
+  {
+    Timeline timeline = new Timeline(
+        new KeyFrame(Duration.seconds(1), event -> updateDateTime(date, time))
+    );
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  @Override public void updateDateTime(Label date, Label time)
+  {
+    LocalDateTime now = LocalDateTime.now();
+
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+    String formattedDate = now.format(dateFormatter);
+    String formattedTime = now.format(timeFormatter);
+
+    Platform.runLater(() -> {
+      date.setText(formattedDate);
+      time.setText(formattedTime);
+    });
+  }
+
+  @Override
+  public List<Notification> fetchNotifications() throws RemoteException{
+    return this.client.fetchNotifications();
+  }
+
+  @Override
+  public void markNotificationAsRead(Notification notification) throws RemoteException{
+    this.client.markNotificationAsRead(notification);
+  }
+
+  @Override
+  public void createNotification(Notification notification) throws RemoteException{
+    this.client.createNotification(notification);
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> {
       if (evt.getPropertyName().equals("login")) {
         Registration temp = (Registration) evt.getNewValue();
         if (temp != null) {
-          setRegistration(temp);
+          //there is a registration
           this.support.firePropertyChange("login", null, "true");
+          this.support.firePropertyChange("welcome", null, temp.getLogin());
         }
         else {
+          //there isn't a registration
           this.support.firePropertyChange("login", null, "false");
         }
+      }
+      if (evt.getPropertyName().equals("reservation_created")) {
+        this.support.firePropertyChange("reservation_created", null, evt.getNewValue());
       }
     });
   }

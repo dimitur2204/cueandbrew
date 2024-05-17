@@ -1,23 +1,14 @@
 package via.dk.cueandbrew.viewmodel.MainPages;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
-import via.dk.cueandbrew.shared.Booking;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.shared.Table;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.view.ViewHandler;
 
-<<<<<<< Updated upstream
-import java.sql.Date;
-import java.sql.Time;
-
-public class ManagerMainPageViewModel {
-    private Model model;
-    private ViewHandler viewHandler;
-    private ObservableList<Notification> notifications;
-=======
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -25,8 +16,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class ManagerMainPageViewModel implements PropertyChangeListener {
-    private PropertyChangeSupport support;
-
+   private PropertyChangeSupport support;
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("welcome")) {
@@ -47,50 +37,43 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
     private final Model model;
     private final ViewHandler viewHandler;
     private final StringProperty welcomeLabel;
->>>>>>> Stashed changes
 
     public ManagerMainPageViewModel(Model model, ViewHandler viewHandler) {
+        this.support = new PropertyChangeSupport(this);
         this.model = model;
+        this.welcomeLabel = new SimpleStringProperty();
+        this.model.addPropertyChangeListener(this);
         this.viewHandler = viewHandler;
-<<<<<<< Updated upstream
-        this.notifications = FXCollections.observableArrayList();
-        var table = new Table(2);
-        var booking = new Booking(
-                new Date(System.currentTimeMillis()),
-                new Time(System.currentTimeMillis()),
-                new Time(System.currentTimeMillis())
-        );
-        booking.getTables().add(table);
-        Reservation reservation = new Reservation.ReservationBuilder()
-                .setClientFirstName("Lol")
-                .setClientLastName("Lol")
-                .setClientPhoneNumber("Lol")
-                .setBooking(booking)
-                .build();
-        this.notifications.add(new Notification(reservation));
-=======
     }
-
     public List<Notification> fetchNotifications() throws RemoteException {
         return this.model.fetchNotifications();
->>>>>>> Stashed changes
     }
 
+    public void bindWelcomeLabel(StringProperty property) {
+        property.bind(welcomeLabel);
+    }
+
+    public void updateDateTime(Label date, Label time) {
+        this.model.updateDateTime(date, time);
+    }
+
+    public void startDateTimeUpdater(Label date, Label time) {
+        this.model.startDateTimeUpdater(date, time);
+    }
 
     public void onMakeAReservation() {
         this.viewHandler.openCreateReservationView();
     }
 
     public void onExit() {
+        Registration temp = Registration.getInstance();
+        temp.setManager_id(-1);
+        temp.setLogin("");
+        this.welcomeLabel.setValue("");
         this.viewHandler.openManagerLoginView();
     }
 
-<<<<<<< Updated upstream
-    public ObservableList<Notification> getNotifications() {
-        return notifications;
-=======
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
->>>>>>> Stashed changes
     }
 }

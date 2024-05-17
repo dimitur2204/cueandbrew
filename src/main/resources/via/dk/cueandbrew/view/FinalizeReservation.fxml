@@ -22,8 +22,8 @@
             <HBox prefHeight="63.0" prefWidth="306.0" />
             <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="10.05.2024" />
-                  <Label text="12:00" />
+                  <Label fx:id="dateLabel" text="10.05.2024" />
+                  <Label fx:id="timeLabel" text="12:00" />
                </children>
             </VBox>
             <HBox prefHeight="100.0" prefWidth="10.0" />
@@ -60,14 +60,14 @@
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="firstnameField"/>
+                  <TextField fx:id="firstnameField" />
                   <HBox prefHeight="10.0" prefWidth="200.0" />
                   <Label text="Lastname">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="lastnameField"/>
+                  <TextField fx:id="lastnameField" />
                   <HBox prefHeight="10.0" prefWidth="200.0" />
                   <Label text="Phone number">
                      <font>
@@ -78,7 +78,7 @@
                      <children>
                         <Label prefHeight="17.0" prefWidth="30.0" text="+45" />
                         <HBox prefHeight="30.0" prefWidth="0.0" />
-                        <TextField fx:id="phonenumberField" />
+                        <TextField fx:id="phoneNumberField" />
                      </children>
                   </HBox>
                </children>
