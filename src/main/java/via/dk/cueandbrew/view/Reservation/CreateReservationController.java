@@ -28,6 +28,7 @@ public class CreateReservationController {
     private CreateReservationViewModel viewModel;
 
     public void init(CreateReservationViewModel viewModel) {
+        this.viewModel = viewModel;
         this.viewModel.updateDateTime(dateLabel, timeLabel);
         this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
         ArrayList<String> hours = new ArrayList<>();
@@ -40,7 +41,6 @@ public class CreateReservationController {
         }
         hourField.setItems(FXCollections.observableArrayList(hours));
         minutesField.setItems(FXCollections.observableArrayList(minutes));
-        this.viewModel = viewModel;
         durationGroup = new ToggleGroup();
         duration30m.setToggleGroup(durationGroup);
         duration1h.setToggleGroup(durationGroup);
