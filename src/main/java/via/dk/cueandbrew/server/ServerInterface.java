@@ -14,7 +14,8 @@ public interface ServerInterface extends Remote
   void onLogin(String login, String password) throws RemoteException;
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException;
-  void addPropertyChangeListener(RemotePropertyChangeListener<Registration> listener) throws RemoteException;
+  void addRegistrationPropertyChangeListener(RemotePropertyChangeListener<Registration> listener) throws RemoteException;
   List<Reservation> onSearch(String phone) throws RemoteException;
+  void addReservationPropertyChangeListener(RemotePropertyChangeListener<Reservation> listener) throws RemoteException;
   boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 }

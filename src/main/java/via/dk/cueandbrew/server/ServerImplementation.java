@@ -15,18 +15,21 @@ import java.util.List;
 
 public class ServerImplementation implements ServerInterface {
 
-    private final RemotePropertyChangeSupport<Registration> support;
+    private final RemotePropertyChangeSupport<Registration> registrationSupport;
+    private final RemotePropertyChangeSupport<Reservation> reservationSupport;
 
     public ServerImplementation() {
-        this.support = new RemotePropertyChangeSupport<>();
+        this.registrationSupport = new RemotePropertyChangeSupport<>();
+        this.reservationSupport = new RemotePropertyChangeSupport<>();
     }
+
     @Override
     public void onLogin(String login, String password)
             throws RemoteException {
         try {
             RegistrationDaoImplementation dao = RegistrationDaoImplementation.getInstance();
             Registration temp = new Registration();
-            this.support.firePropertyChange("login", temp, dao.getRegistration(login, password));
+            this.registrationSupport.firePropertyChange("login", temp, dao.getRegistration(login, password));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -34,12 +37,9 @@ public class ServerImplementation implements ServerInterface {
 
     @Override
     public List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException {
-        try
-        {
+        try {
             return ReservationDaoImpl.getInstance().findReservationsWithinPeriod(start, durationMinutes);
-        }
-        catch (SQLException e)
-        {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -48,36 +48,37 @@ public class ServerImplementation implements ServerInterface {
     public void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException {
         try {
             ReservationDaoImpl.getInstance().create(builder);
+            Reservation res = builder.build();
+            this.reservationSupport.firePropertyChange("reservation_created", null, res);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    public void addPropertyChangeListener(
+    public void addRegistrationPropertyChangeListener(
             RemotePropertyChangeListener<Registration> listener) throws RemoteException {
-        this.support.addPropertyChangeListener(listener);
+        this.registrationSupport.addPropertyChangeListener(listener);
     }
-  @Override public List<Reservation> onSearch(String phone) throws RemoteException
-  {
-      try
-      {
-          return ReservationDaoImpl.getInstance().readByPhoneNumber(phone);
-      }
-      catch (SQLException e)
-      {
-          throw new RuntimeException(e);
-      }
-  }
 
-    @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
-    {
-        try
-        {
-            return FeedbackDaoImplementation.getInstance().createFeedback(content, selectedType, firstname, lastname);
+    public void addReservationPropertyChangeListener(
+            RemotePropertyChangeListener<Reservation> listener) throws RemoteException {
+        this.reservationSupport.addPropertyChangeListener(listener);
+    }
+
+    @Override
+    public List<Reservation> onSearch(String phone) throws RemoteException {
+        try {
+            return ReservationDaoImpl.getInstance().readByPhoneNumber(phone);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        catch (SQLException e)
-        {
+    }
+
+    @Override
+    public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException {
+        try {
+            return FeedbackDaoImplementation.getInstance().createFeedback(content, selectedType, firstname, lastname);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
