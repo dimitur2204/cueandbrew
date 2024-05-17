@@ -1,5 +1,7 @@
 package via.dk.cueandbrew.view.MainPages;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,36 +10,57 @@ import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.view.NotificationView;
 import via.dk.cueandbrew.viewmodel.MainPages.ManagerMainPageViewModel;
 
-public class ManagerMainPageController
-{
-  @FXML private VBox notificationsWrapper;
-  @FXML private Label dateLabel;
-  @FXML private Label timeLabel;
-  @FXML private Label welcomeLabel;
-  private ManagerMainPageViewModel viewModel;
-  private ObservableList<Notification> notifications;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
 
-  public void init(ManagerMainPageViewModel viewModel)
-  {
-    this.viewModel = viewModel;
-    this.viewModel.updateDateTime(dateLabel, timeLabel);
-    this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
-    this.viewModel.bindWelcomeLabel(welcomeLabel.textProperty());
-    this.notifications = viewModel.getNotifications();
-    for(Notification notification : this.notifications) {
-        this.notificationsWrapper.getChildren().add(new NotificationView(notification));
-      this.notificationsWrapper.getChildren().add(new NotificationView(notification));
-      this.notificationsWrapper.getChildren().add(new NotificationView(notification));
-      this.notificationsWrapper.getChildren().add(new NotificationView(notification));
-      this.notificationsWrapper.getChildren().add(new NotificationView(notification));
+public class ManagerMainPageController implements PropertyChangeListener {
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("notification_created")){
+            Notification notification = (Notification) evt.getNewValue();
+            this.notifications.addFirst(notification);
+            updateNotifications();
+        }
     }
-  }
 
-  public void onExit() {
-    this.viewModel.onExit();
-  }
+    @FXML
+    private VBox notificationsWrapper;
+    @FXML
+    private Label dateLabel;
+    @FXML
+    private Label timeLabel;
+    @FXML private Label welcomeLabel;
+    private ManagerMainPageViewModel viewModel;
+    private ObservableList<Notification> notifications;
 
-  public void onMakeAReservation() {
-    this.viewModel.onMakeAReservation();
-  }
+    public void init(ManagerMainPageViewModel viewModel) {
+        this.viewModel = viewModel;
+        this.viewModel.bindWelcomeLabel(welcomeLabel.textProperty());
+        this.viewModel.updateDateTime(dateLabel, timeLabel);
+        this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
+        this.viewModel.addPropertyChangeListener(this);
+        try {
+            this.notifications = FXCollections.observableArrayList(this.viewModel.fetchNotifications());
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+        updateNotifications();
+    }
+
+    private void updateNotifications() {
+        notificationsWrapper.getChildren().clear();
+        for (Notification notification : this.notifications) {
+            NotificationView notificationView = new NotificationView(notification);
+            notificationsWrapper.getChildren().add(notificationView);
+        }
+    }
+
+    public void onExit() {
+        this.viewModel.onExit();
+    }
+
+    public void onMakeAReservation() {
+        this.viewModel.onMakeAReservation();
+    }
 }

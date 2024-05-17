@@ -5,6 +5,7 @@ module via.dk {
     requires java.rmi;
     requires remoteobserver;
     requires java.desktop;
+    requires java.naming;
 
     opens via.dk.cueandbrew.view to javafx.fxml;
     opens via.dk.cueandbrew to javafx.fxml;

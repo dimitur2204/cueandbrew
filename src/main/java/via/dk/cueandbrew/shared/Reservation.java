@@ -11,7 +11,7 @@ public class Reservation implements Serializable {
     private final Timestamp creationDatetime;
     private final Booking booking;
     private final Order order;
-    private final int reservationId;
+    private int reservationId;
 
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
@@ -25,7 +25,9 @@ public class Reservation implements Serializable {
     }
 
 
-
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
+    }
     public int getReservationId()
     {
         return reservationId;

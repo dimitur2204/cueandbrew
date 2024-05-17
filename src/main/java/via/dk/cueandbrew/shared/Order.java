@@ -50,7 +50,7 @@ public class Order implements Serializable
         return drinks;
     }
 
-    public void setDrinks(ArrayList<Drink> drinks) {
+    public void setDrinks(List<Drink> drinks) {
 this.drinks = drinks;
     }
 

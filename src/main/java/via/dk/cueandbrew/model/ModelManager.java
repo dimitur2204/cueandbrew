@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import via.dk.cueandbrew.client.CallbackClient;
+import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
 
@@ -97,6 +98,21 @@ public class ModelManager implements Model, PropertyChangeListener
     });
   }
 
+  @Override
+  public List<Notification> fetchNotifications() throws RemoteException{
+    return this.client.fetchNotifications();
+  }
+
+  @Override
+  public void markNotificationAsRead(Notification notification) throws RemoteException{
+    this.client.markNotificationAsRead(notification);
+  }
+
+  @Override
+  public void createNotification(Notification notification) throws RemoteException{
+    this.client.createNotification(notification);
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> {
@@ -111,6 +127,9 @@ public class ModelManager implements Model, PropertyChangeListener
           //there isn't a registration
           this.support.firePropertyChange("login", null, "false");
         }
+      }
+      if (evt.getPropertyName().equals("reservation_created")) {
+        this.support.firePropertyChange("reservation_created", null, evt.getNewValue());
       }
     });
   }

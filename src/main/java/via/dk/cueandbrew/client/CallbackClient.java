@@ -1,5 +1,6 @@
 package via.dk.cueandbrew.client;
 
+import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Reservation;
 
 import java.beans.PropertyChangeListener;
@@ -15,4 +16,7 @@ public interface CallbackClient
   void addPropertyChange(PropertyChangeListener listener);
   List<Reservation> onSearch(String phone) throws RemoteException;
   boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
+  List<Notification> fetchNotifications() throws RemoteException;
+  void markNotificationAsRead(Notification notification) throws RemoteException;
+  void createNotification(Notification message) throws RemoteException;
 }

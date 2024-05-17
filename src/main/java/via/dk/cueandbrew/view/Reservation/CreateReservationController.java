@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import via.dk.cueandbrew.viewmodel.Reservation.CreateReservationViewModel;
 
-import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
