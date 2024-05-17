@@ -210,7 +210,6 @@ public class ReservationDaoImpl implements ReservationDao {
                             if (!reservations.getLast().getBooking().containsTable(table.getNumber())) {
                                 tables.add(table);
                             }
-                            //TODO: check if there is an order in the reservation
                             //drink
                             if (reservations.getLast().getOrder() != null) {
                                 int drink_id = result.getInt("drink_id");
@@ -223,7 +222,6 @@ public class ReservationDaoImpl implements ReservationDao {
                                             drinks.add(drink);
                                         }
                                     }
-                                    //TODO: check if the last reservation has an order
                                     //add new drinks to order
                                     reservations.getLast().getOrder().setDrinks(drinks);
                             }
@@ -239,7 +237,6 @@ public class ReservationDaoImpl implements ReservationDao {
                             order = new Order();
                             booking = new Booking();
 
-                            //TODO: check if there is an order in the database
                             //ORDER
                             int order_id = result.getInt("order_id");
                             if (result.wasNull()) {
