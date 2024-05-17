@@ -105,6 +105,7 @@ public class ModelManager implements Model, PropertyChangeListener
         if (temp != null) {
           //there is a registration
           this.support.firePropertyChange("login", null, "true");
+          this.support.firePropertyChange("welcome", null, temp.getLogin());
         }
         else {
           //there isn't a registration
