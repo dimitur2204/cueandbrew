@@ -14,7 +14,7 @@
       <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="200.0" prefWidth="10.0" />
-            <Label prefHeight="26.0" prefWidth="397.0" text="Welcome + login">
+            <Label fx:id="welcomeLabel" prefHeight="26.0" prefWidth="397.0" text="Welcome">
                <font>
                   <Font size="17.0" />
                </font>
