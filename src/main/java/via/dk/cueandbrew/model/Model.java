@@ -1,4 +1,5 @@
 package via.dk.cueandbrew.model;
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.shared.Reservation;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
@@ -14,4 +15,6 @@ public interface Model
   List<Reservation> onSearch(String phone) throws RemoteException;
   void onFinalizeReservation() throws RemoteException;
   boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
+  void startDateTimeUpdater(Label date, Label time);
+  void updateDateTime(Label date, Label time);
 }

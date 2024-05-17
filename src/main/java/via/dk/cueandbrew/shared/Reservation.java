@@ -124,4 +124,3 @@ public class Reservation implements Serializable {
         return clientFirstName + " " + clientLastName + " booked table " + booking.getTables().getFirst() + " for " + booking.getStartTime() + " until " + booking.getEndTime();
     }
 }
-

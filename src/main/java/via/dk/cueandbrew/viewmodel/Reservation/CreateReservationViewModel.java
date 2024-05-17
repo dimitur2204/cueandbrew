@@ -1,5 +1,6 @@
 package via.dk.cueandbrew.viewmodel.Reservation;
 
+import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Booking;
 import via.dk.cueandbrew.shared.Reservation;
@@ -15,16 +16,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CreateReservationViewModel {
-    private Model model;
+    private final Model model;
     private final ViewHandler viewHandler;
     private LocalDateTime dateTime;
     private int duration;
-    private ArrayList<Integer> tableNumbers;
+    private final ArrayList<Integer> tableNumbers;
 
     public CreateReservationViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
         this.tableNumbers = new ArrayList<>();
+    }
+
+    public void updateDateTime(Label date, Label time) {
+        this.model.updateDateTime(date, time);
+    }
+
+    public void startDateTimeUpdater(Label date, Label time) {
+        this.model.startDateTimeUpdater(date, time);
     }
 
     public void chooseDateTime(LocalDateTime dateTime) {

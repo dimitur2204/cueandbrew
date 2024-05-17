@@ -15,51 +15,21 @@ import java.sql.Timestamp;
 
 public class OrderController {
 
-    @FXML
-    private ComboBox hourField;
-    @FXML
-    private ComboBox minutesField;
+    @FXML private ComboBox hourField;
+    @FXML private ComboBox minutesField;
+    @FXML private VBox menuContainer;
+    @FXML private VBox selections;
+    @FXML private Label dateLabel;
+    @FXML private Label timeLabel;
     @FXML
     private Button confirmBtn;
 
     private OrderViewModel viewModel;
-
-    @FXML
-    private VBox menuContainer;
-
-    @FXML
-    private VBox selections;
-
-    private Button buildActionButton(String text) {
-        Button button = new Button();
-        button.setTranslateX(20);
-        button.setText(text);
-        return button;
-    }
-
-    private HBox buildDrinkBox() {
-        HBox box = new HBox();
-        box.setPrefHeight(30.0);
-        box.setPrefWidth(290.0);
-        box.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;");
-        return box;
-    }
-
-    private void setTimeOfDrinks() {
-        for (int i = 0; i < 24; i++) {
-            hourField.getItems().add(i);
-        }
-
-        for (int i = 0; i <= 59; i += 15) {
-            minutesField.getItems().add(i);
-        }
-        this.hourField.setValue(this.viewModel.getBookingHour());
-        this.minutesField.setValue(this.viewModel.getBookingMinute());
-    }
-
     public void init(OrderViewModel viewModel) {
         this.confirmBtn.setDisable(true);
         this.viewModel = viewModel;
+        this.viewModel.updateDateTime(dateLabel, timeLabel);
+        this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
         setTimeOfDrinks();
         for (Drink drink : this.viewModel.getDrinks()) {
             Label menuDrinkLabel = new Label();
@@ -97,6 +67,32 @@ public class OrderController {
         }
     }
 
+    private Button buildActionButton(String text) {
+        Button button = new Button();
+        button.setTranslateX(20);
+        button.setText(text);
+        return button;
+    }
+
+    private HBox buildDrinkBox() {
+        HBox box = new HBox();
+        box.setPrefHeight(30.0);
+        box.setPrefWidth(290.0);
+        box.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;");
+        return box;
+    }
+
+    private void setTimeOfDrinks() {
+        for (int i = 0; i < 24; i++) {
+            hourField.getItems().add(i);
+        }
+
+        for (int i = 0; i <= 59; i += 15) {
+            minutesField.getItems().add(i);
+        }
+        this.hourField.setValue(this.viewModel.getBookingHour());
+        this.minutesField.setValue(this.viewModel.getBookingMinute());
+    }
 
     public void onCancel() {
         this.viewModel.onCancel();
