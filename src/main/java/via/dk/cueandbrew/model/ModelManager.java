@@ -1,6 +1,10 @@
 package via.dk.cueandbrew.model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.scene.control.Label;
+import javafx.util.Duration;
 import via.dk.cueandbrew.client.CallbackClient;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
@@ -10,6 +14,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ModelManager implements Model, PropertyChangeListener
@@ -77,6 +82,31 @@ public class ModelManager implements Model, PropertyChangeListener
   @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
   {
     return this.client.createFeedback(content, selectedType, firstname, lastname);
+  }
+
+  @Override public void startDateTimeUpdater(Label date, Label time)
+  {
+    Timeline timeline = new Timeline(
+        new KeyFrame(Duration.seconds(1), event -> updateDateTime(date, time))
+    );
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+  }
+
+  @Override public void updateDateTime(Label date, Label time)
+  {
+    LocalDateTime now = LocalDateTime.now();
+
+    DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+    String formattedDate = now.format(dateFormatter);
+    String formattedTime = now.format(timeFormatter);
+
+    Platform.runLater(() -> {
+      date.setText(formattedDate);
+      time.setText(formattedTime);
+    });
   }
 
   @Override public void propertyChange(PropertyChangeEvent evt)

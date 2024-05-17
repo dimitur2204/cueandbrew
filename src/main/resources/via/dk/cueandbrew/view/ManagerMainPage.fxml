@@ -22,8 +22,8 @@
             <HBox prefHeight="48.0" prefWidth="62.0" />
             <VBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="122.0">
                <children>
-                  <Label text="10.05.2024" />
-                  <Label text="11:33" />
+                  <Label fx:id="dateLabel" />
+                  <Label fx:id="timeLabel" />
                </children>
             </VBox>
             <VBox prefHeight="200.0" prefWidth="10.0" />
