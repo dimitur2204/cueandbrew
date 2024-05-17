@@ -16,24 +16,7 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public class ManagerMainPageViewModel implements PropertyChangeListener {
-   private PropertyChangeSupport support;
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("welcome")) {
-            this.welcomeLabel.setValue("Welcome " + evt.getNewValue().toString());
-        }
-        if (evt.getPropertyName().equals("reservation_created")) {
-            Reservation reservation = (Reservation) evt.getNewValue();
-            Notification notification = new Notification(reservation);
-            try {
-                this.model.createNotification(notification);
-                this.support.firePropertyChange("notification_created", null, notification);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
+    private final PropertyChangeSupport support;
     private final Model model;
     private final ViewHandler viewHandler;
     private final StringProperty welcomeLabel;
@@ -69,11 +52,30 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
         Registration temp = Registration.getInstance();
         temp.setManager_id(-1);
         temp.setLogin("");
+        temp.setId(null);
         this.welcomeLabel.setValue("");
+        this.viewHandler.getViewModelFactory().getManagerLoginViewModel().clearErrorLabel();
         this.viewHandler.openManagerLoginView();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
+
+  @Override
+  public void propertyChange(PropertyChangeEvent evt) {
+    if (evt.getPropertyName().equals("welcome")) {
+      this.welcomeLabel.setValue("Welcome " + evt.getNewValue().toString());
+    }
+    if (evt.getPropertyName().equals("reservation_created")) {
+      Reservation reservation = (Reservation) evt.getNewValue();
+      Notification notification = new Notification(reservation);
+      try {
+        this.model.createNotification(notification);
+        this.support.firePropertyChange("notification_created", null, notification);
+      } catch (RemoteException e) {
+        throw new RuntimeException(e);
+      }
+    }
+  }
 }

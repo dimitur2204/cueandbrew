@@ -10,10 +10,11 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public interface ServerInterface extends Remote
 {
-  void onLogin(String login, String password) throws RemoteException;
+  void onLogin(String login, String password, UUID id) throws RemoteException;
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException;
   void addRegistrationPropertyChangeListener(RemotePropertyChangeListener<Serializable> listener) throws RemoteException;

@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 public class ModelManager implements Model, PropertyChangeListener
 {
@@ -35,11 +36,11 @@ public class ModelManager implements Model, PropertyChangeListener
     return reservationBuilder;
   }
 
-  @Override public void onLogin(String login, String password)
+  @Override public void onLogin(String login, String password, UUID id)
   {
     try
     {
-      this.client.onLogin(login, password);
+      this.client.onLogin(login, password, id);
     }
     catch (RemoteException e)
     {
@@ -118,7 +119,7 @@ public class ModelManager implements Model, PropertyChangeListener
     Platform.runLater(() -> {
       if (evt.getPropertyName().equals("login")) {
         Registration temp = (Registration) evt.getNewValue();
-        if (temp != null) {
+        if (temp.getLogin() != null) {
           //there is a registration
           this.support.firePropertyChange("login", null, "true");
           this.support.firePropertyChange("welcome", null, temp.getLogin());
@@ -128,7 +129,7 @@ public class ModelManager implements Model, PropertyChangeListener
           this.support.firePropertyChange("login", null, "false");
         }
       }
-      if (evt.getPropertyName().equals("reservation_created")) {
+      else if (evt.getPropertyName().equals("reservation_created")) {
         this.support.firePropertyChange("reservation_created", null, evt.getNewValue());
       }
     });
