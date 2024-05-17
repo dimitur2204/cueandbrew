@@ -68,7 +68,11 @@ public class ReservationDaoImpl implements ReservationDao {
             }
             PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)");
             insertReservation.setInt(1, bookingId);
-            insertReservation.setInt(2, orderId);
+            if(orderId != 0) {
+                insertReservation.setInt(2, orderId);
+            } else {
+                insertReservation.setNull(2, Types.INTEGER);
+            }
             insertReservation.setString(3, res.getClientFirstName());
             insertReservation.setString(4, res.getClientLastName());
             insertReservation.setString(5, res.getClientPhoneNumber());
@@ -338,7 +342,7 @@ public class ReservationDaoImpl implements ReservationDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return overlappingReservations;
     }

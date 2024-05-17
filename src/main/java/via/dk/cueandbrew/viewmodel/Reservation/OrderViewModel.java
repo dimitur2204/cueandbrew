@@ -6,28 +6,30 @@ import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Drink;
 import via.dk.cueandbrew.shared.Order;
+import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderViewModel {
-    private final Model model;
-    private final ViewHandler viewHandler;
-    private final ObservableList<Drink> drinks;
-    private final ObservableList<Drink> orders;
+    private Model model;
+    private ViewHandler viewHandler;
+    private List<Drink> drinks;
+    private ObservableList<Drink> orderedDrinks;
 
     public OrderViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
         this.viewHandler = viewHandler;
-        drinks = FXCollections.observableArrayList();
-        orders = FXCollections.observableArrayList();
-        //TODO: Read drinks from the database
+        this.drinks = new ArrayList<>();
         Drink drink = new Drink(1, "Cuba Libre", 80.0, 400);
         Drink drink2 = new Drink(2, "Mojito", 90.0, 500);
         drinks.add(drink);
         drinks.add(drink2);
+        this.orderedDrinks = FXCollections.observableArrayList();
     }
 
     public void updateDateTime(Label date, Label time) {
@@ -63,12 +65,12 @@ public class OrderViewModel {
         this.viewHandler.openCreateReservationView();
     }
 
-    public ObservableList<Drink> getDrinks() {
+    public List<Drink> getDrinks() {
         return drinks;
     }
 
-    public ObservableList<Drink> getOrders() {
-        return orders;
+    public ObservableList<Drink> getOrderedDrinks() {
+        return orderedDrinks;
     }
 
     /*<HBox fx:id="id" alignment="CENTER" prefHeight="30.0" prefWidth="290.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;">
@@ -98,7 +100,7 @@ public class OrderViewModel {
 
     public void onConfirm(Timestamp expected) {
         Order newOrder = new Order(expected);
-        for (Drink drink : orders) {
+        for (Drink drink : orderedDrinks) {
             newOrder.getDrinks().add(drink);
         }
         model.getReservationBuilder().setOrder(newOrder);

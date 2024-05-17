@@ -21,9 +21,12 @@ public class OrderController {
     @FXML private VBox selections;
     @FXML private Label dateLabel;
     @FXML private Label timeLabel;
-    private OrderViewModel viewModel;
+    @FXML
+    private Button confirmBtn;
 
+    private OrderViewModel viewModel;
     public void init(OrderViewModel viewModel) {
+        this.confirmBtn.setDisable(true);
         this.viewModel = viewModel;
         this.viewModel.updateDateTime(dateLabel, timeLabel);
         this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
@@ -38,17 +41,24 @@ public class OrderController {
             addButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    viewModel.getOrders().add(drink);
+                    viewModel.getOrderedDrinks().add(drink);
+                    if(!viewModel.getOrderedDrinks().isEmpty()) {
+                        confirmBtn.setDisable(false);
+                    }
                     Label orderedDrinkLabel = new Label();
                     orderedDrinkLabel.setText(drink.getName() + " - " + drink.getPrice() + "dkk - " + drink.getQuantityOfDrink() + "ml ");
-                    Button orderedDrinkButton = buildActionButton("-");
+                    Button removeDrinkButton = buildActionButton("-");
                     HBox box2 = buildDrinkBox();
-                    box2.getChildren().addAll(orderedDrinkLabel, orderedDrinkButton);
+                    box2.getChildren().addAll(orderedDrinkLabel, removeDrinkButton);
                     selections.getChildren().add(box2);
-                    orderedDrinkButton.setOnAction(new EventHandler<ActionEvent>() {
+                    removeDrinkButton.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
-                            viewModel.getOrders().remove(drink);
+                            var drinks = viewModel.getOrderedDrinks();
+                            drinks.remove(drink);
+                            if(drinks.isEmpty()) {
+                                confirmBtn.setDisable(true);
+                            }
                             selections.getChildren().remove(box2);
                         }
                     });
