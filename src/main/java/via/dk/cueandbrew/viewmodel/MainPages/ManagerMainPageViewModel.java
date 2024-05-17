@@ -2,10 +2,15 @@ package via.dk.cueandbrew.viewmodel.MainPages;
 
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Reservation;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.beans.PropertyChangeEvent;
@@ -13,6 +18,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.Date;
+import java.sql.Time;
 
 public class ManagerMainPageViewModel implements PropertyChangeListener {
    private PropertyChangeSupport support;
@@ -32,15 +41,21 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
 
     private final Model model;
     private final ViewHandler viewHandler;
+    private final StringProperty welcomeLabel;
 
     public ManagerMainPageViewModel(Model model, ViewHandler viewHandler) {
         this.support = new PropertyChangeSupport(this);
         this.model = model;
+        this.welcomeLabel = new SimpleStringProperty();
         this.model.addPropertyChangeListener(this);
         this.viewHandler = viewHandler;
     }
     public List<Notification> fetchNotifications() throws RemoteException {
         return this.model.fetchNotifications();
+    }
+
+    public void bindWelcomeLabel(StringProperty property) {
+        property.bind(welcomeLabel);
     }
 
     public void updateDateTime(Label date, Label time) {
@@ -56,10 +71,21 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
     }
 
     public void onExit() {
+        Registration temp = Registration.getInstance();
+        temp.setManager_id(-1);
+        temp.setLogin("");
+        this.welcomeLabel.setValue("");
         this.viewHandler.openManagerLoginView();
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
+    }
+
+    @Override public void propertyChange(PropertyChangeEvent evt)
+    {
+        if (evt.getPropertyName().equals("welcome")) {
+            this.welcomeLabel.setValue("Welcome " + evt.getNewValue().toString());
+        }
     }
 }

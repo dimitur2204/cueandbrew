@@ -13,7 +13,6 @@ import via.dk.cueandbrew.viewmodel.MainPages.ManagerMainPageViewModel;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
-import java.util.List;
 
 public class ManagerMainPageController implements PropertyChangeListener {
     @Override
@@ -31,11 +30,13 @@ public class ManagerMainPageController implements PropertyChangeListener {
     private Label dateLabel;
     @FXML
     private Label timeLabel;
+    @FXML private Label welcomeLabel;
     private ManagerMainPageViewModel viewModel;
     private ObservableList<Notification> notifications;
 
     public void init(ManagerMainPageViewModel viewModel) {
         this.viewModel = viewModel;
+        this.viewModel.bindWelcomeLabel(welcomeLabel.textProperty());
         this.viewModel.updateDateTime(dateLabel, timeLabel);
         this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
         this.viewModel.addPropertyChangeListener(this);

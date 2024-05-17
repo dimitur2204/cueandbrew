@@ -10,6 +10,7 @@ import via.dk.cueandbrew.shared.Reservation;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
@@ -75,11 +76,21 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     }
 
     @Override
-    public void propertyChange(RemotePropertyChangeEvent<Serializable> remotePropertyChangeEvent) throws RemoteException {
-        Platform.runLater(() -> support.firePropertyChange(remotePropertyChangeEvent.getPropertyName(), null, remotePropertyChangeEvent.getNewValue()));
+    public void propertyChange(
+            RemotePropertyChangeEvent<Serializable> remotePropertyChangeEvent)
+            throws RemoteException {
         Platform.runLater(() -> {
             if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
-                this.support.firePropertyChange("login", null, remotePropertyChangeEvent.getNewValue());
+                Registration clientRegistration = (Registration) remotePropertyChangeEvent.getNewValue();
+                if (clientRegistration != null) {
+                    //there is a registration
+                    Registration.getInstance().setManager_id(clientRegistration.getManager_id());
+                    Registration.getInstance().setLogin(clientRegistration.getLogin());
+                    this.support.firePropertyChange("login", null, clientRegistration);
+                } else {
+                    //there isn't a registration
+                    this.support.firePropertyChange("login", Registration.getInstance(), null);
+                }
             }
             if (remotePropertyChangeEvent.getPropertyName().equals("reservation_created")) {
                 this.support.firePropertyChange("reservation_created", null, remotePropertyChangeEvent.getNewValue());

@@ -71,8 +71,8 @@ public class UserMainPageController
                 + reservation.getBooking().getStartTime() + " until "
                 + reservation.getBooking().getEndTime() + "\nPhone number: "
                 + reservation.getClientPhoneNumber() + "\nNotes: "
-                + reservation.getNotes() + "\nDrinks: " + ((
-                reservation.getOrder() != null) ?
+                + (reservation.getNotes().isEmpty() ? "none given" : reservation.getNotes()) + "\nDrinks: " + ((
+                reservation.getOrder() != null && !reservation.getOrder().getDrinks().isEmpty()) ?
                 reservation.getOrder().getDrinksToString() :
                 " none ordered"));
         content.setWrapText(true);

@@ -22,29 +22,17 @@ public class ModelManager implements Model, PropertyChangeListener
 {
   private final CallbackClient client;
   private final PropertyChangeSupport support;
-  private Registration registration;
   private final Reservation.ReservationBuilder reservationBuilder;
 
   public ModelManager(CallbackClient client) {
     this.client = client;
     this.client.addPropertyChange(this);
-    this.registration = new Registration();
     this.reservationBuilder = new Reservation.ReservationBuilder();
     this.support = new PropertyChangeSupport(this);
   }
 
-  public Registration getRegistration()
-  {
-    return registration;
-  }
-
   public Reservation.ReservationBuilder getReservationBuilder() {
     return reservationBuilder;
-  }
-
-  public void setRegistration(Registration registration)
-  {
-    this.registration = registration;
   }
 
   @Override public void onLogin(String login, String password)
@@ -131,10 +119,12 @@ public class ModelManager implements Model, PropertyChangeListener
       if (evt.getPropertyName().equals("login")) {
         Registration temp = (Registration) evt.getNewValue();
         if (temp != null) {
-          setRegistration(temp);
+          //there is a registration
           this.support.firePropertyChange("login", null, "true");
+          this.support.firePropertyChange("welcome", null, temp.getLogin());
         }
         else {
+          //there isn't a registration
           this.support.firePropertyChange("login", null, "false");
         }
       }

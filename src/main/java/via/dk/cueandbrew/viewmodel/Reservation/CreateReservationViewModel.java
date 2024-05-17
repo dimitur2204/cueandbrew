@@ -2,9 +2,7 @@ package via.dk.cueandbrew.viewmodel.Reservation;
 
 import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
-import via.dk.cueandbrew.shared.Booking;
-import via.dk.cueandbrew.shared.Reservation;
-import via.dk.cueandbrew.shared.Table;
+import via.dk.cueandbrew.shared.*;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.rmi.RemoteException;
@@ -60,9 +58,14 @@ public class CreateReservationViewModel {
     }
 
     public void onCancel() {
-        //need a check here if a manager or a user is logged in
-        //based on this check -> open the relevant views
-        this.viewHandler.openManagerMainPage();
+        if (Registration.getInstance().getManager_id() != -1) {
+            System.out.println(Registration.getInstance().getManager_id());
+            this.viewHandler.openManagerMainPage();
+        }
+        else {
+            System.out.println(Registration.getInstance().getManager_id());
+            this.viewHandler.openUserMainPageView();
+        }
     }
 
     public List<Integer> getUnavailableTableIds(LocalDateTime dateTime, int durationMinutes) throws RemoteException {

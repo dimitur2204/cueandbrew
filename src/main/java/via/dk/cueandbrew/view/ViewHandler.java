@@ -13,7 +13,6 @@ import via.dk.cueandbrew.view.Reservation.FinalizeReservationController;
 import via.dk.cueandbrew.view.Reservation.OrderController;
 import via.dk.cueandbrew.view.Start.ManagerLoginController;
 import via.dk.cueandbrew.view.Start.StartController;
-import via.dk.cueandbrew.viewmodel.MainPages.CreateFeedbackViewModel;
 import via.dk.cueandbrew.viewmodel.ViewModelFactory;
 
 import java.io.IOException;
@@ -40,26 +39,21 @@ public class ViewHandler {
         return stage;
     }
 
-    public ViewModelFactory getViewModelFactory()
-    {
-        return viewModelFactory;
-    }
-
     public void openStartView() {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/Start.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         StartController view = loader.getController();
         view.init(viewModelFactory.getStartViewModel());
-        stage.setTitle("View Vinyls");
+        stage.setTitle("Home");
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -70,13 +64,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/UserMainPage.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         UserMainPageController view = loader.getController();
         view.init(viewModelFactory.getUserMainPageViewModel());
@@ -91,13 +85,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/ManagerLogin.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         ManagerLoginController view = loader.getController();
         view.init(viewModelFactory.getManagerLoginViewModel());
@@ -113,13 +107,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/ManagerMainPage.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         ManagerMainPageController view = loader.getController();
         view.init(viewModelFactory.getManagerMainPageViewModel());
@@ -134,13 +128,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/CreateReservationView.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         CreateReservationController view = loader.getController();
         view.init(viewModelFactory.getCreateReservationViewModel());
@@ -155,13 +149,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/Order.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         OrderController view = loader.getController();
         view.init(viewModelFactory.getOrderViewModel());
@@ -176,13 +170,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/FinalizeReservation.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         FinalizeReservationController view = loader.getController();
         view.init(viewModelFactory.getFinalizeReservationViewModel());
@@ -201,13 +195,13 @@ public class ViewHandler {
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/CreateFeedback.fxml"));
-        Parent root = null;
+        Parent root;
         try
         {
             root = loader.load();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         CreateFeedbackController view = loader.getController();
         view.init(viewModelFactory.getCreateFeedbackViewModel());
