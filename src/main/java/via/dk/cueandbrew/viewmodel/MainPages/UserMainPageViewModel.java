@@ -30,6 +30,7 @@ public class UserMainPageViewModel
 
   public void onClose()
   {
+    this.viewHandler.getViewModelFactory().getManagerLoginViewModel().clearErrorLabel();
     this.viewHandler.openStartView();
   }
 

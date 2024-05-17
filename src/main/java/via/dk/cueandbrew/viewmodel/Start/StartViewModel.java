@@ -3,10 +3,12 @@ package via.dk.cueandbrew.viewmodel.Start;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.view.ViewHandler;
 
+import java.util.UUID;
+
 public class StartViewModel
 {
-  private Model model;
-  private ViewHandler viewHandler;
+  private final Model model;
+  private final ViewHandler viewHandler;
 
   public StartViewModel(Model model, ViewHandler viewHandler)
   {
@@ -20,5 +22,10 @@ public class StartViewModel
 
   public void onManager() {
     this.viewHandler.openManagerLoginView();
+  }
+
+  public void sendIDToLoginController(UUID id)
+  {
+    this.viewHandler.getViewModelFactory().getManagerLoginViewModel().setId(id);
   }
 }

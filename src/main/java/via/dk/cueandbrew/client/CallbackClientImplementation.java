@@ -15,24 +15,10 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class CallbackClientImplementation extends UnicastRemoteObject implements
         RemotePropertyChangeListener<Serializable>, CallbackClient {
-    @Override
-    public List<Notification> fetchNotifications() throws RemoteException {
-        return this.serverInterface.fetchNotifications();
-    }
-
-    @Override
-    public void markNotificationAsRead(Notification notification) throws RemoteException {
-        this.serverInterface.markNotificationAsRead(notification);
-    }
-
-    @Override
-    public void createNotification(Notification message) throws RemoteException {
-        this.serverInterface.createNotification(message);
-    }
-
     private final ServerInterface serverInterface;
     private final PropertyChangeSupport support;
 
@@ -45,9 +31,9 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     }
 
     @Override
-    public void onLogin(String login, String password)
+    public void onLogin(String login, String password, UUID id)
             throws RemoteException {
-        this.serverInterface.onLogin(login, password);
+        this.serverInterface.onLogin(login, password, id);
     }
 
     @Override
@@ -76,21 +62,31 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     }
 
     @Override
+    public List<Notification> fetchNotifications() throws RemoteException {
+        return this.serverInterface.fetchNotifications();
+    }
+
+    @Override
+    public void markNotificationAsRead(Notification notification) throws RemoteException {
+        this.serverInterface.markNotificationAsRead(notification);
+    }
+
+    @Override
+    public void createNotification(Notification message) throws RemoteException {
+        this.serverInterface.createNotification(message);
+    }
+
+    @Override
     public void propertyChange(
             RemotePropertyChangeEvent<Serializable> remotePropertyChangeEvent)
             throws RemoteException {
         Platform.runLater(() -> {
             if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
                 Registration clientRegistration = (Registration) remotePropertyChangeEvent.getNewValue();
-                if (clientRegistration != null) {
-                    //there is a registration
-                    Registration.getInstance().setManager_id(clientRegistration.getManager_id());
-                    Registration.getInstance().setLogin(clientRegistration.getLogin());
-                    this.support.firePropertyChange("login", null, clientRegistration);
-                } else {
-                    //there isn't a registration
-                    this.support.firePropertyChange("login", Registration.getInstance(), null);
-                }
+                Registration.getInstance().setManager_id(clientRegistration.getManager_id());
+                Registration.getInstance().setLogin(clientRegistration.getLogin());
+                Registration.getInstance().setId(clientRegistration.getId());
+                this.support.firePropertyChange("login", null, clientRegistration);
             }
             if (remotePropertyChangeEvent.getPropertyName().equals("reservation_created")) {
                 this.support.firePropertyChange("reservation_created", null, remotePropertyChangeEvent.getNewValue());

@@ -1,8 +1,8 @@
 package via.dk.cueandbrew.view.Start;
 
-import javafx.scene.layout.Region;
-import via.dk.cueandbrew.view.ViewHandler;
 import via.dk.cueandbrew.viewmodel.Start.StartViewModel;
+
+import java.util.UUID;
 
 public class StartController
 {
@@ -10,6 +10,7 @@ public class StartController
 
   public void init(StartViewModel viewModel) {
     this.viewModel = viewModel;
+    this.viewModel.sendIDToLoginController(UUID.randomUUID());
   }
 
   public void onUser()

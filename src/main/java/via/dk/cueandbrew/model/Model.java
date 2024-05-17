@@ -8,9 +8,10 @@ import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public interface Model {
-    void onLogin(String login, String password);
+    void onLogin(String login, String password, UUID id);
 
     void addPropertyChangeListener(PropertyChangeListener listener);
 

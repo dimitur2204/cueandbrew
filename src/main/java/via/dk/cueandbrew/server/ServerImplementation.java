@@ -2,7 +2,6 @@ package via.dk.cueandbrew.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
-import via.dk.cueandbrew.client.CallbackClientImplementation;
 import via.dk.cueandbrew.databse.dao.FeedbackDaoImplementation;
 import via.dk.cueandbrew.databse.dao.NotificationDaoImpl;
 import via.dk.cueandbrew.databse.dao.RegistrationDaoImplementation;
@@ -12,12 +11,11 @@ import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
 
 import java.io.Serializable;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public class ServerImplementation implements ServerInterface {
 
@@ -25,23 +23,25 @@ public class ServerImplementation implements ServerInterface {
     private final RemotePropertyChangeSupport<Serializable> reservationSupport;
 
     public ServerImplementation() {
-        this.registrationSupport = new RemotePropertyChangeSupport<java.io.Serializable>();
-        this.reservationSupport = new RemotePropertyChangeSupport<Serializable>();
+        this.registrationSupport = new RemotePropertyChangeSupport<>();
+        this.reservationSupport = new RemotePropertyChangeSupport<>();
     }
 
     @Override
-    public void onLogin(String login, String password)
+    public void onLogin(String login, String password, UUID id)
             throws RemoteException {
         try {
-            RegistrationDaoImplementation dao = RegistrationDaoImplementation.getInstance();
-            Registration registration = dao.getRegistration(login, password);
+            Registration registration = RegistrationDaoImplementation.getInstance().getRegistration(login, password);
             if (registration != null) {
+                registration.setId(id);
                 //there is a login
                 this.registrationSupport.firePropertyChange("login", null, registration);
             }
             else {
                 //there isn't a login
-                this.registrationSupport.firePropertyChange("login", Registration.createAnEmptyRegistration(), null);
+                Registration registration1 = Registration.createAnEmptyRegistration();
+                registration1.setId(id);
+                this.registrationSupport.firePropertyChange("login", null, registration1);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
