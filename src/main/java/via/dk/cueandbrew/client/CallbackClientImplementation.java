@@ -4,25 +4,42 @@ import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.application.Platform;
 import via.dk.cueandbrew.server.ServerInterface;
-import via.dk.cueandbrew.shared.Registration;
+import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Reservation;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class CallbackClientImplementation extends UnicastRemoteObject implements
-        RemotePropertyChangeListener<Registration>, CallbackClient {
+        RemotePropertyChangeListener<Serializable>, CallbackClient {
+    @Override
+    public List<Notification> fetchNotifications() throws RemoteException {
+        return this.serverInterface.fetchNotifications();
+    }
+
+    @Override
+    public void markNotificationAsRead(Notification notification) throws RemoteException {
+        this.serverInterface.markNotificationAsRead(notification);
+    }
+
+    @Override
+    public void createNotification(Notification message) throws RemoteException {
+        this.serverInterface.createNotification(message);
+    }
+
     private final ServerInterface serverInterface;
     private final PropertyChangeSupport support;
 
     public CallbackClientImplementation(ServerInterface serverInterface) throws RemoteException {
         super(0);
         this.serverInterface = serverInterface;
-        this.serverInterface.addPropertyChangeListener(this);
+        this.serverInterface.addRegistrationPropertyChangeListener(this);
+        this.serverInterface.addReservationPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
 
@@ -47,24 +64,26 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         this.support.addPropertyChangeListener(listener);
     }
 
-  @Override public List<Reservation> onSearch(String phone) throws RemoteException
-  {
-    return this.serverInterface.onSearch(phone);
-  }
+    @Override
+    public List<Reservation> onSearch(String phone) throws RemoteException {
+        return this.serverInterface.onSearch(phone);
+    }
 
-  @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
-  {
-    return this.serverInterface.createFeedback(content, selectedType, firstname, lastname);
-  }
+    @Override
+    public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException {
+        return this.serverInterface.createFeedback(content, selectedType, firstname, lastname);
+    }
 
-  @Override public void propertyChange(
-      RemotePropertyChangeEvent<Registration> remotePropertyChangeEvent)
-      throws RemoteException
-  {
-    Platform.runLater(() -> {
-      if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
-        this.support.firePropertyChange("login", null, remotePropertyChangeEvent.getNewValue());
-      }
-    });
-  }
+    @Override
+    public void propertyChange(RemotePropertyChangeEvent<Serializable> remotePropertyChangeEvent) throws RemoteException {
+        Platform.runLater(() -> support.firePropertyChange(remotePropertyChangeEvent.getPropertyName(), null, remotePropertyChangeEvent.getNewValue()));
+        Platform.runLater(() -> {
+            if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
+                this.support.firePropertyChange("login", null, remotePropertyChangeEvent.getNewValue());
+            }
+            if (remotePropertyChangeEvent.getPropertyName().equals("reservation_created")) {
+                this.support.firePropertyChange("reservation_created", null, remotePropertyChangeEvent.getNewValue());
+            }
+        });
+    }
 }

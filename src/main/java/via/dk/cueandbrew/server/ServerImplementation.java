@@ -2,25 +2,31 @@ package via.dk.cueandbrew.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
+import via.dk.cueandbrew.client.CallbackClientImplementation;
 import via.dk.cueandbrew.databse.dao.FeedbackDaoImplementation;
+import via.dk.cueandbrew.databse.dao.NotificationDaoImpl;
 import via.dk.cueandbrew.databse.dao.RegistrationDaoImplementation;
 import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
+import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
 
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class ServerImplementation implements ServerInterface {
 
-    private final RemotePropertyChangeSupport<Registration> registrationSupport;
-    private final RemotePropertyChangeSupport<Reservation> reservationSupport;
+    private final RemotePropertyChangeSupport<Serializable> registrationSupport;
+    private final RemotePropertyChangeSupport<Serializable> reservationSupport;
 
     public ServerImplementation() {
-        this.registrationSupport = new RemotePropertyChangeSupport<>();
-        this.reservationSupport = new RemotePropertyChangeSupport<>();
+        this.registrationSupport = new RemotePropertyChangeSupport<java.io.Serializable>();
+        this.reservationSupport = new RemotePropertyChangeSupport<Serializable>();
     }
 
     @Override
@@ -47,8 +53,7 @@ public class ServerImplementation implements ServerInterface {
     @Override
     public void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException {
         try {
-            ReservationDaoImpl.getInstance().create(builder);
-            Reservation res = builder.build();
+            Reservation res = ReservationDaoImpl.getInstance().create(builder);
             this.reservationSupport.firePropertyChange("reservation_created", null, res);
         } catch (Exception e) {
             e.printStackTrace();
@@ -56,12 +61,12 @@ public class ServerImplementation implements ServerInterface {
     }
 
     public void addRegistrationPropertyChangeListener(
-            RemotePropertyChangeListener<Registration> listener) throws RemoteException {
+            RemotePropertyChangeListener<Serializable> listener) throws RemoteException {
         this.registrationSupport.addPropertyChangeListener(listener);
     }
 
     public void addReservationPropertyChangeListener(
-            RemotePropertyChangeListener<Reservation> listener) throws RemoteException {
+            RemotePropertyChangeListener<Serializable> listener) throws RemoteException {
         this.reservationSupport.addPropertyChangeListener(listener);
     }
 
@@ -79,7 +84,34 @@ public class ServerImplementation implements ServerInterface {
         try {
             return FeedbackDaoImplementation.getInstance().createFeedback(content, selectedType, firstname, lastname);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RemoteException();
+        }
+    }
+
+    @Override
+    public void createNotification(Notification notification) throws RemoteException{
+        try {
+            NotificationDaoImpl.getInstance().createNotification(notification);
+        } catch (SQLException e) {
+            throw new RemoteException();
+        }
+    }
+
+    @Override
+    public List<Notification> fetchNotifications() throws RemoteException {
+        try {
+            return NotificationDaoImpl.getInstance().fetchNotifications();
+        } catch (SQLException e) {
+            throw new RemoteException();
+        }
+    }
+
+    @Override
+    public void markNotificationAsRead(Notification notification) throws RemoteException {
+        try {
+            NotificationDaoImpl.getInstance().markNotificationAsRead(notification);
+        } catch (SQLException e) {
+            throw new RemoteException();
         }
     }
 }
