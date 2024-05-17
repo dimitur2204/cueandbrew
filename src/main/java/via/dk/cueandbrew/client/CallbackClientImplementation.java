@@ -63,7 +63,17 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
   {
     Platform.runLater(() -> {
       if (remotePropertyChangeEvent.getPropertyName().equals("login")) {
-        this.support.firePropertyChange("login", null, remotePropertyChangeEvent.getNewValue());
+        Registration clientRegistration = remotePropertyChangeEvent.getNewValue();
+        if (clientRegistration != null) {
+          //there is a registration
+          Registration.getInstance().setManager_id(clientRegistration.getManager_id());
+          Registration.getInstance().setLogin(clientRegistration.getLogin());
+          this.support.firePropertyChange("login", null, clientRegistration);
+        }
+        else {
+          //there isn't a registration
+          this.support.firePropertyChange("login", Registration.getInstance(), null);
+        }
       }
     });
   }
