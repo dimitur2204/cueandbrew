@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,7 +156,6 @@ public class ReservationDaoImpl implements ReservationDao {
                 Order order = new Order();
 
                 while (result.next()) {
-                    //check by the creation_date_time if it is still the same reservation
                     if (reservations.isEmpty()) {
                         //ORDER
                         int order_id = result.getInt("order_id");
@@ -342,32 +340,8 @@ public class ReservationDaoImpl implements ReservationDao {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException();
         }
         return overlappingReservations;
-    }
-
-    @Override
-    public void update(Reservation reservation) throws SQLException {
-        try (Connection connection = Database.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "UPDATE cueandbrew.reservations SET client_firstname = ?, client_lastname = ?, client_phone_number = ?, notes = ? WHERE booking_id = ?");
-            statement.setString(1, reservation.getClientFirstName());
-            statement.setString(2, reservation.getClientLastName());
-            statement.setString(3, reservation.getClientPhoneNumber());
-            statement.setString(4, reservation.getNotes());
-        } catch (SQLException e) {
-            System.err.println("SQL error during update: " + e.getMessage());
-            throw e;
-        }
-    }
-
-    @Override
-    public void delete(Reservation reservation) throws SQLException {
-        try (Connection connection = Database.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement(
-                    "DELETE FROM cueandbrew.reservations WHERE booking_id = ?");
-            statement.executeUpdate();
-        }
     }
 }
