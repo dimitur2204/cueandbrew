@@ -201,22 +201,23 @@ public class ReservationDaoImpl implements ReservationDao {
                         reservations.add(reservation);
                     } else {
                         if (reservations.getLast().getReservationId() == result.getInt("reservation_id")) {
-                            //tables.clear();
-                            //drinks.clear();
-
                             //table
                             Table table = new Table(result.getInt("number"));
                             if (!reservations.getLast().getBooking().containsTable(table.getNumber())) {
                                 tables.add(table);
                             }
+                            //TODO: check if there is an order in the reservation
                             //drink
-                            Drink drink = new Drink(result.getInt("drink_id"), result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
-                            if (!reservations.getLast().getOrder().containsDrink(drink.getName())) {
-                                drinks.add(drink);
+                            if (reservations.getLast().getOrder() != null) {
+                                Drink drink = new Drink(result.getInt("drink_id"), result.getString("name"), result.getDouble("price"), result.getInt("quantity"));
+                                if (!reservations.getLast().getOrder().containsDrink(drink.getName())) {
+                                    drinks.add(drink);
+                                }
+                                //TODO: check if the last reservation has an order
+                                //add new drinks to order
+                                reservations.getLast().getOrder().setDrinks(drinks);
                             }
 
-                            //add new drinks to order
-                            reservations.getLast().getOrder().setDrinks(drinks);
                             //add new tables to booking
                             reservations.getLast().getBooking().setTables(tables);
                         } else {
@@ -224,21 +225,28 @@ public class ReservationDaoImpl implements ReservationDao {
                             //add the new reservation to the list
                             tables.clear();
                             drinks.clear();
-                            //probably not necessary to make them null
-
 
                             order = new Order();
                             booking = new Booking();
 
-                            String drinkName = result.getString("name");
-                            int drinkId = result.getInt("drink_id");
-                            double drinkPrice = result.getDouble("price");
-                            int quantity = result.getInt("quantity");
-                            String expected_order_date = result.getString("expected_order_date");
-                            String expected_order_time = result.getString("expected_order_time");
-                            drinks.add(new Drink(drinkId, drinkName, drinkPrice, quantity));
-                            order.setDrinks(drinks);
-                            order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
+                            //TODO: check if there is an order in the database
+                            //ORDER
+                            int order_id = result.getInt("order_id");
+                            if (result.wasNull()) {
+                                order_id = -1;
+                            }
+
+                            if (order_id != -1) {
+                                String drinkName = result.getString("name");
+                                int drinkId = result.getInt("drink_id");
+                                double drinkPrice = result.getDouble("price");
+                                int quantity = result.getInt("quantity");
+                                String expected_order_date = result.getString("expected_order_date");
+                                String expected_order_time = result.getString("expected_order_time");
+                                drinks.add(new Drink(drinkId, drinkName, drinkPrice, quantity));
+                                order.setDrinks(drinks);
+                                order.setExpectedDatetime(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(expected_order_date, DateTimeFormatter.ISO_LOCAL_DATE), LocalTime.parse(expected_order_time, DateTimeFormatter.ISO_LOCAL_TIME))));
+                            }
 
                             //BOOKING
                             int table_number = result.getInt("number");
