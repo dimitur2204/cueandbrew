@@ -8,6 +8,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +73,7 @@ public class ReservationDaoImpl implements ReservationDao {
             insertReservation.setString(4, res.getClientLastName());
             insertReservation.setString(5, res.getClientPhoneNumber());
             insertReservation.setString(6, res.getNotes());
-            insertReservation.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now()));
+            insertReservation.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
             insertReservation.executeUpdate();
             return res;
         }
