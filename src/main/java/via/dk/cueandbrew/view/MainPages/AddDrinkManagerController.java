@@ -23,7 +23,7 @@ public class AddDrinkManagerController
     @FXML
     public void onAddDrink(){
         viewModel.onAddDrink(name.getText(),Double.parseDouble(price.getText()),Integer.parseInt(
-                quantity.getText()));
+            quantity.getText()));
 
     }
     @FXML

@@ -64,6 +64,18 @@ public class ModelManager implements Model, PropertyChangeListener
     this.client.onFinalizeReservation(this.reservationBuilder);
   }
 
+  @Override public void addDrink(String name, double price, int quantity)
+  {
+    try
+    {
+      this.client.addDrink(name, price, quantity);
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
   @Override public List<Reservation> onSearch(String phone) throws RemoteException
   {
     return this.client.onSearch(phone);

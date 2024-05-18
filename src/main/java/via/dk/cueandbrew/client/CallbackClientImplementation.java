@@ -66,6 +66,12 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         return this.serverInterface.fetchNotifications();
     }
 
+    @Override public void addDrink(String name, double price, int quantity)
+        throws RemoteException
+    {
+        this.serverInterface.addDrink(name, price, quantity);
+    }
+
     @Override
     public void markNotificationAsRead(Notification notification) throws RemoteException {
         this.serverInterface.markNotificationAsRead(notification);

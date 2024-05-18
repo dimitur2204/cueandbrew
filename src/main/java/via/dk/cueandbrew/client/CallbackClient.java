@@ -18,6 +18,7 @@ public interface CallbackClient
   List<Reservation> onSearch(String phone) throws RemoteException;
   boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
   List<Notification> fetchNotifications() throws RemoteException;
+  void addDrink(String name, double price, int quantity) throws RemoteException;
   void markNotificationAsRead(Notification notification) throws RemoteException;
   void createNotification(Notification message) throws RemoteException;
 }

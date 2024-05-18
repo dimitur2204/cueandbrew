@@ -23,6 +23,7 @@ public interface Model {
 
     void onFinalizeReservation() throws RemoteException;
 
+    void addDrink(String name, double price, int quantity);
     boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 
     void startDateTimeUpdater(Label date, Label time);

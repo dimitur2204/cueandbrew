@@ -2,6 +2,7 @@ package via.dk.cueandbrew.viewmodel.MainPages;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Notification;
@@ -40,7 +41,12 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
             throw new RuntimeException(e);
         }
     }
+  @FXML
+  public void onAddADrink()
+  {
+    this.viewHandler.openAddDrinkManager();
 
+  }
     public void bindWelcomeLabel(StringProperty property) {
         property.bind(welcomeLabel);
     }

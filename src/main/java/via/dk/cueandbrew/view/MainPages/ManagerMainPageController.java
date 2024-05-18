@@ -76,4 +76,7 @@ public class ManagerMainPageController implements PropertyChangeListener {
     public void onMakeAReservation() {
         this.viewModel.onMakeAReservation();
     }
+    public void onAddADrink(){
+        this.viewModel.onAddADrink();
+    }
 }

@@ -19,10 +19,10 @@ public class ViewModelFactory {
     private ManagerLoginViewModel managerLoginViewModel;
     private ManagerMainPageViewModel managerMainPageViewModel;
     private CreateReservationViewModel createReservationViewModel;
+    private AddDrinkManagerViewModel addDrinkManagerViewModel;
     private OrderViewModel orderViewModel;
     private FinalizeReservationViewModel finalizeReservationViewModel;
     private CreateFeedbackViewModel createFeedbackViewModel;
-    private AddDrinkManagerViewModel addDrinkManagerViewModel;
 
     public ViewModelFactory(Model model) {
         this.model = model;
@@ -37,42 +37,49 @@ public class ViewModelFactory {
         this.orderViewModel = new OrderViewModel(model, viewHandler);
         this.finalizeReservationViewModel = new FinalizeReservationViewModel(model, viewHandler);
         this.createFeedbackViewModel = new CreateFeedbackViewModel(model, viewHandler);
-        this.addDrinkManagerViewModel = new AddDrinkManagerViewModel(model, viewHandler);
+        this.addDrinkManagerViewModel=new AddDrinkManagerViewModel(model,viewHandler);
     }
 
-    public StartViewModel getStartViewModel() {
+    public StartViewModel getStartViewModel()
+    {
         return startViewModel;
     }
 
-    public UserMainPageViewModel getUserMainPageViewModel() {
+    public UserMainPageViewModel getUserMainPageViewModel()
+    {
         return userMainPageViewModel;
     }
 
-    public ManagerLoginViewModel getManagerLoginViewModel() {
+    public ManagerLoginViewModel getManagerLoginViewModel()
+    {
         return managerLoginViewModel;
     }
 
-    public ManagerMainPageViewModel getManagerMainPageViewModel() {
+    public AddDrinkManagerViewModel getAddDrinkManagerViewModel(){
+        return addDrinkManagerViewModel;
+    }
+    public ManagerMainPageViewModel getManagerMainPageViewModel()
+    {
         return managerMainPageViewModel;
     }
 
-    public CreateReservationViewModel getCreateReservationViewModel() {
+    public CreateReservationViewModel getCreateReservationViewModel()
+    {
         return createReservationViewModel;
     }
 
-    public OrderViewModel getOrderViewModel() {
+    public OrderViewModel getOrderViewModel()
+    {
         return orderViewModel;
     }
 
-    public FinalizeReservationViewModel getFinalizeReservationViewModel() {
+    public FinalizeReservationViewModel getFinalizeReservationViewModel()
+    {
         return finalizeReservationViewModel;
     }
 
-    public CreateFeedbackViewModel getCreateFeedbackViewModel() {
+    public CreateFeedbackViewModel getCreateFeedbackViewModel()
+    {
         return createFeedbackViewModel;
-    }
-
-    public AddDrinkManagerViewModel getAddDrinkManagerViewModel() {
-        return addDrinkManagerViewModel;
     }
 }
