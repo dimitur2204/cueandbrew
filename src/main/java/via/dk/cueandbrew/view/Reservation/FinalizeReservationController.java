@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import via.dk.cueandbrew.view.Toast;
+import via.dk.cueandbrew.view.ViewHandler;
 import via.dk.cueandbrew.viewmodel.Reservation.FinalizeReservationViewModel;
 
 public class FinalizeReservationController {
@@ -23,9 +25,11 @@ public class FinalizeReservationController {
     @FXML
     private Label timeLabel;
     private FinalizeReservationViewModel viewModel;
+    private ViewHandler viewHandler;
 
-    public void init(FinalizeReservationViewModel viewModel) {
+    public void init(FinalizeReservationViewModel viewModel, ViewHandler viewHandler) {
         this.viewModel = viewModel;
+        this.viewHandler = viewHandler;
         this.viewModel.updateDateTime(dateLabel, timeLabel);
         this.viewModel.startDateTimeUpdater(dateLabel, timeLabel);
         this.finalizeBtn.setDisable(true);
@@ -38,13 +42,15 @@ public class FinalizeReservationController {
         this.viewModel.onCancel();
     }
 
-  public void onFinalize() {
-    String firstname = this.firstnameField.getText();
-    String lastname = this.lastnameField.getText();
-    String phoneNumber = this.phoneNumberField.getText();
-    String notes = this.notesField.getText();
-    this.viewModel.onFinalize(firstname, lastname, phoneNumber, notes);
-  }
+    public void onFinalize() {
+        String firstname = this.firstnameField.getText();
+        String lastname = this.lastnameField.getText();
+        String phoneNumber = this.phoneNumberField.getText();
+        String notes = this.notesField.getText();
+        this.viewModel.onFinalize(firstname, lastname, phoneNumber, notes);
+        Toast.makeText(this.viewHandler.getStage(), "Reservation created!");
+    }
+
     private void attachValidationListener(TextField field) {
         field.textProperty().addListener((observable, oldValue, newValue) -> {
             if (firstnameField.getText().isEmpty() || lastnameField.getText().isEmpty() || phoneNumberField.getText().isEmpty()) {

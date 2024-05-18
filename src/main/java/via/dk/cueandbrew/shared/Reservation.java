@@ -121,6 +121,19 @@ public class Reservation implements Serializable {
             return new Reservation(this);
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Reservation other = (Reservation) obj;
+        return other.getBooking().equals(this.getBooking()) && other.getClientFirstName().equals(this.getClientFirstName()) && other.getClientLastName().equals(this.getClientLastName());
+    }
+
     @Override
     public String toString() {
         return clientFirstName + " " + clientLastName + " booked table " + booking.getTables().getFirst() + " for " + booking.getStartTime() + " until " + booking.getEndTime();

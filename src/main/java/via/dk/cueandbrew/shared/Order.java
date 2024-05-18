@@ -57,4 +57,13 @@ this.drinks = drinks;
     public void setExpectedDatetime(Timestamp expectedDatetime) {
         this.expectedDatetime = expectedDatetime;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Order) {
+            Order other = (Order) obj;
+            return this.drinks.equals(other.drinks) && this.expectedDatetime.equals(other.expectedDatetime);
+        }
+        return false;
+    }
 }

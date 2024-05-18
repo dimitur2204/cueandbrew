@@ -30,7 +30,7 @@ public class FinalizeReservationViewModel {
         this.viewHandler.closeFinalizeReservationView();
     }
 
-    public void onFinalize(String firstname, String lastname, String phoneNumber, String notes) {
+    public Reservation onFinalize(String firstname, String lastname, String phoneNumber, String notes) {
         this.model.getReservationBuilder()
                 .setClientFirstName(firstname)
                 .setClientLastName(lastname)
@@ -41,12 +41,12 @@ public class FinalizeReservationViewModel {
         } catch (RemoteException e) {
             throw new RuntimeException(e);
         }
-        Toast.makeText(this.viewHandler.getStage(), "Reservation created!");
         this.viewHandler.closeFinalizeReservationView();
         if(Registration.getInstance().getManager_id() != -1){
             this.viewHandler.openManagerMainPage();
         } else {
             this.viewHandler.openUserMainPageView();
         }
+        return this.model.getReservationBuilder().build();
     }
 }
