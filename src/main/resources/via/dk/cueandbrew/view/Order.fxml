@@ -51,7 +51,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#onSkip" text="Skip" />
                   <HBox prefHeight="100.0" prefWidth="10.0" />
-                  <Button mnemonicParsing="false" fx:id="confirmBtn" onAction="#onConfirm" text="Confirm" />
+                  <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
                   <VBox prefHeight="200.0" prefWidth="10.0" />
                </children>
             </HBox>
@@ -61,7 +61,7 @@
    <center>
       <HBox prefHeight="179.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox fx:id="menuContainer" prefHeight="260.0" prefWidth="292.0" style="-fx-border-color: black; -fx-border-radius: 30; -fx-padding: 0 5 5 5;">
+            <VBox fx:id="menuContainer" prefHeight="260.0" prefWidth="292.0" style="-fx-padding: 0 5 5 5;">
                <children>
                   <HBox prefHeight="20.0" prefWidth="200.0" />
                   <Label text="Menu">
@@ -75,7 +75,7 @@
             <VBox prefHeight="200.0" prefWidth="10.0" />
             <ScrollPane prefHeight="290.0" prefWidth="313.0">
                <content>
-                  <VBox fx:id="selections" prefHeight="290.0" prefWidth="295.0" style="-fx-border-color: black; -fx-border-radius: 30; -fx-padding: 0 5 5 5;">
+                  <VBox fx:id="selections" prefHeight="288.0" prefWidth="288.0" style="-fx-padding: 0 5 5 5;">
                      <children>
                         <HBox prefHeight="20.0" prefWidth="200.0" />
                         <Label text="Your selections">

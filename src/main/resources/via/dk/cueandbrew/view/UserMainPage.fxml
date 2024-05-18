@@ -75,7 +75,7 @@
             </VBox>
          </top>
           <center>
-              <VBox prefHeight="231.0" prefWidth="470.0" style="-fx-border-color: black; -fx-border-radius: 30; -fx-padding: 0 5 5 5;">
+              <VBox prefHeight="231.0" prefWidth="470.0" style="-fx-padding: 0 5 5 5;">
                   <children>
                       <HBox prefHeight="20.0" prefWidth="200.0" />
                       <Label text="Reservations">

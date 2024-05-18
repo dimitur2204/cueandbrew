@@ -302,11 +302,11 @@ public class ReservationDaoImpl implements ReservationDao {
                 SELECT r.*, b.*, t.*
                 FROM cueandbrew.reservations AS r
                 JOIN cueandbrew.bookings AS b ON r.booking_id = b.booking_id
-                JOIN cueandbrew.booking_tables AS bt ON bt.table_number = b.booking_id
+                JOIN cueandbrew.booking_tables AS bt ON bt.booking_id = b.booking_id
                 JOIN cueandbrew.tables AS t ON bt.table_number = t.number
                 WHERE b.date = ? AND ((b.start_time BETWEEN ? AND ?)
                    OR (b.end_time BETWEEN ? AND ?)
-                   OR (b.start_time < ? AND b.end_time > ?));
+                   OR (b.start_time <= ? AND b.end_time >= ?));
                 """;
 
         try (Connection connection = Database.createConnection();

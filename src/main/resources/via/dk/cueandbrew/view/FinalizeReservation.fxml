@@ -55,14 +55,14 @@
          <children>
             <VBox prefHeight="200.0" prefWidth="300.0">
                <children>
-                  <Label text="Firstname">
+                  <Label text="First name">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
                   <TextField fx:id="firstnameField" />
                   <HBox prefHeight="10.0" prefWidth="200.0" />
-                  <Label text="Lastname">
+                  <Label text="Last name">
                      <font>
                         <Font size="17.0" />
                      </font>

@@ -78,7 +78,6 @@ public class OrderController {
         HBox box = new HBox();
         box.setPrefHeight(30.0);
         box.setPrefWidth(290.0);
-        box.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;");
         return box;
     }
 

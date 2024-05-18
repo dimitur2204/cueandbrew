@@ -126,6 +126,7 @@ public class CreateReservationController {
 
     public void updateBasedOnSelection(LocalDateTime selectedTime, int duration) throws RemoteException {
         List<Integer> unavailableTables = viewModel.getUnavailableTableIds(selectedTime, duration);
+
         disableTableSelections(unavailableTables);
     }
 

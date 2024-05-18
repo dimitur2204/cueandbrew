@@ -38,7 +38,7 @@
          <children>
             <VBox prefHeight="302.0" prefWidth="376.0">
                <children>
-                  <VBox prefHeight="248.0" prefWidth="376.0" style="-fx-border-color: black; -fx-border-radius: 0; -fx-padding: 0 5 0 5;">
+                  <VBox prefHeight="345.0" prefWidth="376.0" style="-fx-padding: 0 5 0 5;">
                      <children>
                         <Label text="Notifications">
                            <font>
