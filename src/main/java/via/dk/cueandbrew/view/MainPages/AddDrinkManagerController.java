@@ -18,12 +18,13 @@ public class AddDrinkManagerController
   public void init(AddDrinkManagerViewModel viewModel)
   {
     this.viewModel=viewModel;
-    viewModel.setName(name.getText());
-    System.out.println(name.getText());
+
   }
   @FXML
   public void onAddDrink(){
-    viewModel.onAddDrink();
+    viewModel.onAddDrink(name.getText(),Double.parseDouble(price.getText()),Integer.parseInt(
+        quantity.getText()));
+
   }
   @FXML
   public void onCancel(){

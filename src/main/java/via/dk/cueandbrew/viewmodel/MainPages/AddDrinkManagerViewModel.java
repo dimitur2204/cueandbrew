@@ -12,41 +12,20 @@ public class AddDrinkManagerViewModel
   private Model model;
   private ViewHandler viewHandler;
   private OrderViewModel orderViewModel;
-  private StringProperty name;
-  private DoubleProperty price;
-  private IntegerProperty quantity;
   public AddDrinkManagerViewModel(Model model, ViewHandler viewHandler)
   {
     this.model = model;
     this.viewHandler = viewHandler;
     this.orderViewModel=new OrderViewModel(model,viewHandler);
-    price=new SimpleDoubleProperty();
-    name=new SimpleStringProperty();
-    quantity=new SimpleIntegerProperty();
   }
 
-  public void onAddDrink(){
+  public void onAddDrink(String name,Double price,Integer quantity){
    viewHandler.openOrder();
-   Drink drink=new Drink(name.getValue(), price.get(), quantity.get());
-   orderViewModel.getDrinks().add(drink);
+   Drink drink=new Drink(name,price,quantity);
+   model.addDrink(name,price,quantity);
   }
 
   public void onCancel(){
     viewHandler.openManagerMainPage();
-  }
-
-  public void setName(String name)
-  {
-    this.name.set(name);
-  }
-
-  public void setPrice(double price)
-  {
-    this.price.set(price);
-  }
-
-  public void setQuantity(int quantity)
-  {
-    this.quantity.set(quantity);
   }
 }
