@@ -18,7 +18,7 @@ import java.rmi.RemoteException;
 public class ManagerMainPageController implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("notification_created")){
+        if (evt.getPropertyName().equals("notification_created")) {
             Notification notification = (Notification) evt.getNewValue();
             this.notifications.addFirst(notification);
             updateNotifications();
@@ -31,7 +31,8 @@ public class ManagerMainPageController implements PropertyChangeListener {
     private Label dateLabel;
     @FXML
     private Label timeLabel;
-    @FXML private Label welcomeLabel;
+    @FXML
+    private Label welcomeLabel;
     private ManagerMainPageViewModel viewModel;
     private ObservableList<Notification> notifications;
 
@@ -66,6 +67,10 @@ public class ManagerMainPageController implements PropertyChangeListener {
 
     public void onExit() {
         this.viewModel.onExit();
+    }
+
+    public void onAddDrink() {
+        this.viewModel.onOpenAddDrink();
     }
 
     public void onMakeAReservation() {

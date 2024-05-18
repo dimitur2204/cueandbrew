@@ -5,6 +5,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import via.dk.cueandbrew.view.MainPages.AddDrinkManagerController;
 import via.dk.cueandbrew.view.MainPages.CreateFeedbackController;
 import via.dk.cueandbrew.view.MainPages.ManagerMainPageController;
 import via.dk.cueandbrew.view.MainPages.UserMainPageController;
@@ -18,6 +19,7 @@ import via.dk.cueandbrew.viewmodel.ViewModelFactory;
 import java.io.IOException;
 
 public class ViewHandler {
+
     private final ViewModelFactory viewModelFactory;
     private final Stage stage;
     private final Stage finalizeReservationStage;
@@ -80,6 +82,27 @@ public class ViewHandler {
         UserMainPageController view = loader.getController();
         view.init(viewModelFactory.getUserMainPageViewModel());
         stage.setTitle("Main");
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void openAddDrinkView() {
+        FXMLLoader loader = new FXMLLoader();
+
+        loader.setLocation(getClass().getResource("/via/dk/cueandbrew/view/AddDrinkManager.fxml"));
+        Parent root;
+        try
+        {
+            root = loader.load();
+        }
+        catch (IOException e) {
+            throw new RuntimeException();
+        }
+        AddDrinkManagerController view = loader.getController();
+        view.init(viewModelFactory.getAddDrinkManagerViewModel());
+        stage.setTitle("Add drinks");
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
