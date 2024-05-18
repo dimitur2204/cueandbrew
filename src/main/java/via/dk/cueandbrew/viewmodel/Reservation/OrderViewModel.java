@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
 import via.dk.cueandbrew.shared.Drink;
 import via.dk.cueandbrew.shared.Order;
-import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.sql.Date;
@@ -16,10 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderViewModel {
-    private Model model;
-    private ViewHandler viewHandler;
-    private List<Drink> drinks;
-    private ObservableList<Drink> orderedDrinks;
+    private final Model model;
+    private final ViewHandler viewHandler;
+    private final List<Drink> drinks;
+    private final ObservableList<Drink> orderedDrinks;
 
     public OrderViewModel(Model model, ViewHandler viewHandler) {
         this.model = model;
@@ -73,27 +72,6 @@ public class OrderViewModel {
         return orderedDrinks;
     }
 
-    /*<HBox fx:id="id" alignment="CENTER" prefHeight="30.0" prefWidth="290.0" style="-fx-border-color: black; -fx-border-radius: 10; -fx: 0 0 0 0;">
-                         <children>
-                            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
-                               <children>
-                                  <Label text="1. Mojito - 150ml - 70dkk" />
-                               </children>
-                               <opaqueInsets>
-                                  <Insets />
-                               </opaqueInsets>
-                            </HBox>
-                            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-                               <children>
-                                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="26.0" style="-fx-background-radius: 100;" text="-" />
-                               </children>
-                               <opaqueInsets>
-                                  <Insets bottom="5.0" />
-                               </opaqueInsets>
-                            </HBox>
-                         </children>
-                      </HBox>
-                      */
     public void onSkip() {
         this.viewHandler.openFinalizeReservationView();
     }
