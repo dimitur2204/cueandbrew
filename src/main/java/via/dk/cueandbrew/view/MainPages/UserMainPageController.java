@@ -15,6 +15,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that is responsible for the UserMainPageController
+ * @Author Dimitar Nizamov
+ */
 public class UserMainPageController
 {
   @FXML private Label messageLabel;
@@ -26,6 +30,10 @@ public class UserMainPageController
   private UserMainPageViewModel viewModel;
   private List<Reservation> reservations;
 
+    /**
+     * A method that initializes the UserMainPageViewModel
+     * @param viewModel The UserMainPageViewModel
+     */
   public void init(UserMainPageViewModel viewModel)
   {
     this.viewModel = viewModel;
@@ -35,22 +43,34 @@ public class UserMainPageController
     this.viewModel.startDateTimeUpdater(dateLabel, hourLabel);
   }
 
+  /**
+   * A method that calls the onMakeAReservation method from the viewModel
+   */
   public void onMakeAReservation()
   {
     this.viewModel.onMakeAReservation();
   }
 
+    /** A method that calls the onClose method from the viewModel */
   public void onClose()
   {
     this.viewModel.onClose();
   }
 
+    /**
+     * A method that calls the onSearch method from the viewModel
+     * @throws RemoteException
+     */
   public void onSearch() throws RemoteException
   {
     this.reservations = this.viewModel.onSearch(this.phoneLabel.getText());
     buildReservationsMenu();
   }
 
+    /**
+     * A method that builds the reservations menu
+     * Setting styles and content for each reservation
+     */
   public void buildReservationsMenu() {
     if (!this.reservations.isEmpty()) {
       this.messageLabel.setVisible(false);

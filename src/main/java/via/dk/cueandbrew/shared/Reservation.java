@@ -3,6 +3,10 @@ package via.dk.cueandbrew.shared;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * A class that is responsible for the Reservation
+ * @Author Darja Jefremova, Dimitar Nizamov
+ */
 public class Reservation implements Serializable {
     private final String notes;
     private final String clientFirstName;
@@ -13,6 +17,10 @@ public class Reservation implements Serializable {
     private final Order order;
     private int reservationId;
 
+    /**
+     * A private constructor that initializes the Reservation with the specified builder
+     * @param builder The builder of the reservation
+     */
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
         this.clientLastName = builder.clientLastName;
@@ -24,45 +32,82 @@ public class Reservation implements Serializable {
         this.reservationId = builder.reservationId;
     }
 
-
+    /**
+     * A method that returns the reservation id
+     * @return The id of the reservation
+     */
     public void setReservationId(int reservationId) {
         this.reservationId = reservationId;
     }
+    /**
+     * A method that returns the reservation id
+     * @return The id of the reservation
+     */
     public int getReservationId()
     {
         return reservationId;
     }
 
+    /** A method that returns the booking
+     * @return The booking of the reservation
+     */
     public Booking getBooking() {
         return booking;
     }
 
 
+    /**
+     * A method that returns the first name of the client
+     * @return The first name of the client
+     */
     public String getClientFirstName() {
         return clientFirstName;
     }
 
-
+    /**
+     * A method that returns the last name of the client
+     * @return The last name of the client
+     */
     public String getClientLastName() {
         return clientLastName;
     }
 
+    /**
+     * A method that returns the phone number of the client
+     * @return The phone number of the client
+     */
     public String getClientPhoneNumber() {
         return clientPhoneNumber;
     }
 
+    /**
+     * A method that returns the creation date and time
+     * @return The creation date and time of the reservation
+     */
     public Timestamp getCreationDatetime() {
         return creationDatetime;
     }
 
+    /**
+     * A method that returns the notes
+     * @return The notes of the reservation
+     */
     public String getNotes() {
         return notes;
     }
 
+    /**
+     * A method that returns the order
+     * @return The order of the reservation
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * A builder class that is responsible for the Reservation
+     * @author Dimitar Nizamov
+     */
     public static class ReservationBuilder implements Serializable {
         private String clientFirstName;
         private String clientLastName;
@@ -73,50 +118,97 @@ public class Reservation implements Serializable {
         private Order order;
         private int reservationId;
 
+        /**
+         * A constructor that initializes the ReservationBuilder with the current time
+         */
         public ReservationBuilder() {
             this.creationDatetime = new Timestamp(System.currentTimeMillis());
         }
 
+        /**
+         * A method that sets the notes
+         * @param notes The notes of the reservation
+         * @return The notes of the reservation
+         */
         public ReservationBuilder setNotes(String notes) {
             this.notes = notes;
             return this;
         }
 
+        /**
+         * A method that sets the booking
+         * @param booking The booking of the reservation
+         * @return The booking of the reservation
+         */
         public ReservationBuilder setBooking(Booking booking) {
             this.booking = booking;
             return this;
         }
 
+        /**
+         * A method that sets the order
+         * @param order The order of the reservation
+         * @return The order of the reservation
+         */
         public ReservationBuilder setOrder(Order order) {
             this.order = order;
             return this;
         }
 
+        /**
+         * A method that sets the first name of the client
+         * @param clientFirstName The first name of the client
+         * @return The first name of the client
+         */
         public ReservationBuilder setClientLastName(String clientLastName) {
             this.clientLastName = clientLastName;
             return this;
         }
 
+        /**
+         * A method that sets the first name of the client
+         * @param clientFirstName The first name of the client
+         * @return The first name of the client
+         */
         public ReservationBuilder setClientFirstName(String clientFirstName) {
             this.clientFirstName = clientFirstName;
             return this;
         }
 
+        /**
+         * A method that sets the creation date and time
+         * @param creationDatetime The creation date and time of the reservation
+         * @return The creation date and time of the reservation
+         */
         public ReservationBuilder setCreationDatetime(Timestamp creationDatetime) {
             this.creationDatetime = creationDatetime;
             return this;
         }
 
+        /**
+         * A method that sets the phone number of the client
+         * @param clientPhoneNumber The phone number of the client
+         * @return The phone number of the client
+         */
         public ReservationBuilder setClientPhoneNumber(String clientPhoneNumber) {
             this.clientPhoneNumber = clientPhoneNumber;
             return this;
         }
 
+        /**
+         * A method that sets the reservation id
+         * @param reservationId The id of the reservation
+         * @return The id of the reservation
+         */
         public ReservationBuilder setReservationId(int reservationId) {
             this.reservationId = reservationId;
             return this;
         }
 
+        /**
+         * A method that builds the reservation based on the specified builder
+         * @return The reservation
+         */
         public Reservation build() {
             return new Reservation(this);
         }
