@@ -28,7 +28,7 @@ public class NotificationView extends HBox {
 //</HBox>
     public NotificationView(via.dk.cueandbrew.shared.Notification notification, EventHandler<ActionEvent> onSeenButtonClicked){
         super();
-        this.styleProperty().set("-fx-padding: 0 5 0 5; -fx-border-color: gray; -fx-border-radius: 5;");
+        this.styleProperty().set("-fx-padding: 0 5 0 5;");
         var reservation = notification.getReservation();
         var wrapper = new VBox();
         wrapper.setPrefHeight(100);

@@ -60,7 +60,7 @@ public class UserMainPageController
         HBox hBox = new HBox();
         hBox.setPrefWidth(250);
         hBox.setSpacing(10);
-        hBox.setStyle("-fx-border-color: black; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10;");
+        hBox.setStyle("-fx-border-style: solid hidden solid hidden; -fx-border-color: black;  -fx-background-radius: 10; -fx-padding: 10;");
 
         Label content = new Label(
             reservation.getCreationDatetime().toString() + "\n"
