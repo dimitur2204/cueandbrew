@@ -57,6 +57,10 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
         this.viewHandler.openCreateReservationView();
     }
 
+    public void onOpenAddDrink() {
+        this.viewHandler.openAddDrinkView();
+    }
+
     public void onExit() {
         Registration temp = Registration.getInstance();
         temp.setManager_id(-1);

@@ -58,7 +58,7 @@
             </VBox>
             <VBox alignment="TOP_RIGHT" prefHeight="302.0" prefWidth="206.0">
                <children>
-                  <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="106.0" text="Add a drink">
+                  <Button onAction="#onAddDrink" mnemonicParsing="false" prefHeight="26.0" prefWidth="106.0" text="Add a drink">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
