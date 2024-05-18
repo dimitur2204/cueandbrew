@@ -30,4 +30,13 @@ public class Drink implements Serializable {
     public int getQuantityOfDrink() {
         return quantityOfDrink;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Drink)) {
+            return false;
+        }
+        Drink other = (Drink) obj;
+        return id == other.id && name.equals(other.name) && price == other.price && quantityOfDrink == other.quantityOfDrink;
+    }
 }

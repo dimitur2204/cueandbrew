@@ -41,7 +41,7 @@ public class OrderController {
             addButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    viewModel.getOrderedDrinks().add(drink);
+                    viewModel.addDrink(drink);
                     if(!viewModel.getOrderedDrinks().isEmpty()) {
                         confirmBtn.setDisable(false);
                     }

@@ -184,7 +184,7 @@ public class ViewHandler {
             throw new RuntimeException();
         }
         FinalizeReservationController view = loader.getController();
-        view.init(viewModelFactory.getFinalizeReservationViewModel());
+        view.init(viewModelFactory.getFinalizeReservationViewModel(), this);
         finalizeReservationStage.setTitle("Finalize Reservation");
 
         Scene scene = new Scene(root);

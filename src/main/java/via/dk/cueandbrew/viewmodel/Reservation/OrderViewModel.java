@@ -68,6 +68,10 @@ public class OrderViewModel {
         return drinks;
     }
 
+    public void addDrink(Drink drink) {
+        orderedDrinks.add(drink);
+    }
+
     public ObservableList<Drink> getOrderedDrinks() {
         return orderedDrinks;
     }

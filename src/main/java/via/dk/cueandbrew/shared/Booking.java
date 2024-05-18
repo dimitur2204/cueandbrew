@@ -88,6 +88,19 @@ public class Booking implements Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        Booking other = (Booking) obj;
+        return other.getTables().equals(this.getTables()) && other.getDate().equals(this.getDate()) && other.getStartTime().equals(this.getStartTime()) && other.getEndTime().equals(this.getEndTime());
+
+    }
+
+    @Override
     public String toString() {
         return "Booking{" +
                 "tables=" + tables +
