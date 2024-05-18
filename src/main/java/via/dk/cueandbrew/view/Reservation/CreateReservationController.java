@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that is responsible for the CreateReservationController
+ * @Author Darja Jefremova, Dimitar Nizamov
+ */
 public class CreateReservationController {
 
     @FXML
@@ -38,6 +42,10 @@ public class CreateReservationController {
 
     private CreateReservationViewModel viewModel;
 
+    /**
+     * A method that initializes the CreateReservationViewModel
+     * @param viewModel The CreateReservationViewModel
+     */
     public void init(CreateReservationViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.updateDateTime(dateLabel, timeLabel);
@@ -104,6 +112,11 @@ public class CreateReservationController {
         });
     }
 
+    /**
+     * A method that handles the duration change
+     * @param selectedDuration The selected duration
+     * @throws RemoteException
+     */
     private void handleDurationChange(RadioButton selectedDuration) throws RemoteException {
         String durationText = selectedDuration.getText();
         int duration = "30m".equals(durationText) ? 30 : "1h".equals(durationText) ? 60 : 120;
@@ -117,6 +130,10 @@ public class CreateReservationController {
         viewModel.chooseDuration(duration);
     }
 
+    /**
+     * A method that handles the date change
+     * @param date The date
+     */
     private void handleDateChange(LocalDate date) {
         if (hourField.getValue() == null || minutesField.getValue() == null) {
             return;
@@ -124,18 +141,34 @@ public class CreateReservationController {
         viewModel.chooseDateTime(LocalDateTime.of(date, java.time.LocalTime.of(Integer.parseInt(hourField.getValue()), Integer.parseInt(minutesField.getValue()))));
     }
 
+    /**
+     * A method that updates the view based on the selection of the time
+     * It disables the tables that are unavailable at the selected time
+     * @param selectedTime The selected time
+     * @param duration The duration
+     * @throws RemoteException
+     */
     public void updateBasedOnSelection(LocalDateTime selectedTime, int duration) throws RemoteException {
         List<Integer> unavailableTables = viewModel.getUnavailableTableIds(selectedTime, duration);
 
         disableTableSelections(unavailableTables);
     }
 
+    /**
+     * A method that disables the table selections if there are unavailable tables
+     * @param unavailableTables The unavailable tables
+     */
     private void disableTableSelections(List<Integer> unavailableTables) {
         table1CheckBox.setDisable(unavailableTables.contains(1));
         table2CheckBox.setDisable(unavailableTables.contains(2));
         table3CheckBox.setDisable(unavailableTables.contains(3));
         table4CheckBox.setDisable(unavailableTables.contains(4));
     }
+
+    /**
+     * A method that attaches a validation listener to toggle group
+     * @param tb The toggle group
+     */
     private void attachValidationListener(ToggleGroup tb) {
         tb.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (hourField.getValue() != null && minutesField.getValue() != null && datePicker.getValue() != null && durationGroup.getSelectedToggle() != null && (table1CheckBox.isSelected() || table2CheckBox.isSelected() || table3CheckBox.isSelected() || table4CheckBox.isSelected())) {
@@ -146,6 +179,11 @@ public class CreateReservationController {
         });
     }
 
+
+    /**
+     * A method that attaches a validation listener to a checkbox
+     * @param cb The checkbox
+     */
     private void attachValidationListener(CheckBox cb) {
         cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (hourField.getValue() != null && minutesField.getValue() != null && datePicker.getValue() != null && durationGroup.getSelectedToggle() != null && (table1CheckBox.isSelected() || table2CheckBox.isSelected() || table3CheckBox.isSelected() || table4CheckBox.isSelected())) {
@@ -156,6 +194,10 @@ public class CreateReservationController {
         });
     }
 
+    /**
+     * A method that attaches a validation listener to a combobox
+     * @param cb The combobox
+     */
     private <T> void attachValidationListener(ComboBoxBase<T> cb) {
         //if all fields are filled, enable the next button
         cb.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -167,6 +209,10 @@ public class CreateReservationController {
         });
     }
 
+    /**
+     * A method that attaches a validation listener to a text field
+     * @param tf The text field
+ */
     private void attachValidationListener(TextField tf) {
         //if all fields are filled, enable the next button
         tf.textProperty().addListener((observable, oldValue, newValue) -> {
