@@ -1,5 +1,8 @@
 package via.dk.cueandbrew.view;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -23,7 +26,7 @@ public class NotificationView extends HBox {
 //      </VBox>
 //   </children>
 //</HBox>
-    public NotificationView(via.dk.cueandbrew.shared.Notification notification){
+    public NotificationView(via.dk.cueandbrew.shared.Notification notification, EventHandler<ActionEvent> onSeenButtonClicked){
         super();
         this.styleProperty().set("-fx-padding: 0 5 0 5; -fx-border-color: gray; -fx-border-radius: 5;");
         var reservation = notification.getReservation();
@@ -43,7 +46,8 @@ public class NotificationView extends HBox {
         buttonWrapper.setAlignment(javafx.geometry.Pos.CENTER);
         buttonWrapper.setPrefHeight(88);
         buttonWrapper.setPrefWidth(348);
-        var button = new Button("Button");
+        var button = new Button("Seen");
+        button.setOnAction(onSeenButtonClicked);
         button.setAlignment(javafx.geometry.Pos.CENTER);
         button.setMnemonicParsing(false);
         buttonWrapper.getChildren().add(button);

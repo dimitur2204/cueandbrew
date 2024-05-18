@@ -29,7 +29,16 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
         this.viewHandler = viewHandler;
     }
     public List<Notification> fetchNotifications() throws RemoteException {
-        return this.model.fetchNotifications();
+        //return only notificaitnos that are not seen
+        return this.model.fetchNotifications().stream().filter(notification -> notification.getWasSeen() == 0).toList();
+    }
+
+    public void markNotificationAsRead(Notification notification) {
+        try {
+            this.model.markNotificationAsRead(notification);
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void bindWelcomeLabel(StringProperty property) {

@@ -50,7 +50,7 @@ public class NotificationDaoImpl implements NotificationDao {
                     set was_seen = ?
                     where notification_id = ?;
                     """);
-            statement.setBoolean(1, true);
+            statement.setInt(1, 1);
             statement.setInt(2, notification.getNotificationId());
             statement.executeUpdate();
         } catch (SQLException e) {

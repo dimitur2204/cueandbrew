@@ -1,8 +1,9 @@
 package via.dk.cueandbrew.view.MainPages;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -51,7 +52,14 @@ public class ManagerMainPageController implements PropertyChangeListener {
     private void updateNotifications() {
         notificationsWrapper.getChildren().clear();
         for (Notification notification : this.notifications) {
-            NotificationView notificationView = new NotificationView(notification);
+            NotificationView notificationView = new NotificationView(notification, new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    viewModel.markNotificationAsRead(notification);
+                    notifications.remove(notification);
+                    updateNotifications();
+                }
+            });
             notificationsWrapper.getChildren().add(notificationView);
         }
     }
