@@ -2,6 +2,8 @@ package via.dk.cueandbrew.viewmodel.Reservation;
 
 import javafx.scene.control.Label;
 import via.dk.cueandbrew.model.Model;
+import via.dk.cueandbrew.shared.Registration;
+import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.view.Toast;
 import via.dk.cueandbrew.view.ViewHandler;
 
@@ -41,6 +43,10 @@ public class FinalizeReservationViewModel {
         }
         Toast.makeText(this.viewHandler.getStage(), "Reservation created!");
         this.viewHandler.closeFinalizeReservationView();
-        this.viewHandler.openManagerMainPage();
+        if(Registration.getInstance().getManager_id() != -1){
+            this.viewHandler.openManagerMainPage();
+        } else {
+            this.viewHandler.openUserMainPageView();
+        }
     }
 }
