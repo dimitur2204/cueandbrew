@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An interface that defines the methods that are avaliable for interacting with the client
+ */
 public interface CallbackClient
 {
   void onLogin(String login, String password, UUID id) throws RemoteException;
