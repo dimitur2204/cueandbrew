@@ -1,6 +1,9 @@
 package via.dk.cueandbrew.viewmodel.MainPages;
 
+import javafx.beans.property.*;
+import javafx.fxml.FXML;
 import via.dk.cueandbrew.model.Model;
+import via.dk.cueandbrew.shared.Drink;
 import via.dk.cueandbrew.view.ViewHandler;
 import via.dk.cueandbrew.viewmodel.Reservation.OrderViewModel;
 
@@ -28,8 +31,8 @@ public class AddDrinkManagerViewModel
      * A method that opens the order view
      */
     public void onAddDrink(String name,Double price,Integer quantity){
-        //TODO: save to db
         viewHandler.openOrder();
+        viewHandler.openAddDrinkManager();
     }
 
     /**

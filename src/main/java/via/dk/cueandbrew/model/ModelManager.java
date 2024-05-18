@@ -100,10 +100,23 @@ public class ModelManager implements Model, PropertyChangeListener
    * @param phone The phone number of the client
    * @return The list of reservations
    */
+
   @Override public List<Reservation> onSearch(String phone) throws RemoteException
   {
     return this.client.onSearch(phone);
   }
+
+    @Override public void addDrink(String name, double price, int quantity)
+    {
+        try
+        {
+            this.client.addDrink(name, price, quantity);
+        }
+        catch (RemoteException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
 
   /**
    * A method that creates a feedback

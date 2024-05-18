@@ -19,10 +19,10 @@ import java.util.List;
  * @author Andreea Caisim
  */
 public class OrderViewModel {
-    private Model model;
-    private ViewHandler viewHandler;
-    private List<Drink> drinks;
-    private ObservableList<Drink> orderedDrinks;
+    private final Model model;
+    private final ViewHandler viewHandler;
+    private final List<Drink> drinks;
+    private final ObservableList<Drink> orderedDrinks;
 
     /**
      * A constructor that sets the model and the viewHandler

@@ -2,10 +2,7 @@ package via.dk.cueandbrew.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
-import via.dk.cueandbrew.databse.dao.FeedbackDaoImplementation;
-import via.dk.cueandbrew.databse.dao.NotificationDaoImpl;
-import via.dk.cueandbrew.databse.dao.RegistrationDaoImplementation;
-import via.dk.cueandbrew.databse.dao.ReservationDaoImpl;
+import via.dk.cueandbrew.databse.dao.*;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
@@ -121,6 +118,19 @@ public class ServerImplementation implements ServerInterface {
         try {
             return ReservationDaoImpl.getInstance().readByPhoneNumber(phone);
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override public void addDrink(String name, double price, int quantity)
+        throws RemoteException
+    {
+        try
+        {
+          DrinksDaoImpl.getInstance().addDrink(name, price, quantity);
+        }
+        catch (SQLException e)
+        {
             throw new RuntimeException(e);
         }
     }

@@ -56,9 +56,6 @@
                 <configuration>
                     <source>21</source>
                     <target>21</target>
-                    <compilerArgs>
-                        <arg>--add-exports</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
