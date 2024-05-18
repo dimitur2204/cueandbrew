@@ -18,6 +18,11 @@ import via.dk.cueandbrew.viewmodel.ViewModelFactory;
 
 import java.io.IOException;
 
+/**
+ * Class responsible for managing the views of the application. It is responsible for opening and closing the views.
+ * It is also responsible for initializing the controllers of the views.
+ * @author Andreea Caisim, Darja Jefremova, Dimitar Nizamov, Marius Marcoci
+ */
 public class ViewHandler {
 
     private final ViewModelFactory viewModelFactory;
@@ -37,15 +42,26 @@ public class ViewHandler {
         this.createFeedbackStage.initOwner(this.stage);
     }
 
+    /**
+     * Method that returns the ViewModelFactory
+     * @return ViewModelFactory
+     */
     public ViewModelFactory getViewModelFactory()
     {
         return viewModelFactory;
     }
 
+    /**
+     * Method that returns the stage
+     * @return Stage
+     */
     public Stage getStage() {
         return stage;
     }
 
+    /**
+     * Method that opens the start view
+     */
     public void openStartView() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -67,6 +83,7 @@ public class ViewHandler {
         stage.show();
     }
 
+    /** Method that opens the user main page view */
     public void openUserMainPageView() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -88,6 +105,7 @@ public class ViewHandler {
         stage.show();
     }
 
+    /** Method that opens the add drink view */
     public void openAddDrinkView() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -109,6 +127,7 @@ public class ViewHandler {
         stage.show();
     }
 
+/** Method that opens the manager login view */
     public void openManagerLoginView() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -130,6 +149,7 @@ public class ViewHandler {
         stage.show();
     }
 
+    /** Method that opens the manager main page view */
     public void openManagerMainPage()
     {
         FXMLLoader loader = new FXMLLoader();
@@ -152,6 +172,7 @@ public class ViewHandler {
         stage.show();
     }
 
+    /** Method that closes the manager main page view */
     public void openCreateReservationView() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -173,6 +194,7 @@ public class ViewHandler {
         stage.show();
     }
 
+    /** Method that closes the create reservation view */
     public void openOrder() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -194,6 +216,7 @@ public class ViewHandler {
         stage.show();
     }
 
+    /** Method that closes the order view */
     public void openFinalizeReservationView() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -215,10 +238,12 @@ public class ViewHandler {
         finalizeReservationStage.show();
     }
 
+    /** Method that closes the finalize reservation view */
     public void closeFinalizeReservationView() {
         finalizeReservationStage.close();
     }
 
+    /** Method that opens the create feedback view */
     public void openCreateFeedbackStage() {
         FXMLLoader loader = new FXMLLoader();
 
@@ -240,10 +265,12 @@ public class ViewHandler {
         createFeedbackStage.show();
     }
 
+    /** Method that closes the create feedback view */
     public void closeCreateFeedbackStage() {
         createFeedbackStage.close();
     }
 
+    /** Method that starts the view handler */
     public void start() {
         openStartView();
     }

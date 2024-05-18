@@ -12,6 +12,10 @@ import via.dk.cueandbrew.viewmodel.Reservation.OrderViewModel;
 import via.dk.cueandbrew.viewmodel.Start.ManagerLoginViewModel;
 import via.dk.cueandbrew.viewmodel.Start.StartViewModel;
 
+/**
+ * Factory class for instantiating all view models
+ *  @author Andreea Caisim, Darja Jefremova, Dimitar Nizamov, Marius Marcoci
+ */
 public class ViewModelFactory {
     private final Model model;
     private StartViewModel startViewModel;
