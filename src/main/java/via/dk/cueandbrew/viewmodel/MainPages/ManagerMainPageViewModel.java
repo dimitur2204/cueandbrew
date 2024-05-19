@@ -81,12 +81,28 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
         support.addPropertyChangeListener(listener);
     }
 
+  public List<Feedback> fetchFeedbacks()
+  {
+    return this.model.fetchFeedbacks();
+  }
+
+  public boolean checkFeedback(int managerId, int feedbackId)
+  {
+    return this.model.checkFeedback(managerId, feedbackId);
+  }
+
+//  public void fireCreateFeedbackPropertyChange(int feedback_id, String content, String selectedType, String firstname, String lastname) {
+//      Feedback feedback = new Feedback(feedback_id, firstname, lastname, content, selectedType, 0);
+//      this.support.firePropertyChange("feedback_created", null, feedback);
+//    System.out.println(feedback);
+//  }
+
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     if (evt.getPropertyName().equals("welcome")) {
       this.welcomeLabel.setValue("Welcome " + evt.getNewValue().toString());
     }
-    if (evt.getPropertyName().equals("reservation_created")) {
+    else if (evt.getPropertyName().equals("reservation_created")) {
       Reservation reservation = (Reservation) evt.getNewValue();
       Notification notification = new Notification(reservation);
       try {
@@ -95,6 +111,14 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
       } catch (RemoteException e) {
         throw new RuntimeException(e);
       }
+    }
+    else if (evt.getPropertyName().equals("created_feedback"))
+    {
+      this.support.firePropertyChange("feedback_created", null, evt.getNewValue());
+    }
+    else if (evt.getPropertyName().equals("check_feedback"))
+    {
+      this.support.firePropertyChange("check_feedback", null, evt.getNewValue());
     }
   }
 }

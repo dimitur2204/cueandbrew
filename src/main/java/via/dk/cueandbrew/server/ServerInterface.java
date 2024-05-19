@@ -1,7 +1,7 @@
 package via.dk.cueandbrew.server;
 
 import dk.via.remote.observer.RemotePropertyChangeListener;
-import via.dk.cueandbrew.client.CallbackClientImplementation;
+import via.dk.cueandbrew.shared.Feedback;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Reservation;
 
@@ -18,12 +18,16 @@ public interface ServerInterface extends Remote
   List<Reservation> getReservationsByDateTimeAndDuration(LocalDateTime start, int durationMinutes) throws RemoteException;
   void onFinalizeReservation(Reservation.ReservationBuilder builder) throws RemoteException;
   void addRegistrationPropertyChangeListener(RemotePropertyChangeListener<Serializable> listener) throws RemoteException;
+  void addFeedbackPropertyChangeListener(
+      RemotePropertyChangeListener<Serializable> listener) throws RemoteException;
   List<Reservation> onSearch(String phone) throws RemoteException;
   void addDrink(String name, double price, int quantity)throws RemoteException;
   void addReservationPropertyChangeListener(RemotePropertyChangeListener<Serializable> listener) throws RemoteException;
-  boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
+  Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
   List<Notification> fetchNotifications() throws RemoteException;
   void markNotificationAsRead(Notification notification) throws RemoteException;
   void createNotification(Notification notification) throws RemoteException;
   boolean cancelReservation(int id) throws RemoteException;
+  List<Feedback> fetchFeedbacks() throws RemoteException;
+  boolean checkFeedback(int managerId, int feedbackId) throws RemoteException;
 }
