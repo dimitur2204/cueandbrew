@@ -114,6 +114,18 @@ public class ServerImplementation implements ServerInterface {
         }
     }
 
+    @Override public boolean cancelReservation(int id) throws RemoteException
+    {
+        try
+        {
+            return ReservationDaoImpl.getInstance().cancelReservation(id);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public List<Notification> fetchNotifications() throws RemoteException {
         try {

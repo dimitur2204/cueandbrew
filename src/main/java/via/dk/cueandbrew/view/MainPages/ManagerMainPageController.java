@@ -16,15 +16,6 @@ import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
 public class ManagerMainPageController implements PropertyChangeListener {
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("notification_created")) {
-            Notification notification = (Notification) evt.getNewValue();
-            this.notifications.addFirst(notification);
-            updateNotifications();
-        }
-    }
-
     @FXML
     private VBox notificationsWrapper;
     @FXML
@@ -78,5 +69,14 @@ public class ManagerMainPageController implements PropertyChangeListener {
     }
     public void onAddADrink(){
         this.viewModel.onAddADrink();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("notification_created")) {
+            Notification notification = (Notification) evt.getNewValue();
+            this.notifications.addFirst(notification);
+            updateNotifications();
+        }
     }
 }

@@ -2,6 +2,7 @@ package via.dk.cueandbrew.view.MainPages;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -12,6 +13,8 @@ import javafx.scene.layout.VBox;
 import via.dk.cueandbrew.shared.Reservation;
 import via.dk.cueandbrew.viewmodel.MainPages.UserMainPageViewModel;
 import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +84,38 @@ public class UserMainPageController
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Button button = new Button("Leave Feedback");
-        button.setOnAction(actionEvent -> this.viewModel.openCreateFeedbackPage());
+        Button feedbackButton = new Button("Leave Feedback");
+        if (reservation.getWasCancelled() == 1 || Timestamp.valueOf(LocalDateTime.parse(this.dateLabel.getText() + "T" + this.hourLabel.getText())).before(Timestamp.valueOf(LocalDateTime.parse(reservation.getBooking().getDate().toString() + "T" + reservation.getBooking().getStartTime().toString())))) {
+          feedbackButton.setDisable(true);
+        }
+        feedbackButton.setOnAction(actionEvent -> this.viewModel.openCreateFeedbackPage());
 
-        hBox.getChildren().addAll(content, spacer, button);
+        Button cancelReservationButton = new Button("Cancel reservation");
+        //disable cancel if reservationDate + hour < current date + hour
+        if (reservation.getWasCancelled() == 1 || Timestamp.valueOf(LocalDateTime.parse(this.dateLabel.getText() + "T" + this.hourLabel.getText())).after(Timestamp.valueOf(LocalDateTime.parse(reservation.getBooking().getDate().toString() + "T" + reservation.getBooking().getStartTime().toString())))) {
+          cancelReservationButton.setDisable(true);
+        }
+        cancelReservationButton.setOnAction(actionEvent -> {
+          try
+          {
+            if (this.viewModel.cancelReservation(reservation.getReservationId()))
+            {
+              this.showConfirmationMessage();
+              cancelReservationButton.setDisable(true);
+            }
+            else
+            {
+              this.showErrorMessage();
+            }
+          }
+          catch (RemoteException e)
+          {
+            throw new RuntimeException(e);
+          }
+        });
+
+        VBox buttons = new VBox(feedbackButton, cancelReservationButton);
+        hBox.getChildren().addAll(content, spacer, buttons);
         hBox.setAlignment(Pos.CENTER);
 
         this.contentVBox.getChildren().add(hBox);
@@ -94,5 +125,21 @@ public class UserMainPageController
       this.messageLabel.setText("You do not have any reservations made");
       this.messageLabel.setVisible(true);
     }
+  }
+
+  private void showConfirmationMessage() {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle("Action successful");
+    alert.setHeaderText("Action successful");
+    alert.setContentText("Reservation cancelled successfully");
+    alert.showAndWait();
+  }
+
+  private void showErrorMessage() {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle("Action failed");
+    alert.setHeaderText("Action failed");
+    alert.setContentText("Could not cancel the reservation");
+    alert.showAndWait();
   }
 }

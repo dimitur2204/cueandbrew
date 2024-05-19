@@ -82,6 +82,11 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         this.serverInterface.createNotification(message);
     }
 
+    @Override public boolean cancelReservation(int id) throws RemoteException
+    {
+        return this.serverInterface.cancelReservation(id);
+    }
+
     @Override
     public void propertyChange(
             RemotePropertyChangeEvent<Serializable> remotePropertyChangeEvent)

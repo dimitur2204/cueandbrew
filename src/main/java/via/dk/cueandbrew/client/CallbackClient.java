@@ -21,4 +21,5 @@ public interface CallbackClient
   void addDrink(String name, double price, int quantity) throws RemoteException;
   void markNotificationAsRead(Notification notification) throws RemoteException;
   void createNotification(Notification message) throws RemoteException;
+  boolean cancelReservation(int id) throws RemoteException;
 }

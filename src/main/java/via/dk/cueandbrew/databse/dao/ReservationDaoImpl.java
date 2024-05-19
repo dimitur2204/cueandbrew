@@ -65,7 +65,7 @@ public class ReservationDaoImpl implements ReservationDao {
                     insertDrink.executeUpdate();
                 }
             }
-            PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime, was_cancelled) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             insertReservation.setInt(1, bookingId);
             if (orderId != 0) {
                 insertReservation.setInt(2, orderId);
@@ -77,6 +77,7 @@ public class ReservationDaoImpl implements ReservationDao {
             insertReservation.setString(5, res.getClientPhoneNumber());
             insertReservation.setString(6, res.getNotes());
             insertReservation.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
+            insertReservation.setInt(8, res.getWasCancelled());
             insertReservation.executeUpdate();
             ResultSet keys = insertReservation.getGeneratedKeys();
             keys.next();
@@ -123,6 +124,7 @@ public class ReservationDaoImpl implements ReservationDao {
                         r.notes,
                         r.creation_datetime,
                         r.order_id,
+                        r.was_cancelled,
                         t.number,
                         d.drink_id,
                         d.name,
@@ -295,6 +297,7 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
+    //probably need a check in the query if was_cancelled = 1 (the reservation was cancelled)
     public List<Reservation> findReservationsWithinPeriod(LocalDateTime start, int durationMinutes) {
         List<Reservation> overlappingReservations = new ArrayList<>();
         LocalDateTime endTime = start.plusMinutes(durationMinutes);
@@ -343,6 +346,22 @@ public class ReservationDaoImpl implements ReservationDao {
             throw new RuntimeException();
         }
         return overlappingReservations;
+    }
+
+    @Override public boolean cancelReservation(int id) throws SQLException
+    {
+        try (Connection connection = Database.createConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("""
+            UPDATE cueandbrew.reservations
+            SET was_cancelled = 1
+            where reservation_id = ?;
+            """);
+            statement.setInt(1, id);
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected > 0;
+        }
     }
 
     public Reservation getReservationById(int id) throws SQLException {

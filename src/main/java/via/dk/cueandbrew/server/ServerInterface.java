@@ -25,4 +25,5 @@ public interface ServerInterface extends Remote
   List<Notification> fetchNotifications() throws RemoteException;
   void markNotificationAsRead(Notification notification) throws RemoteException;
   void createNotification(Notification notification) throws RemoteException;
+  boolean cancelReservation(int id) throws RemoteException;
 }

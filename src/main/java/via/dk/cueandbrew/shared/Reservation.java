@@ -12,6 +12,7 @@ public class Reservation implements Serializable {
     private final Booking booking;
     private final Order order;
     private int reservationId;
+    private final int wasCancelled;
 
     private Reservation(ReservationBuilder builder) {
         this.clientFirstName = builder.clientFirstName;
@@ -22,6 +23,7 @@ public class Reservation implements Serializable {
         this.booking = builder.booking;
         this.order = builder.order;
         this.reservationId = builder.reservationId;
+        this.wasCancelled = builder.wasCancelled;
     }
 
 
@@ -63,6 +65,11 @@ public class Reservation implements Serializable {
         return order;
     }
 
+    public int getWasCancelled()
+    {
+        return wasCancelled;
+    }
+
     public static class ReservationBuilder implements Serializable {
         private String clientFirstName;
         private String clientLastName;
@@ -72,6 +79,7 @@ public class Reservation implements Serializable {
         private Booking booking;
         private Order order;
         private int reservationId;
+        private int wasCancelled;
 
         public ReservationBuilder() {
             this.creationDatetime = new Timestamp(System.currentTimeMillis());
@@ -114,6 +122,11 @@ public class Reservation implements Serializable {
 
         public ReservationBuilder setReservationId(int reservationId) {
             this.reservationId = reservationId;
+            return this;
+        }
+
+        public ReservationBuilder setWasCancelled(int wasCancelled) {
+            this.wasCancelled = wasCancelled;
             return this;
         }
 

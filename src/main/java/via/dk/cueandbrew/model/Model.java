@@ -35,4 +35,5 @@ public interface Model {
     void markNotificationAsRead(Notification notification) throws RemoteException;
 
     void createNotification(Notification notification) throws RemoteException;
+  boolean cancelReservation(int id) throws RemoteException;
 }

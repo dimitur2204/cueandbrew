@@ -126,6 +126,16 @@ public class ModelManager implements Model, PropertyChangeListener
     this.client.createNotification(notification);
   }
 
+  @Override public boolean cancelReservation(int id) throws RemoteException
+  {
+    boolean result = this.client.cancelReservation(id);
+    //not sure if this if statement is needed
+    if (result) {
+      this.reservationBuilder.setWasCancelled(1);
+    }
+    return result;
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> {
