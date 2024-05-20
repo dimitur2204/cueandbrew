@@ -13,6 +13,10 @@ import via.dk.cueandbrew.viewmodel.Reservation.OrderViewModel;
 
 import java.sql.Timestamp;
 
+/**
+ * A class that is responsible for the OrderController
+ * @author Dimitar Nizamov, Darja Jefremova, Andreea Caisim
+ */
 public class OrderController {
 
     @FXML private ComboBox hourField;
@@ -25,6 +29,10 @@ public class OrderController {
     private Button confirmBtn;
 
     private OrderViewModel viewModel;
+    /**
+     * A method that initializes the OrderViewModel
+     * @param viewModel The OrderViewModel
+     */
     public void init(OrderViewModel viewModel) {
         this.confirmBtn.setDisable(true);
         this.viewModel = viewModel;
@@ -67,6 +75,11 @@ public class OrderController {
         }
     }
 
+    /**
+     * A method that builds the action button
+     * @param text The text
+     * @return The button
+ */
     private Button buildActionButton(String text) {
         Button button = new Button();
         button.setTranslateX(20);
@@ -74,6 +87,10 @@ public class OrderController {
         return button;
     }
 
+    /**
+     * A method that builds the drink box
+     * @return The HBox
+     */
     private HBox buildDrinkBox() {
         HBox box = new HBox();
         box.setPrefHeight(30.0);
@@ -81,6 +98,9 @@ public class OrderController {
         return box;
     }
 
+    /**
+     * A method that sets the time of drinks
+     */
     private void setTimeOfDrinks() {
         for (int i = 0; i < 24; i++) {
             hourField.getItems().add(i);
@@ -93,18 +113,30 @@ public class OrderController {
         this.minutesField.setValue(this.viewModel.getBookingMinute());
     }
 
+    /**
+     * A method that cancels the order
+     */
     public void onCancel() {
         this.viewModel.onCancel();
     }
 
+    /**
+     * A method that goes back to reservations
+     */
     public void onBackToReservations() {
         this.viewModel.onBackToReservations();
     }
 
+    /**
+     * A method that skips the ordering of drinks
+     */
     public void onSkip() {
         this.viewModel.onSkip();
     }
 
+    /**
+     * A method that confirms the order
+     */
     public void onConfirm() {
         var hours = (int) hourField.getValue();
         var minutes = (int) minutesField.getValue();

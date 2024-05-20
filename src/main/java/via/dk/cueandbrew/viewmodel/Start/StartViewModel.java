@@ -5,27 +5,47 @@ import via.dk.cueandbrew.view.ViewHandler;
 
 import java.util.UUID;
 
-public class StartViewModel
-{
-  private final Model model;
-  private final ViewHandler viewHandler;
+/**
+ * A class that is responsible for the StartViewModel
+ *
+ * @author Marius Marcoci
+ */
+public class StartViewModel {
+    private final Model model;
+    private final ViewHandler viewHandler;
 
-  public StartViewModel(Model model, ViewHandler viewHandler)
-  {
-    this.model = model;
-    this.viewHandler = viewHandler;
-  }
+    /**
+     * A constructor that sets the model and the viewHandler
+     *
+     * @param model       The model
+     * @param viewHandler The viewHandler
+     */
+    public StartViewModel(Model model, ViewHandler viewHandler) {
+        this.model = model;
+        this.viewHandler = viewHandler;
+    }
 
-  public void onUser() {
-    this.viewHandler.openUserMainPageView();
-  }
+    /**
+     * A method that opens the user main page view
+     */
+    public void onUser() {
+        this.viewHandler.openUserMainPageView();
+    }
 
-  public void onManager() {
-    this.viewHandler.openManagerLoginView();
-  }
+    /**
+     * A method that opens the manager login view
+     */
+    public void onManager() {
+        this.viewHandler.openManagerLoginView();
+    }
 
-  public void sendIDToLoginController(UUID id)
-  {
-    this.viewHandler.getViewModelFactory().getManagerLoginViewModel().setId(id);
-  }
+
+    /**
+     * A method that sends the id to the login controller
+     *
+     * @param id The id
+     */
+    public void sendIDToLoginController(UUID id) {
+        this.viewHandler.getViewModelFactory().getManagerLoginViewModel().setId(id);
+    }
 }

@@ -5,6 +5,11 @@ import javafx.scene.control.*;
 import via.dk.cueandbrew.viewmodel.MainPages.CreateFeedbackViewModel;
 import java.rmi.RemoteException;
 
+/**
+ * A class that is responsible for the CreateFeedbackController
+ * @author Marius Marcoci
+
+ */
 public class CreateFeedbackController
 {
   @FXML private Button finalizeButton;
@@ -14,6 +19,10 @@ public class CreateFeedbackController
   @FXML private TextArea feedback;
   private CreateFeedbackViewModel viewModel;
 
+    /**
+     * A method that initializes the CreateFeedbackViewModel
+     * @param viewModel The CreateFeedbackViewModel
+     */
  public void init(CreateFeedbackViewModel viewModel) {
    this.viewModel = viewModel;
    firstname.textProperty().addListener((observable, oldValue, newValue) -> checkInput());
@@ -23,6 +32,7 @@ public class CreateFeedbackController
    this.typeDropdown.setValue("Positive");
  }
 
+ /** Validates the input fields and enables the finalize button if all fields are filled out */
   private void checkInput() {
     boolean isFirstNameEmpty = firstname.getText().isEmpty();
     boolean isLastNameEmpty = lastname.getText().isEmpty();
@@ -31,10 +41,17 @@ public class CreateFeedbackController
     finalizeButton.setDisable(isFirstNameEmpty || isLastNameEmpty || isFeedbackEmpty);
   }
 
+    /**
+     * A method that calls the onCancel method from the viewModel
+     */
  public void onCancel() {
    this.viewModel.onCancel();
  }
 
+    /**
+     * A method that calls the onFinalize method from the viewModel and passes the feedback, type, firstname and lastname
+     * @throws RemoteException
+     */
   public void onFinalize() throws RemoteException
   {
     showPopup(this.viewModel.onFinalize(this.feedback.textProperty().get(),
@@ -42,6 +59,10 @@ public class CreateFeedbackController
         this.firstname.getText(), this.lastname.getText()) != null);
   }
 
+    /**
+     * A method that shows a popup
+     * @param confirmation A boolean that is true if the feedback was submitted successfully
+     */
   private void showPopup(boolean confirmation) {
     Alert alert;
     if (confirmation) {

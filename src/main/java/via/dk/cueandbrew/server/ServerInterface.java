@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An interface that defines the methods that the server can call
+ */
 public interface ServerInterface extends Remote
 {
   void onLogin(String login, String password, UUID id) throws RemoteException;

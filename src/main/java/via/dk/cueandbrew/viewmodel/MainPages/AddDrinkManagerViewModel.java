@@ -7,11 +7,19 @@ import via.dk.cueandbrew.shared.Drink;
 import via.dk.cueandbrew.view.ViewHandler;
 import via.dk.cueandbrew.viewmodel.Reservation.OrderViewModel;
 
+/**
+ * A class that is responsible for the AddDrinkManagerViewModel
+ * @author Andreea Caisim
+ */
 public class AddDrinkManagerViewModel
 {
     private Model model;
     private ViewHandler viewHandler;
     private OrderViewModel orderViewModel;
+    /** A constructor that sets the model and the viewHandler
+     * @param model The model
+     * @param viewHandler The viewHandler
+     */
     public AddDrinkManagerViewModel(Model model, ViewHandler viewHandler)
     {
         this.model = model;
@@ -19,11 +27,17 @@ public class AddDrinkManagerViewModel
         this.orderViewModel=new OrderViewModel(model,viewHandler);
     }
 
+    /**
+     * A method that opens the order view
+     */
     public void onAddDrink(String name,Double price,Integer quantity){
         viewHandler.openOrder();
         viewHandler.openAddDrinkManager();
     }
 
+    /**
+     * A method that cancels the add drink
+     */
     public void onCancel(){
         viewHandler.openManagerMainPage();
     }

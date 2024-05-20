@@ -1,14 +1,21 @@
 package via.dk.cueandbrew.view;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+
+/** It defines the styles for a notification view
+ * @author Dimitar Nizamov
+ **/
 public class NotificationView extends HBox {
+    /** It creates a notification view
+     ** @param notification the notification to be displayed
+     ** @param onSeenButtonClicked the event handler for the seen button
+     **/
     public NotificationView(via.dk.cueandbrew.shared.Notification notification, EventHandler<ActionEvent> onSeenButtonClicked) {
         super();
         this.styleProperty().set("-fx-padding: 0 5 0 5;");

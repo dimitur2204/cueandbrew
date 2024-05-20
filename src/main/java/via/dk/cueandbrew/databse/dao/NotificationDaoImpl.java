@@ -10,12 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class that implements the NotificationDao interface and defines the methods that are avaliable for interacting with the notifications in the database
+ * @author Dimitar Nizamov
+ */
 public class NotificationDaoImpl implements NotificationDao {
     private static NotificationDaoImpl instance;
 
+    /**
+     * A private constructor that is used to create an instance of the NotificationDaoImpl class
+     */
     private NotificationDaoImpl() {
     }
 
+    /**
+     * A method that is used to create an instance of the NotificationDaoImpl class
+     * @return an instance of the NotificationDaoImpl class
+     */
     public static NotificationDaoImpl getInstance() {
         if (instance == null) {
             instance = new NotificationDaoImpl();
@@ -23,6 +34,11 @@ public class NotificationDaoImpl implements NotificationDao {
         return instance;
     }
 
+    /**
+     * A method that is used to fetch all notifications from the database
+     * @return a list of all notifications
+     * @throws SQLException
+     */
     @Override
     public List<Notification> fetchNotifications() throws SQLException {
         try (Connection connection = Database.createConnection()) {
@@ -42,6 +58,11 @@ public class NotificationDaoImpl implements NotificationDao {
         }
     }
 
+    /**
+     * A method that is used to mark a notification as read
+     * @param notification the notification that is to be marked as read
+     * @throws SQLException
+     */
     @Override
     public void markNotificationAsRead(Notification notification) throws SQLException {
         try (Connection connection = Database.createConnection()) {
@@ -58,6 +79,11 @@ public class NotificationDaoImpl implements NotificationDao {
         }
     }
 
+    /**
+     * A method that is used to create a notification
+     * @param notification the notification that is to be created
+     * @throws SQLException
+     */
     @Override
     public void createNotification(Notification notification) throws SQLException {
         try (Connection connection = Database.createConnection()) {
