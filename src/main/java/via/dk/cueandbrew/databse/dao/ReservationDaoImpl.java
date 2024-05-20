@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ReservationDaoImpl implements ReservationDao {
     private static ReservationDaoImpl instance;
@@ -196,14 +197,14 @@ public class ReservationDaoImpl implements ReservationDao {
                         String client_lastname = result.getString("client_lastname");
                         String client_phone_number = result.getString("client_phone_number");
                         String notes = result.getString("notes");
-                        String creation_datetime = result.getString("creation_datetime");
+                        Timestamp creation_datetime = result.getTimestamp("creation_datetime");
                         Reservation reservation = new Reservation.ReservationBuilder()
                                 .setReservationId(reservation_id)
                                 .setClientFirstName(client_firstname)
                                 .setClientLastName(client_lastname)
                                 .setClientPhoneNumber(client_phone_number)
                                 .setNotes(notes)
-                                .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                                .setCreationDatetime(creation_datetime)
                                 .setBooking(booking)
                                 .setOrder(order)
                                 .build();
@@ -297,7 +298,6 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
-    //probably need a check in the query if was_cancelled = 1 (the reservation was cancelled)
     public List<Reservation> findReservationsWithinPeriod(LocalDateTime start, int durationMinutes) {
         List<Reservation> overlappingReservations = new ArrayList<>();
         LocalDateTime endTime = start.plusMinutes(durationMinutes);
@@ -330,6 +330,7 @@ public class ReservationDaoImpl implements ReservationDao {
                     String startTime = result.getString("start_time");
                     String endTimeStr = result.getString("end_time");
                     String tableNumber = result.getString("number");
+                    int wasCancelled = result.getInt("was_cancelled");
                     Booking booking = new Booking(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTimeStr));
                     booking.getTables().add(new Table(Integer.parseInt(tableNumber)));
                     Reservation reservation = new Reservation.ReservationBuilder()
@@ -338,6 +339,7 @@ public class ReservationDaoImpl implements ReservationDao {
                             .setClientPhoneNumber(phoneNumber)
                             .setNotes(result.getString("notes"))
                             .setBooking(booking)
+                            .setWasCancelled(wasCancelled)
                             .build();
                     overlappingReservations.add(reservation);
                 }
@@ -345,18 +347,17 @@ public class ReservationDaoImpl implements ReservationDao {
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return overlappingReservations;
+        return overlappingReservations.stream().filter(r -> r.getWasCancelled() == 0).toList();
     }
 
-    @Override public boolean cancelReservation(int id) throws SQLException
-    {
-        try (Connection connection = Database.createConnection())
-        {
+    @Override
+    public boolean cancelReservation(int id) throws SQLException {
+        try (Connection connection = Database.createConnection()) {
             PreparedStatement statement = connection.prepareStatement("""
-            UPDATE cueandbrew.reservations
-            SET was_cancelled = 1
-            where reservation_id = ?;
-            """);
+                    UPDATE cueandbrew.reservations
+                    SET was_cancelled = 1
+                    where reservation_id = ?;
+                    """);
             statement.setInt(1, id);
             int rowsAffected = statement.executeUpdate();
 
