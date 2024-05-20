@@ -129,19 +129,6 @@ public class ServerImplementation implements ServerInterface {
         }
     }
 
-    @Override public void addDrink(String name, double price, int quantity)
-        throws RemoteException
-    {
-        try
-        {
-          DrinksDaoImpl.getInstance().addDrink(name, price, quantity);
-        }
-        catch (SQLException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
-
     /**
      * A method that creates a feedback
      * @param content The content of the feedback
@@ -207,6 +194,18 @@ public class ServerImplementation implements ServerInterface {
             return result;
         }
         catch (SQLException | RemoteException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override public boolean onAddDrink(String name, Double price, int quantity)
+    {
+        try
+        {
+            return DrinksDaoImpl.getInstance().addDrink(name, price, quantity);
+        }
+        catch (SQLException e)
         {
             throw new RuntimeException(e);
         }

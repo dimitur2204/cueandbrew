@@ -7,9 +7,9 @@ module via.dk {
     requires java.desktop;
     requires java.naming;
 
-
     exports via.dk.cueandbrew;
     exports via.dk.cueandbrew.server;
+    exports via.dk.cueandbrew.client;
     exports via.dk.cueandbrew.shared;
     exports via.dk.cueandbrew.model;
     exports via.dk.cueandbrew.view;

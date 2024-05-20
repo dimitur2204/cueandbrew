@@ -109,15 +109,6 @@ public class ModelManager implements Model, PropertyChangeListener {
         return this.client.onSearch(phone);
     }
 
-    @Override
-    public void addDrink(String name, double price, int quantity) {
-        try {
-            this.client.addDrink(name, price, quantity);
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     /**
      * A method that creates a feedback
      *
@@ -224,6 +215,19 @@ public class ModelManager implements Model, PropertyChangeListener {
         try {
             return this.client.checkFeedback(managerId, feedbackId);
         } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override public boolean onAddDrink(String name, Double price,
+        Integer quantity)
+    {
+        try
+        {
+            return this.client.onAddDrink(name, price, quantity);
+        }
+        catch (RemoteException e)
+        {
             throw new RuntimeException(e);
         }
     }

@@ -24,7 +24,6 @@ public interface ServerInterface extends Remote
   void addFeedbackPropertyChangeListener(
       RemotePropertyChangeListener<Serializable> listener) throws RemoteException;
   List<Reservation> onSearch(String phone) throws RemoteException;
-  void addDrink(String name, double price, int quantity)throws RemoteException;
   void addReservationPropertyChangeListener(RemotePropertyChangeListener<Serializable> listener) throws RemoteException;
   Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
   List<Notification> fetchNotifications() throws RemoteException;
@@ -33,4 +32,5 @@ public interface ServerInterface extends Remote
   boolean cancelReservation(int id) throws RemoteException;
   List<Feedback> fetchFeedbacks() throws RemoteException;
   boolean checkFeedback(int managerId, int feedbackId) throws RemoteException;
+  boolean onAddDrink(String name, Double price, int quantity) throws RemoteException;
 }

@@ -28,7 +28,6 @@ public interface Model {
 
     void onFinalizeReservation() throws RemoteException;
 
-    void addDrink(String name, double price, int quantity);
     Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 
     void startDateTimeUpdater(Label date, Label time);
@@ -43,4 +42,5 @@ public interface Model {
   boolean cancelReservation(int id) throws RemoteException;
   List<Feedback> fetchFeedbacks();
     boolean checkFeedback(int managerId, int feedbackId);
+  boolean onAddDrink(String name, Double price, Integer quantity);
 }
