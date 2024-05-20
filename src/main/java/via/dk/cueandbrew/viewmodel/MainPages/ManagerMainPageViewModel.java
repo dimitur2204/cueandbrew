@@ -16,12 +16,21 @@ import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * A class that is responsible for the ManagerMainPageViewModel
+ * @Author Dimitar Nizamov, Andreea Caisim
+ */
 public class ManagerMainPageViewModel implements PropertyChangeListener {
     private final PropertyChangeSupport support;
     private final Model model;
     private final ViewHandler viewHandler;
     private final StringProperty welcomeLabel;
 
+    /**
+     * A constructor that sets the model and the viewHandler
+     * @param model The model
+     * @param viewHandler The viewHandler
+     */
     public ManagerMainPageViewModel(Model model, ViewHandler viewHandler) {
         this.support = new PropertyChangeSupport(this);
         this.model = model;
@@ -29,11 +38,21 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
         this.model.addPropertyChangeListener(this);
         this.viewHandler = viewHandler;
     }
+
+    /**
+     * A method that fetches the notifications
+     * @return The list of notifications
+     * @throws RemoteException If the method failed
+     */
     public List<Notification> fetchNotifications() throws RemoteException {
         //return only notificaitnos that are not seen
         return this.model.fetchNotifications().stream().filter(notification -> notification.getWasSeen() == 0).toList();
     }
 
+    /**
+     * A method that marks the notification as read
+     * @param notification The notification
+     */
     public void markNotificationAsRead(Notification notification) {
         try {
             this.model.markNotificationAsRead(notification);
@@ -47,26 +66,50 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
     this.viewHandler.openAddDrinkManager();
 
   }
+
+    /**
+     * A method that binds the welcome label
+     * @param property The property
+     */
     public void bindWelcomeLabel(StringProperty property) {
         property.bind(welcomeLabel);
     }
 
+    /**
+     * A method that updates the date and time
+     * @param date The date
+     * @param time The time
+     */
     public void updateDateTime(Label date, Label time) {
         this.model.updateDateTime(date, time);
     }
 
+    /**
+     * A method that starts the date time updater
+     * @param date The date
+     * @param time The time
+     */
     public void startDateTimeUpdater(Label date, Label time) {
         this.model.startDateTimeUpdater(date, time);
     }
 
+    /**
+     * A method that opens the finalize reservation view
+     */
     public void onMakeAReservation() {
         this.viewHandler.openCreateReservationView();
     }
 
+    /**
+     * A method that opens the create feedback view
+     */
     public void onOpenAddDrink() {
         this.viewHandler.openAddDrinkView();
     }
 
+    /**
+     * A method that invalidates the login and opens the manager login view
+     */
     public void onExit() {
         Registration temp = Registration.getInstance();
         temp.setManager_id(-1);
@@ -91,19 +134,10 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
     return this.model.checkFeedback(managerId, feedbackId);
   }
 
-<<<<<<< Updated upstream
-//  public void fireCreateFeedbackPropertyChange(int feedback_id, String content, String selectedType, String firstname, String lastname) {
-//      Feedback feedback = new Feedback(feedback_id, firstname, lastname, content, selectedType, 0);
-//      this.support.firePropertyChange("feedback_created", null, feedback);
-//    System.out.println(feedback);
-//  }
-
-=======
     /**
      * A method that listens for property changes
      * @param evt The event
      */
->>>>>>> Stashed changes
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     if (evt.getPropertyName().equals("welcome")) {

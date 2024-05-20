@@ -13,12 +13,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+/**
+ * A class that implements the methods that are avaliable for interacting with the drinks in the database
+ * @author Darja Jefremova, Dimitar Nizamov, Marius Marcoci
+ */
 public class ReservationDaoImpl implements ReservationDao {
     private static ReservationDaoImpl instance;
 
     private ReservationDaoImpl() {
     }
 
+
+    /**
+     * A method that is used to create an instance of the ReservationDaoImpl class
+     * @return an instance of the ReservationDaoImpl class
+     * @throws SQLException
+     */
     public static ReservationDaoImpl getInstance() throws SQLException {
         if (instance == null) {
             instance = new ReservationDaoImpl();
@@ -26,6 +36,12 @@ public class ReservationDaoImpl implements ReservationDao {
         return instance;
     }
 
+    /**
+     * A method that is used to create a reservation in the database
+     * @param builder the builder that is used to create the reservation
+     * @return the reservation
+     * @throws SQLException
+     */
     @Override
     public Reservation create(Reservation.ReservationBuilder builder) throws SQLException {
         try (Connection connection = Database.createConnection()) {
@@ -87,6 +103,12 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
+    /**
+     * A method that is to read a reservation from the database
+     * @param id the id of the reservation
+     * @return the reservation
+     * @throws SQLException
+     */
     @Override
     public Reservation readByTable(int tableId) throws SQLException {
         try (Connection connection = Database.createConnection()) {
@@ -112,6 +134,12 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
+    /**
+     * A method that is used to read a reservation from the database
+     * @param phone the phone number of the reservation
+     * @return a list of reservations
+     * @throws SQLException
+     */
     @Override
     public List<Reservation> readByPhoneNumber(String phone)
             throws SQLException {
@@ -298,6 +326,13 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
+    /**
+     * A method that is used to find reservations within a certain period of time
+     * @param start the start time of the period
+     * @param durationMinutes the duration of the period
+     * @return a list of reservations
+     * @throws SQLException
+     */
     public List<Reservation> findReservationsWithinPeriod(LocalDateTime start, int durationMinutes) {
         List<Reservation> overlappingReservations = new ArrayList<>();
         LocalDateTime endTime = start.plusMinutes(durationMinutes);
@@ -365,6 +400,11 @@ public class ReservationDaoImpl implements ReservationDao {
         }
     }
 
+    /**
+     * A method that is used to update a reservation in the database
+     * @param reservation the reservation that is to be updated
+     * @throws SQLException
+     */
     public Reservation getReservationById(int id) throws SQLException {
         try (Connection connection = Database.createConnection()) {
             PreparedStatement statement = connection.prepareStatement("""

@@ -13,8 +13,17 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
+
+/** Provides a toast message that can be called from any class.
+ * It shows a message for a short period of time in the middle of the screen.
+ */
 public final class Toast
 {
+
+    /** Creates a toast message with the given message and owner stage.
+     * @param ownerStage Stage object that is the owner of the toast message
+     * @param toastMsg String message to be displayed
+     */
     public static void makeText(Stage ownerStage, String toastMsg)
     {
         int fadeInDelay = 500;

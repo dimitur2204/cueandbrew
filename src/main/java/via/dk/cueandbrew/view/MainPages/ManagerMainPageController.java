@@ -21,6 +21,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 
+/**
+ * A class that is responsible for the ManagerMainPageController
+ * @author Dimitar Nizamov
+ */
 public class ManagerMainPageController implements PropertyChangeListener {
     @FXML private VBox notificationsWrapper;
     @FXML private Label dateLabel;
@@ -31,6 +35,10 @@ public class ManagerMainPageController implements PropertyChangeListener {
     private ObservableList<Notification> notifications;
     private ObservableList<Feedback> feedbacks;
 
+    /**
+     * A method that initializes the ManagerMainPageViewModel
+     * @param viewModel The ManagerMainPageViewModel
+     */
     public void init(ManagerMainPageViewModel viewModel) {
         this.viewModel = viewModel;
         this.viewModel.bindWelcomeLabel(welcomeLabel.textProperty());
@@ -91,6 +99,9 @@ public class ManagerMainPageController implements PropertyChangeListener {
       }
     }
 
+    /**
+     * A method that updates the notifications
+     */
     private void updateNotifications() {
         notificationsWrapper.getChildren().clear();
         for (Notification notification : this.notifications) {
@@ -106,14 +117,23 @@ public class ManagerMainPageController implements PropertyChangeListener {
         }
     }
 
+    /**
+     * A method that calls the onExit method from the viewModel
+     */
     public void onExit() {
         this.viewModel.onExit();
     }
 
+    /**
+     * A method that calls the onAddDrink method from the viewModel
+     */
     public void onAddDrink() {
         this.viewModel.onOpenAddDrink();
     }
 
+    /**
+     * A method that calls the onAddTable method from the viewModel
+     */
     public void onMakeAReservation() {
         this.viewModel.onMakeAReservation();
     }

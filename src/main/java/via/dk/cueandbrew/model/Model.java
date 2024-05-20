@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * A class that is responsible for the Model that the client uses
+ * @Author Dimitar Nizamov
+ */
 public interface Model {
     void onLogin(String login, String password, UUID id);
 

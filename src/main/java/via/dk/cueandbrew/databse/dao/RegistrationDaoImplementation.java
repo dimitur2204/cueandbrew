@@ -7,6 +7,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * A class that implements the RegistrationDao interface and defines the methods that are avaliable for interacting with the registration in the database
+ * @author Marius Marcoci
+ */
 public class RegistrationDaoImplementation implements RegistrationDao
 {
   private static RegistrationDaoImplementation instance;
@@ -14,6 +18,11 @@ public class RegistrationDaoImplementation implements RegistrationDao
   private RegistrationDaoImplementation() {
   }
 
+  /**
+   * A method that creates an instance of the RegistrationDaoImplementation class
+   * @return an instance of the RegistrationDaoImplementation class
+   * @throws SQLException
+   */
   public static RegistrationDaoImplementation getInstance() throws SQLException {
     if (instance == null) {
       instance = new RegistrationDaoImplementation();
@@ -21,6 +30,13 @@ public class RegistrationDaoImplementation implements RegistrationDao
     return instance;
   }
 
+    /**
+     * A method that gets the registration from the database
+     * @param login the login of the registration
+     * @param password the password of the registration
+     * @return the registration
+     * @throws SQLException
+     */
   @Override public Registration getRegistration(String login,
       String password) throws SQLException
   {
