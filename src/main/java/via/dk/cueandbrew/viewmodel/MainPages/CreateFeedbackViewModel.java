@@ -1,6 +1,7 @@
 package via.dk.cueandbrew.viewmodel.MainPages;
 
 import via.dk.cueandbrew.model.Model;
+import via.dk.cueandbrew.shared.Feedback;
 import via.dk.cueandbrew.view.ViewHandler;
 
 import java.rmi.RemoteException;
@@ -42,7 +43,7 @@ public class CreateFeedbackViewModel
      * @return A boolean
      * @throws RemoteException
      */
-  public boolean onFinalize(String content, String selectedType, String firstname, String lastname) throws RemoteException
+  public Feedback onFinalize(String content, String selectedType, String firstname, String lastname) throws RemoteException
   {
     return this.model.createFeedback(content, selectedType, firstname, lastname);
   }

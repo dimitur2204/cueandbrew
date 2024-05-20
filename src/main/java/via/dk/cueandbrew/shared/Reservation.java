@@ -16,6 +16,7 @@ public class Reservation implements Serializable {
     private final Booking booking;
     private final Order order;
     private int reservationId;
+    private final int wasCancelled;
 
     /**
      * A private constructor that initializes the Reservation with the specified builder
@@ -30,6 +31,7 @@ public class Reservation implements Serializable {
         this.booking = builder.booking;
         this.order = builder.order;
         this.reservationId = builder.reservationId;
+        this.wasCancelled = builder.wasCancelled;
     }
 
     /**
@@ -104,6 +106,11 @@ public class Reservation implements Serializable {
         return order;
     }
 
+    public int getWasCancelled()
+    {
+        return wasCancelled;
+    }
+
     /**
      * A builder class that is responsible for the Reservation
      * @author Dimitar Nizamov
@@ -117,6 +124,7 @@ public class Reservation implements Serializable {
         private Booking booking;
         private Order order;
         private int reservationId;
+        private int wasCancelled;
 
         /**
          * A constructor that initializes the ReservationBuilder with the current time
@@ -202,6 +210,11 @@ public class Reservation implements Serializable {
          */
         public ReservationBuilder setReservationId(int reservationId) {
             this.reservationId = reservationId;
+            return this;
+        }
+
+        public ReservationBuilder setWasCancelled(int wasCancelled) {
+            this.wasCancelled = wasCancelled;
             return this;
         }
 

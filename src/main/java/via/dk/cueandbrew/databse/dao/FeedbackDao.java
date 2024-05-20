@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface FeedbackDao
 {
-  boolean createFeedback(String feedback, String selectedType, String firstname, String lastname) throws RemoteException, SQLException;
-  List<Feedback> getFeedbacks() throws RemoteException;
+  Feedback createFeedback(String feedback, String selectedType, String firstname, String lastname) throws RemoteException, SQLException;
+  List<Feedback> getFeedbacks() throws RemoteException, SQLException;
+  boolean checkFeedback(int managerId, int feedbackId) throws SQLException;
 }

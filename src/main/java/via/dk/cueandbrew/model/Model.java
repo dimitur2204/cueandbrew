@@ -1,6 +1,7 @@
 package via.dk.cueandbrew.model;
 
 import javafx.scene.control.Label;
+import via.dk.cueandbrew.shared.Feedback;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Reservation;
 
@@ -28,7 +29,7 @@ public interface Model {
     void onFinalizeReservation() throws RemoteException;
 
     void addDrink(String name, double price, int quantity);
-    boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
+    Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException;
 
     void startDateTimeUpdater(Label date, Label time);
 
@@ -39,4 +40,7 @@ public interface Model {
     void markNotificationAsRead(Notification notification) throws RemoteException;
 
     void createNotification(Notification notification) throws RemoteException;
+  boolean cancelReservation(int id) throws RemoteException;
+  List<Feedback> fetchFeedbacks();
+    boolean checkFeedback(int managerId, int feedbackId);
 }

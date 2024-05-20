@@ -3,6 +3,7 @@ package via.dk.cueandbrew.server;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import dk.via.remote.observer.RemotePropertyChangeSupport;
 import via.dk.cueandbrew.databse.dao.*;
+import via.dk.cueandbrew.shared.Feedback;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
@@ -23,6 +24,7 @@ public class ServerImplementation implements ServerInterface {
 
     private final RemotePropertyChangeSupport<Serializable> registrationSupport;
     private final RemotePropertyChangeSupport<Serializable> reservationSupport;
+    private final RemotePropertyChangeSupport<Serializable> feedbackSupport;
 
     /**
      * A constructor that initializes the Server Implementation
@@ -30,6 +32,7 @@ public class ServerImplementation implements ServerInterface {
     public ServerImplementation() {
         this.registrationSupport = new RemotePropertyChangeSupport<>();
         this.reservationSupport = new RemotePropertyChangeSupport<>();
+        this.feedbackSupport = new RemotePropertyChangeSupport<>();
     }
 
     /**
@@ -94,6 +97,7 @@ public class ServerImplementation implements ServerInterface {
      * A method that adds a property change listener to the registration
      * @param listener The listener to be added
      */
+    @Override public void addRegistrationPropertyChangeListener(
     public void addRegistrationPropertyChangeListener(
             RemotePropertyChangeListener<Serializable> listener) throws RemoteException {
         this.registrationSupport.addPropertyChangeListener(listener);
@@ -106,6 +110,10 @@ public class ServerImplementation implements ServerInterface {
     public void addReservationPropertyChangeListener(
             RemotePropertyChangeListener<Serializable> listener) throws RemoteException {
         this.reservationSupport.addPropertyChangeListener(listener);
+    }
+
+    @Override public void addFeedbackPropertyChangeListener(RemotePropertyChangeListener<Serializable> listener) throws RemoteException {
+        this.feedbackSupport.addPropertyChangeListener(listener);
     }
 
     /**
@@ -144,9 +152,11 @@ public class ServerImplementation implements ServerInterface {
      * @return True if the feedback is created, false otherwise
      */
     @Override
-    public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException {
+    public Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException {
         try {
-            return FeedbackDaoImplementation.getInstance().createFeedback(content, selectedType, firstname, lastname);
+            Feedback result = FeedbackDaoImplementation.getInstance().createFeedback(content, selectedType, firstname, lastname);
+            this.feedbackSupport.firePropertyChange("created_feedback", null, result);
+            return result;
         } catch (SQLException e) {
             throw new RemoteException();
         }
@@ -162,6 +172,44 @@ public class ServerImplementation implements ServerInterface {
             NotificationDaoImpl.getInstance().createNotification(notification);
         } catch (SQLException e) {
             throw new RemoteException();
+        }
+    }
+
+    @Override public boolean cancelReservation(int id) throws RemoteException
+    {
+        try
+        {
+            return ReservationDaoImpl.getInstance().cancelReservation(id);
+        }
+        catch (SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override public List<Feedback> fetchFeedbacks()
+    {
+        try
+        {
+            return FeedbackDaoImplementation.getInstance().getFeedbacks();
+        }
+        catch (RemoteException | SQLException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override public boolean checkFeedback(int managerId, int feedbackId)
+    {
+        try
+        {
+            boolean result =  FeedbackDaoImplementation.getInstance().checkFeedback(managerId, feedbackId);
+            this.feedbackSupport.firePropertyChange("check_feedback", null, result);
+            return result;
+        }
+        catch (SQLException | RemoteException e)
+        {
+            throw new RuntimeException(e);
         }
     }
 

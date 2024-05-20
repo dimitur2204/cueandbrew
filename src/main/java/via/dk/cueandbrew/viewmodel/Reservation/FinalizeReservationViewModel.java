@@ -65,7 +65,8 @@ public class FinalizeReservationViewModel {
                 .setClientFirstName(firstname)
                 .setClientLastName(lastname)
                 .setClientPhoneNumber(phoneNumber)
-                .setNotes(notes);
+                .setNotes(notes)
+                .setWasCancelled(0);
         try {
             this.model.onFinalizeReservation();
         } catch (RemoteException e) {

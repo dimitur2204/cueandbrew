@@ -15,4 +15,5 @@ public interface ReservationDao {
     Reservation readByTable(int tableId) throws SQLException;
     List<Reservation> readByPhoneNumber(String phone) throws SQLException;
     List<Reservation> findReservationsWithinPeriod(LocalDateTime start, int durationMinutes) throws SQLException;
+    boolean cancelReservation(int id) throws SQLException;
 }

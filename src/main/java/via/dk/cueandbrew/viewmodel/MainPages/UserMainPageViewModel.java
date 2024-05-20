@@ -80,4 +80,9 @@ public class UserMainPageViewModel
   {
     return this.model.onSearch(phone);
   }
+
+  public boolean cancelReservation(int id) throws RemoteException
+  {
+    return this.model.cancelReservation(id);
+  }
 }

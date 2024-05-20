@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * A class that implements the methods that are avaliable for interacting with the drinks in the database
@@ -81,7 +82,7 @@ public class ReservationDaoImpl implements ReservationDao {
                     insertDrink.executeUpdate();
                 }
             }
-            PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement insertReservation = connection.prepareStatement("INSERT INTO cueandbrew.reservations (booking_id, order_id, client_firstname, client_lastname, client_phone_number, notes, creation_datetime, was_cancelled) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             insertReservation.setInt(1, bookingId);
             if (orderId != 0) {
                 insertReservation.setInt(2, orderId);
@@ -93,6 +94,7 @@ public class ReservationDaoImpl implements ReservationDao {
             insertReservation.setString(5, res.getClientPhoneNumber());
             insertReservation.setString(6, res.getNotes());
             insertReservation.setTimestamp(7, Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
+            insertReservation.setInt(8, res.getWasCancelled());
             insertReservation.executeUpdate();
             ResultSet keys = insertReservation.getGeneratedKeys();
             keys.next();
@@ -151,6 +153,7 @@ public class ReservationDaoImpl implements ReservationDao {
                         r.notes,
                         r.creation_datetime,
                         r.order_id,
+                        r.was_cancelled,
                         t.number,
                         d.drink_id,
                         d.name,
@@ -222,14 +225,14 @@ public class ReservationDaoImpl implements ReservationDao {
                         String client_lastname = result.getString("client_lastname");
                         String client_phone_number = result.getString("client_phone_number");
                         String notes = result.getString("notes");
-                        String creation_datetime = result.getString("creation_datetime");
+                        Timestamp creation_datetime = result.getTimestamp("creation_datetime");
                         Reservation reservation = new Reservation.ReservationBuilder()
                                 .setReservationId(reservation_id)
                                 .setClientFirstName(client_firstname)
                                 .setClientLastName(client_lastname)
                                 .setClientPhoneNumber(client_phone_number)
                                 .setNotes(notes)
-                                .setCreationDatetime(Timestamp.valueOf(LocalDateTime.parse(creation_datetime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))))
+                                .setCreationDatetime(creation_datetime)
                                 .setBooking(booking)
                                 .setOrder(order)
                                 .build();
@@ -362,6 +365,7 @@ public class ReservationDaoImpl implements ReservationDao {
                     String startTime = result.getString("start_time");
                     String endTimeStr = result.getString("end_time");
                     String tableNumber = result.getString("number");
+                    int wasCancelled = result.getInt("was_cancelled");
                     Booking booking = new Booking(Date.valueOf(date), Time.valueOf(startTime), Time.valueOf(endTimeStr));
                     booking.getTables().add(new Table(Integer.parseInt(tableNumber)));
                     Reservation reservation = new Reservation.ReservationBuilder()
@@ -370,6 +374,7 @@ public class ReservationDaoImpl implements ReservationDao {
                             .setClientPhoneNumber(phoneNumber)
                             .setNotes(result.getString("notes"))
                             .setBooking(booking)
+                            .setWasCancelled(wasCancelled)
                             .build();
                     overlappingReservations.add(reservation);
                 }
@@ -377,7 +382,22 @@ public class ReservationDaoImpl implements ReservationDao {
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return overlappingReservations;
+        return overlappingReservations.stream().filter(r -> r.getWasCancelled() == 0).toList();
+    }
+
+    @Override
+    public boolean cancelReservation(int id) throws SQLException {
+        try (Connection connection = Database.createConnection()) {
+            PreparedStatement statement = connection.prepareStatement("""
+                    UPDATE cueandbrew.reservations
+                    SET was_cancelled = 1
+                    where reservation_id = ?;
+                    """);
+            statement.setInt(1, id);
+            int rowsAffected = statement.executeUpdate();
+
+            return rowsAffected > 0;
+        }
     }
 
     /**
