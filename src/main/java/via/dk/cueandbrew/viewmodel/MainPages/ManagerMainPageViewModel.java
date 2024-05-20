@@ -91,12 +91,19 @@ public class ManagerMainPageViewModel implements PropertyChangeListener {
     return this.model.checkFeedback(managerId, feedbackId);
   }
 
+<<<<<<< Updated upstream
 //  public void fireCreateFeedbackPropertyChange(int feedback_id, String content, String selectedType, String firstname, String lastname) {
 //      Feedback feedback = new Feedback(feedback_id, firstname, lastname, content, selectedType, 0);
 //      this.support.firePropertyChange("feedback_created", null, feedback);
 //    System.out.println(feedback);
 //  }
 
+=======
+    /**
+     * A method that listens for property changes
+     * @param evt The event
+     */
+>>>>>>> Stashed changes
   @Override
   public void propertyChange(PropertyChangeEvent evt) {
     if (evt.getPropertyName().equals("welcome")) {
