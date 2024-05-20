@@ -37,8 +37,9 @@ public class CreateFeedbackController
 
   public void onFinalize() throws RemoteException
   {
-    boolean confirmation = this.viewModel.onFinalize(this.feedback.textProperty().get(), this.typeDropdown.getSelectionModel().getSelectedItem(), this.firstname.getText(), this.lastname.getText());
-    showPopup(confirmation);
+    showPopup(this.viewModel.onFinalize(this.feedback.textProperty().get(),
+        this.typeDropdown.getSelectionModel().getSelectedItem(),
+        this.firstname.getText(), this.lastname.getText()) != null);
   }
 
   private void showPopup(boolean confirmation) {

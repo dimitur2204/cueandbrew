@@ -1,6 +1,3 @@
-create schema cueandbrew;
-set schema 'cueandbrew';
-
 create table managers (
     manager_id serial primary key,
     firstname varchar(100),
@@ -79,6 +76,7 @@ create table reservations (
     client_lastname varchar(100),
     client_phone_number varchar(15),
     creation_datetime timestamp,
+    was_cancelled int,
     foreign key (booking_id) references bookings(booking_id),
     foreign key (order_id) references orders(order_id),
     foreign key (received_by_id) references managers(manager_id)
@@ -128,7 +126,8 @@ INSERT INTO booking_tables (booking_id, table_number)
 VALUES
     (1, 1),
     (1, 2),
-    (2, 3);
+    (2, 3),
+    (3, 1);
 
 -- Inserting drinks
 INSERT INTO drinks (name, price, quantity)
@@ -153,15 +152,15 @@ VALUES
     (3, 3);
 
 -- Inserting reservations
-INSERT INTO reservations (booking_id, order_id, received_by_id, notes, client_firstname, client_lastname, client_phone_number, creation_datetime)
+INSERT INTO reservations (booking_id, order_id, received_by_id, notes, client_firstname, client_lastname, client_phone_number, creation_datetime, was_cancelled)
 VALUES
-    (1, 1, 1, 'VIP Guests', 'Alice', 'Johnson', '123-456-7890', '2024-05-14 12:59:00'),
-    (2, 2, 2, 'Birthday party', 'Bob', 'Anderson', '987-654-3210', '2024-05-14 13:15:00'),
-    (3, 3, NULL, 'Anniversary', 'Charlie', 'Brown', '555-555-5555', '2024-05-14 14:30:00');
+    (1, 1, NULL, 'VIP Guests', 'Alice', 'Johnson', '123-456-7890', '2024-05-14 12:59:00', 0),
+    (2, 2, NULL, 'Birthday party', 'Bob', 'Anderson', '987-654-3210', '2024-05-14 13:15:00', 1),
+    (3, 3, NULL, 'Anniversary', 'Charlie', 'Brown', '555-555-5555', '2024-05-14 14:30:00', 1);
 
 -- Inserting notifications with a specific creation time without seconds
 INSERT INTO notifications (reservation_id, content, was_seen, creation_time)
 VALUES
-    (1, 'bitch ass made a reservation for table 1, 2, 3. Notes: jadhjabhbjvsjh. Phone Number: snjgnjsbhjhf', 0, '2024-05-14 12:59:00'),
-    (2, 'Your reservation is confirmed.', 0, '2024-05-14 13:15:00'),
-    (3, 'Your reservation is confirmed.', 0, '2024-05-14 14:30:00');
+    (1, 'Alice Johnson made a reservation', 0, '2024-05-14 12:59:00'),
+    (2, 'Bob Anderson made a reservation', 0, '2024-05-14 13:15:00'),
+    (3, 'Charlie Brown make a reservation', 0, '2024-05-14 14:30:00');

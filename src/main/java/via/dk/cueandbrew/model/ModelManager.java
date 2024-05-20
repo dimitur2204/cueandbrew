@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import via.dk.cueandbrew.client.CallbackClient;
+import via.dk.cueandbrew.shared.Feedback;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
@@ -81,7 +82,7 @@ public class ModelManager implements Model, PropertyChangeListener
     return this.client.onSearch(phone);
   }
 
-  @Override public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
+  @Override public Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException
   {
     return this.client.createFeedback(content, selectedType, firstname, lastname);
   }
@@ -126,6 +127,40 @@ public class ModelManager implements Model, PropertyChangeListener
     this.client.createNotification(notification);
   }
 
+  @Override public boolean cancelReservation(int id) throws RemoteException
+  {
+    boolean result = this.client.cancelReservation(id);
+    //not sure if this if statement is needed
+    if (result) {
+      this.reservationBuilder.setWasCancelled(1);
+    }
+    return result;
+  }
+
+  @Override public List<Feedback> fetchFeedbacks()
+  {
+    try
+    {
+      return this.client.fetchFeedbacks();
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override public boolean checkFeedback(int managerId, int feedbackId)
+  {
+    try
+    {
+      return this.client.checkFeedback(managerId, feedbackId);
+    }
+    catch (RemoteException e)
+    {
+      throw new RuntimeException(e);
+    }
+  }
+
   @Override public void propertyChange(PropertyChangeEvent evt)
   {
     Platform.runLater(() -> {
@@ -143,6 +178,14 @@ public class ModelManager implements Model, PropertyChangeListener
       }
       else if (evt.getPropertyName().equals("reservation_created")) {
         this.support.firePropertyChange("reservation_created", null, evt.getNewValue());
+      }
+      else if (evt.getPropertyName().equals("created_feedback"))
+      {
+        this.support.firePropertyChange("created_feedback", null, evt.getNewValue());
+      }
+      else if (evt.getPropertyName().equals("check_feedback"))
+      {
+        this.support.firePropertyChange("check_feedback", null, evt.getNewValue());
       }
     });
   }

@@ -4,6 +4,7 @@ import dk.via.remote.observer.RemotePropertyChangeEvent;
 import dk.via.remote.observer.RemotePropertyChangeListener;
 import javafx.application.Platform;
 import via.dk.cueandbrew.server.ServerInterface;
+import via.dk.cueandbrew.shared.Feedback;
 import via.dk.cueandbrew.shared.Notification;
 import via.dk.cueandbrew.shared.Registration;
 import via.dk.cueandbrew.shared.Reservation;
@@ -27,6 +28,7 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         this.serverInterface = serverInterface;
         this.serverInterface.addRegistrationPropertyChangeListener(this);
         this.serverInterface.addReservationPropertyChangeListener(this);
+        this.serverInterface.addFeedbackPropertyChangeListener(this);
         this.support = new PropertyChangeSupport(this);
     }
 
@@ -57,7 +59,7 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
     }
 
     @Override
-    public boolean createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException {
+    public Feedback createFeedback(String content, String selectedType, String firstname, String lastname) throws RemoteException {
         return this.serverInterface.createFeedback(content, selectedType, firstname, lastname);
     }
 
@@ -82,6 +84,22 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         this.serverInterface.createNotification(message);
     }
 
+    @Override public boolean cancelReservation(int id) throws RemoteException
+    {
+        return this.serverInterface.cancelReservation(id);
+    }
+
+    @Override public List<Feedback> fetchFeedbacks() throws RemoteException
+    {
+        return this.serverInterface.fetchFeedbacks();
+    }
+
+    @Override public boolean checkFeedback(int managerId, int feedbackId)
+        throws RemoteException
+    {
+        return this.serverInterface.checkFeedback(managerId, feedbackId);
+    }
+
     @Override
     public void propertyChange(
             RemotePropertyChangeEvent<Serializable> remotePropertyChangeEvent)
@@ -94,8 +112,16 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
                 Registration.getInstance().setId(clientRegistration.getId());
                 this.support.firePropertyChange("login", null, clientRegistration);
             }
-            if (remotePropertyChangeEvent.getPropertyName().equals("reservation_created")) {
+            else if (remotePropertyChangeEvent.getPropertyName().equals("reservation_created")) {
                 this.support.firePropertyChange("reservation_created", null, remotePropertyChangeEvent.getNewValue());
+            }
+            else if (remotePropertyChangeEvent.getPropertyName().equals("created_feedback"))
+            {
+                this.support.firePropertyChange("created_feedback", null, remotePropertyChangeEvent.getNewValue());
+            }
+            else if (remotePropertyChangeEvent.getPropertyName().equals("check_feedback"))
+            {
+                this.support.firePropertyChange("check_feedback", null, remotePropertyChangeEvent.getNewValue());
             }
         });
     }

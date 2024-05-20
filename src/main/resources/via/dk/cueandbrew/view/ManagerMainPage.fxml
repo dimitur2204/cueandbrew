@@ -36,9 +36,9 @@
    <right>
       <HBox prefHeight="302.0" prefWidth="642.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="302.0" prefWidth="376.0">
+            <VBox prefHeight="296.0" prefWidth="300.0">
                <children>
-                  <VBox prefHeight="345.0" prefWidth="376.0" style="-fx-padding: 0 5 0 5;">
+                  <VBox prefHeight="296.0" prefWidth="300.0" style="-fx-padding: 0 5 0 5;">
                      <children>
                         <Label text="Notifications">
                            <font>
@@ -48,7 +48,7 @@
                         <HBox prefHeight="7.0" prefWidth="364.0" />
                         <ScrollPane prefWidth="200.0">
                            <content>
-                              <VBox fx:id="notificationsWrapper" prefWidth="343.0">
+                              <VBox fx:id="notificationsWrapper" prefWidth="277.0">
                               </VBox>
                            </content>
                         </ScrollPane>
@@ -56,20 +56,41 @@
                   </VBox>
                </children>
             </VBox>
-            <VBox alignment="TOP_RIGHT" prefHeight="302.0" prefWidth="206.0">
+            <VBox alignment="TOP_RIGHT" prefHeight="296.0" prefWidth="300.0">
                <children>
-                  <Button onAction="#onAddDrink" mnemonicParsing="false" prefHeight="26.0" prefWidth="106.0" text="Add a drink">
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </Button>
-                  <VBox prefHeight="6.0" prefWidth="206.0" />
-                  <Button mnemonicParsing="false" onAction="#onMakeAReservation" text="New reservation" />
-                  <VBox prefHeight="6.0" prefWidth="206.0" />
-                  <Button mnemonicParsing="false" onAction="#onExit" prefHeight="26.0" prefWidth="105.0" text="Exit" />
+                  <VBox prefHeight="300.0">
+                     <children>
+                        <Label text="Reviews">
+                           <font>
+                              <Font size="17.0" />
+                           </font>
+                        </Label>
+                        <HBox prefHeight="7.0" prefWidth="200.0" />
+                        <ScrollPane prefWidth="273.0">
+                           <content>
+                              <VBox fx:id="feedbacksWrapper" prefWidth="280.0" />
+                           </content>
+                        </ScrollPane>
+                     </children></VBox>
                </children>
             </VBox>
+            <VBox prefHeight="296.0" prefWidth="18.0" />
          </children>
       </HBox>
    </right>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="55.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#onMakeAReservation" text="New reservation" />
+            <HBox prefHeight="55.0" prefWidth="4.0" />
+            <Button mnemonicParsing="false" onAction="#onAddDrink" prefHeight="26.0" prefWidth="106.0" text="Add a drink">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+            <HBox prefHeight="55.0" prefWidth="272.0" />
+            <Button mnemonicParsing="false" onAction="#onExit" prefHeight="26.0" prefWidth="105.0" text="Exit" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
