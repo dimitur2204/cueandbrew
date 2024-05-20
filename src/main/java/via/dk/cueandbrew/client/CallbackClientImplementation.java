@@ -129,12 +129,6 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
         return this.serverInterface.fetchNotifications();
     }
 
-    @Override public void addDrink(String name, double price, int quantity)
-        throws RemoteException
-    {
-        this.serverInterface.addDrink(name, price, quantity);
-    }
-
     /**
      * A method that marks a notification as read
      *
@@ -171,6 +165,18 @@ public class CallbackClientImplementation extends UnicastRemoteObject implements
             throws RemoteException
     {
         return this.serverInterface.checkFeedback(managerId, feedbackId);
+    }
+
+    @Override public boolean onAddDrink(String name, Double price, int quantity)
+    {
+        try
+        {
+            return this.serverInterface.onAddDrink(name, price, quantity);
+        }
+        catch (RemoteException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

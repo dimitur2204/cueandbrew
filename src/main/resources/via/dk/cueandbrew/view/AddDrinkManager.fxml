@@ -43,7 +43,7 @@
                     <children>
                         <Button mnemonicParsing="false" onAction="#onCancel" text="Cancel" />
                         <HBox prefHeight="100.0" prefWidth="10.0" />
-                        <Button mnemonicParsing="false" onAction="#onAddDrink" text="Add Drink" />
+                        <Button mnemonicParsing="false" onAction="#onAddDrink" text="Add Drink" fx:id="finalizeButton" disable="true"/>
                         <VBox prefHeight="200.0" prefWidth="10.0" />
                     </children>
                 </HBox>
