@@ -42,13 +42,22 @@ public class CreateReservationTest {
         booking.setTables(tables);
         return booking;
     }
+
     private Order getMockOrder() {
         Order order = new Order();
         ArrayList<Drink> drinks = new ArrayList<>();
-        Drink drink1 = new Drink(1, "Beer", 20, 500);
-        Drink drink2 = new Drink(2, "Wine", 30, 100);
-        drinks.add(drink1);
+        Drink drink = new Drink(1, "Cuba Libre", 80.0, 400);
+        Drink drink2 = new Drink(2, "Mojito", 90.0, 500);
+        Drink drink3 = new Drink(2, "Pina Colada", 100.0, 500);
+        Drink drink4 = new Drink(2, "Cola", 20.0, 500);
+        Drink drink5 = new Drink(2, "Wine", 50.0, 300);
+        Drink drink6 = new Drink(2, "Water", 15.0, 200);
+        drinks.add(drink);
         drinks.add(drink2);
+        drinks.add(drink3);
+        drinks.add(drink4);
+        drinks.add(drink5);
+        drinks.add(drink6);
         order.setDrinks(drinks);
         order.setExpectedDatetime(java.sql.Timestamp.valueOf("2002-04-22 12:00:00"));
         return order;

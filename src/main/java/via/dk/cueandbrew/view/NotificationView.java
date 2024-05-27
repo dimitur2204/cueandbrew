@@ -44,11 +44,11 @@ public class NotificationView extends HBox {
         var buttonWrapper = new VBox();
         buttonWrapper.setAlignment(javafx.geometry.Pos.CENTER);
         buttonWrapper.setPrefHeight(88);
-        buttonWrapper.setPrefWidth(348);
+        buttonWrapper.setPrefWidth(400);
         var button = new Button("Seen");
         button.setOnAction(onSeenButtonClicked);
+        button.setPrefWidth(120);
         button.setAlignment(javafx.geometry.Pos.CENTER);
-        button.setMnemonicParsing(false);
         buttonWrapper.getChildren().add(button);
         this.getChildren().addAll(wrapper, buttonWrapper);
         //add margin to the bottom of the view with a hbox appended to the bottom

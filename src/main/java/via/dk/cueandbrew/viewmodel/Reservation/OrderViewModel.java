@@ -35,8 +35,16 @@ public class OrderViewModel {
         this.drinks = new ArrayList<>();
         Drink drink = new Drink(1, "Cuba Libre", 80.0, 400);
         Drink drink2 = new Drink(2, "Mojito", 90.0, 500);
+        Drink drink3 = new Drink(3, "Pina Colada", 100.0, 500);
+        Drink drink4 = new Drink(4, "Cola", 20.0, 500);
+        Drink drink5 = new Drink(5, "Wine", 50.0, 300);
+        Drink drink6 = new Drink(6, "Water", 15.0, 200);
         drinks.add(drink);
         drinks.add(drink2);
+        drinks.add(drink3);
+        drinks.add(drink4);
+        drinks.add(drink5);
+        drinks.add(drink6);
         this.orderedDrinks = FXCollections.observableArrayList();
     }
 

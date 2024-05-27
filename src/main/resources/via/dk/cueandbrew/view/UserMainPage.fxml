@@ -62,13 +62,13 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Label text="+45" />
+                        <Label prefHeight="17.0" prefWidth="34.0" text="+45" />
                         <HBox prefHeight="42.0" prefWidth="6.0" />
                         <TextField fx:id="phoneLabel" />
                         <HBox prefHeight="42.0" prefWidth="19.0" />
                         <Button fx:id="searchButton" disable="true" mnemonicParsing="false" onAction="#onSearch" text="Search reservations" />
                         <HBox prefHeight="42.0" prefWidth="134.0" />
-                        <Button mnemonicParsing="false" onAction="#onMakeAReservation" text="Make a reservation" />
+                        <Button mnemonicParsing="false" onAction="#onMakeAReservation" prefHeight="26.0" prefWidth="129.0" text="Make a reservation" />
                      </children>
                   </HBox>
                </children>
