@@ -80,10 +80,18 @@ public class CreateReservationTest {
     void testOrderStep() {
         var reservationBuilder = new Reservation.ReservationBuilder();
         Mockito.when(model.getReservationBuilder()).thenReturn(reservationBuilder);
-        Drink drink = new Drink(1, "Beer", 20, 500);
-        Drink drink2 = new Drink(2, "Wine", 30, 100);
+        Drink drink = new Drink(1, "Cuba Libre", 80.0, 400);
+        Drink drink2 = new Drink(2, "Mojito", 90.0, 500);
+        Drink drink3 = new Drink(2, "Pina Colada", 100.0, 500);
+        Drink drink4 = new Drink(2, "Cola", 20.0, 500);
+        Drink drink5 = new Drink(2, "Wine", 50.0, 300);
+        Drink drink6 = new Drink(2, "Water", 15.0, 200);
         orderViewModel.addDrink(drink);
         orderViewModel.addDrink(drink2);
+        orderViewModel.addDrink(drink3);
+        orderViewModel.addDrink(drink4);
+        orderViewModel.addDrink(drink5);
+        orderViewModel.addDrink(drink6);
         var ts = java.sql.Timestamp.valueOf("2002-04-22 12:00:00");
         orderViewModel.onConfirm(ts);
         Assertions.assertEquals(reservationBuilder.build().getOrder(), getMockOrder());

@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * A class that is responsible for the UserMainPageController
- * @Author Dimitar Nizamov
+ * @author Dimitar Nizamov
  */
 public class UserMainPageController
 {
@@ -66,6 +66,8 @@ public class UserMainPageController
      */
   public void onSearch() throws RemoteException
   {
+    this.reservations.clear();
+    this.contentVBox.getChildren().removeAll(this.contentVBox.getChildren());
     this.reservations = this.viewModel.onSearch(this.phoneLabel.getText());
     buildReservationsMenu();
   }
