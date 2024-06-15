@@ -95,21 +95,9 @@ public class CreateReservationController {
             }
         });
         attachValidationListener(table1CheckBox);
-        table1CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(1);
-        });
         attachValidationListener(table2CheckBox);
-        table2CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(2);
-        });
         attachValidationListener(table3CheckBox);
-        table3CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(3);
-        });
         attachValidationListener(table4CheckBox);
-        table4CheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            viewModel.chooseTable(4);
-        });
     }
 
     /**
@@ -225,6 +213,10 @@ public class CreateReservationController {
     }
 
     public void onNext() {
+		if(this.table1CheckBox.isSelected()) this.viewModel.chooseTable(1);
+		if(this.table2CheckBox.isSelected()) this.viewModel.chooseTable(2);
+		if(this.table3CheckBox.isSelected()) this.viewModel.chooseTable(3);
+		if(this.table4CheckBox.isSelected()) this.viewModel.chooseTable(4);
         this.viewModel.onNext();
     }
 
